@@ -61,8 +61,13 @@ export default function Stepper() {
       formData.append("year", data.client.car.year);
       formData.append("vin", data.client.car.vin);
       formData.append("services", data.services.join(", "));
+      const FORM_ENDPOINT = process.env.NEXT_PUBLIC_FORMSPREE_URL;
 
-      const res = await fetch("https://formspree.io/f/mdayjjqz", {
+      if (!FORM_ENDPOINT) {
+        throw new Error("Missing Formspree endpoint in env");
+      }
+
+      const res = await fetch(FORM_ENDPOINT, {
         method: "POST",
         body: formData,
         headers: {
