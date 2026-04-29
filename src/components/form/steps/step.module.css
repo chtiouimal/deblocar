@@ -1,0 +1,42 @@
+.stepContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.step {
+    display: flex;
+    gap: 120px;
+}
+
+.stepContent {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding-top: 8px
+}
+
+.stepForm {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    max-width: 324px;
+    width: 100%;
+}
+
+.infoGroupContainer {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 600;
+}
+
+.infoContainer {
+    display: flex;
+    gap: 32px
+}
+
+.infoLabel {
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.6);
+}

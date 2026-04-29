@@ -1,0 +1,70 @@
+.stepperContainer {
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    max-width: 1212px;
+    margin: 0 auto;
+}
+
+.stepperContent {
+    width: 100%;
+    padding: 0 32px;
+}
+
+.stepperTabs {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 40px;
+  max-width: 1212px;
+  width: 100%;
+}
+
+.stepTab {
+  margin-left: 32px;
+  background: transparent;
+  border: none;
+  padding: 0 0 28px 0;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 16;
+  font-family: var(--mantine-font-family-headings);
+  font-size: 20px;
+  font-weight: 400;
+
+  color: rgba(255, 255, 255, 0.28);
+  transition: all 0.3s ease;
+}
+
+.stepTab:hover {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.activeTab {
+  color: white;
+}
+
+.activeLine {
+  position: absolute;
+  bottom: -1.5px;
+  left: 0;
+  width: 33.3333%;
+  height: 3px;
+  display: flex;
+  background: transparent;
+
+  transition: transform 0.35s ease;
+}
+
+.activeLineTic { 
+  margin-left: 32px;
+  background: #dc1f26;
+  box-shadow: 0 0 30px rgba(220, 31, 38, 0.4);
+  width: 80px !important;
+  height: 100% !important;
+}

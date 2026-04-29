@@ -9,32 +9,36 @@ import { useFormStore } from "@/hooks/useFormStore";
 import { validateStep1, validateStep2 } from "@/lib/validation/devisValidation";
 import { initialDevisFormData } from "@/constants/devis";
 import { StepInfoErrors, StepServicesErrors } from "@/types/devis";
+import { Button } from "@mantine/core";
+import styles from "./stepper.module.css";
+import { colors } from "@/theme/colors";
+import { CheckIcon } from "@phosphor-icons/react";
 
 type StepErrors = StepInfoErrors & StepServicesErrors;
 
 export default function Stepper() {
-
   const { data, updateClient, updateCar, setData } = useFormStore();
   const [step, setStep] = useState(0);
   const [stepErrors, setStepErrors] = useState<StepErrors>({});
   const [loading, setLoading] = useState(false);
+  const stepLabels = ["Informations client", "Services", "Finalisation"];
 
   const next = () => {
     let result;
 
-    if (step === 0) {
-        result = validateStep1(data);
-    }
+    // if (step === 0) {
+    //   result = validateStep1(data);
+    // }
 
     if (step === 1) {
-        result = validateStep2(data);
+      result = validateStep2(data);
     }
 
-    if (!result) return;
+    // if (!result) return;
 
-    setStepErrors(result.errors);
+    // setStepErrors(result.errors);
 
-    if (!result.isValid) return;
+    // if (!result.isValid) return;
 
     setStepErrors({});
     setStep((s) => s + 1);
@@ -75,12 +79,10 @@ export default function Stepper() {
         },
       });
 
-      // ⚠️ IMPORTANT: don’t assume JSON always exists
       if (!res.ok) {
         throw new Error("Form submission failed");
       }
 
-      // success
       setData(initialDevisFormData);
       setStepErrors({});
       setStep(0);
@@ -111,20 +113,71 @@ export default function Stepper() {
   ];
 
   return (
-    <div>
-      {steps[step]}
+    <div className={styles.stepperContainer}>
+      <div className={styles.stepperTabs}>
+        {stepLabels.map((label, index) => (
+          <button
+            key={label}
+            type="button"
+            className={`${styles.stepTab} ${
+              step === index ? styles.activeTab : ""
+            }`}
+            // onClick={() => {
+            //   if (index <= step) setStep(index);
+            // }}
+            style={{ color: step > index ? "#DC1F26" : "#fff" }}
+          >
+            {step > index && (
+              <CheckIcon size={16} weight="thin" color={colors.primary} />
+            )}
+            {label}
+          </button>
+        ))}
 
-      <div style={{ marginTop: 20 }}>
-        <button onClick={back} disabled={step === 0}>
-          Back
-        </button>
+        {/* underline */}
+        <span
+          className={styles.activeLine}
+          style={{
+            transform: `translateX(${step * 100}%)`,
+          }}
+        >
+          <span className={styles.activeLineTic} />
+        </span>
+      </div>
+      <div className={styles.stepperContent}>{steps[step]}</div>
+
+      <div
+        style={{ marginTop: 20, display: "flex", gap: 32, padding: "0 32px" }}
+      >
+        <Button
+          onClick={back}
+          disabled={step === 0}
+          variant="transparent"
+          style={{ backgroundColor: "transparent", padding: 0 }}
+        >
+          Précédant
+        </Button>
 
         {step < steps.length - 1 ? (
-          <button onClick={next}>Next</button>
+          <Button
+            onClick={next}
+            variant="filled"
+            style={{
+              boxShadow: "0 0 30px 0 rgba(220, 31, 38, 0.4)",
+            }}
+          >
+            Suivant
+          </Button>
         ) : (
-          <button onClick={submitForm} disabled={loading}>
-            {loading ? "Sending..." : "Submit"}
-          </button>
+          <Button
+            onClick={submitForm}
+            disabled={loading}
+            style={{
+              boxShadow: "0 0 30px 0 rgba(220, 31, 38, 0.4)",
+            }}
+          >
+            {loading ? "En cours..." : "Envoyer"}
+          </Button>
         )}
       </div>
     </div>
