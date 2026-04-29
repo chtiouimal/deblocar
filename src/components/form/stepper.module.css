@@ -1,16 +1,19 @@
 .stepperContainer {
-    height: 70vh;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-end;
     max-width: 1212px;
     margin: 0 auto;
+    max-height: 88vh;
 }
 
 .stepperContent {
   width: 100%;
   padding: 0 32px;
+  overflow: auto;
+  height: 100%;
 }
 
 .stepperFooter {
@@ -18,7 +21,6 @@
   display: flex;
   gap: 32;
   padding-right: 32;
-  padding-bottom: 32;
 }
 
 .stepperTabs {
