@@ -29,19 +29,19 @@ export default function Stepper() {
   const next = () => {
     let result;
 
-    // if (step === 0) {
-    //   result = validateStep1(data);
-    // }
+    if (step === 0) {
+      result = validateStep1(data);
+    }
 
     if (step === 1) {
       result = validateStep2(data);
     }
 
-    // if (!result) return;
+    if (!result) return;
 
-    // setStepErrors(result.errors);
+    setStepErrors(result.errors);
 
-    // if (!result.isValid) return;
+    if (!result.isValid) return;
 
     setStepErrors({});
     setStep((s) => s + 1);
