@@ -13,11 +13,14 @@ import { Button } from "@mantine/core";
 import styles from "./stepper.module.css";
 import { colors } from "@/theme/colors";
 import { CheckIcon } from "@phosphor-icons/react";
+import { useViewport } from "@/hooks/useViewport";
 
 type StepErrors = StepInfoErrors & StepServicesErrors;
 
 export default function Stepper() {
   const { data, updateClient, updateCar, setData } = useFormStore();
+  const { isMobile, isTablet, isDesktop, width, height, device } =
+    useViewport();
   const [step, setStep] = useState(0);
   const [stepErrors, setStepErrors] = useState<StepErrors>({});
   const [loading, setLoading] = useState(false);
@@ -114,41 +117,70 @@ export default function Stepper() {
 
   return (
     <div className={styles.stepperContainer}>
-      <div className={styles.stepperTabs}>
-        {stepLabels.map((label, index) => (
-          <button
-            key={label}
-            type="button"
-            className={`${styles.stepTab} ${
-              step === index ? styles.activeTab : ""
-            }`}
-            // onClick={() => {
-            //   if (index <= step) setStep(index);
-            // }}
-            style={{ color: step > index ? "#DC1F26" : "#fff" }}
-          >
-            {step > index && (
-              <CheckIcon size={16} weight="thin" color={colors.primary} />
-            )}
-            {label}
-          </button>
-        ))}
+      {isMobile ? (
+        <div className={styles.stepperTabsMobile}>
+          {/* vertical background line */}
+          <span className={styles.verticalLine} />
 
-        {/* underline */}
-        <span
-          className={styles.activeLine}
-          style={{
-            transform: `translateX(${step * 100}%)`,
-          }}
-        >
-          <span className={styles.activeLineTic} />
-        </span>
-      </div>
+          {/* vertical tick that moves */}
+          <span
+            className={styles.verticalTick}
+            style={{
+              transform: `translateY(${step * 100}%)`,
+            }}
+          />
+
+          {stepLabels.map((label, index) => (
+            <button
+              key={label}
+              type="button"
+              className={`${styles.stepTabMobile} ${
+                step === index ? styles.activeTabMobile : ""
+              }`}
+              style={{ color: step > index ? "#DC1F26" : undefined }}
+            >
+              {step > index && (
+                <CheckIcon size={14} weight="thin" color={colors.primary} />
+              )}
+              {label}
+            </button>
+          ))}
+        </div>
+      ) : (
+        <div className={styles.stepperTabs}>
+          {stepLabels.map((label, index) => (
+            <button
+              key={label}
+              type="button"
+              className={`${styles.stepTab} ${
+                step === index ? styles.activeTab : ""
+              }`}
+              // onClick={() => {
+              //   if (index <= step) setStep(index);
+              // }}
+              style={{ color: step > index ? "#DC1F26" : "#fff" }}
+            >
+              {step > index && (
+                <CheckIcon size={16} weight="thin" color={colors.primary} />
+              )}
+              {label}
+            </button>
+          ))}
+
+          {/* underline */}
+          <span
+            className={styles.activeLine}
+            style={{
+              transform: `translateX(${step * 100}%)`,
+            }}
+          >
+            <span className={styles.activeLineTic} />
+          </span>
+        </div>
+      )}
       <div className={styles.stepperContent}>{steps[step]}</div>
 
-      <div
-        style={{ marginTop: 20, display: "flex", gap: 32, padding: "0 32px" }}
-      >
+      <div className={styles.stepperFooter}>
         <Button
           onClick={back}
           disabled={step === 0}

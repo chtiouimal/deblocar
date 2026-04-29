@@ -9,8 +9,16 @@
 }
 
 .stepperContent {
-    width: 100%;
-    padding: 0 32px;
+  width: 100%;
+  padding: 0 32px;
+}
+
+.stepperFooter {
+  margin-top: 20;
+  display: flex;
+  gap: 32;
+  padding-right: 32;
+  padding-bottom: 32;
 }
 
 .stepperTabs {
@@ -67,4 +75,71 @@
   box-shadow: 0 0 30px rgba(220, 31, 38, 0.4);
   width: 80px !important;
   height: 100% !important;
+}
+
+.stepperTabsMobile {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin-bottom: 40px;
+  width: 100%;
+}
+
+.stepTabMobile {
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--mantine-font-family-headings);
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.28);
+  transition: all 0.3s ease;
+  position: relative;
+  padding-left: 32px;
+  height: 52px;
+}
+
+.stepTabMobile:hover {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.activeTabMobile {
+  color: white;
+}
+
+.verticalLine {
+  position: absolute;
+  left: 6px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.verticalTick {
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 3px;
+  height: 52px;
+  background: #DC1F26;
+  box-shadow: 0 0 30px rgba(220, 31, 38, 0.4);
+  border-radius: 2px;
+  transition: transform 0.35s ease;
+}
+
+@media (max-width: 768px) {
+  .stepperContent {
+    padding: 0;
+  }
+  .stepperFooter {
+    padding-right: 0;
+  }
+  .stepTab {
+    font-size: 16px
+  }
 }
