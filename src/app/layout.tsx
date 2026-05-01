@@ -1,6 +1,7 @@
 "use client";
 
 import "@mantine/core/styles.css";
+import "./globals.css";
 import { Montserrat, Poppins } from "next/font/google";
 
 import {
@@ -9,6 +10,7 @@ import {
   mantineHtmlProps,
 } from "@mantine/core";
 import { theme } from "@/theme";
+import Header from "@/components/core/header/Header";
 
 // export const metadata = {
 //   title: "Deblocar",
@@ -45,6 +47,7 @@ export default function RootLayout({
       </head>
       <body>
         <MantineProvider theme={theme} defaultColorScheme="dark">
+          <Header />
           {children}
         </MantineProvider>
       </body>

@@ -4,7 +4,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-end;
-    max-width: 1212px;
+    max-width: 1440px;
     margin: 0 auto;
     max-height: 88vh;
 }
@@ -29,7 +29,7 @@
   grid-template-columns: repeat(3, 1fr);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   margin-bottom: 40px;
-  max-width: 1212px;
+  max-width: 1440px;
   width: 100%;
 }
 

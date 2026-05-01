@@ -1,0 +1,38 @@
+.ctaContainer {
+    padding: 0 !important;
+    max-height: 55px !important;
+    height: auto;
+    width: auto;
+    background-color: transparent !important;
+    overflow: visible;
+    border: none;
+    cursor: pointer;
+}
+
+.ctaInnerContainer {
+    display: flex;
+    align-items: center;
+    gap: 4;
+    height: 100%;
+}
+
+.ctaTextContainer {
+  background-color: #DC1F26;
+  box-shadow: 0 0 30px rgba(220, 31, 38, 0.4);
+  padding: 12px 32px;
+  border-top-left-radius: 6;
+  border-bottom-left-radius: 6;
+}
+
+.ctaIconContainer {
+  background-color: #DC1F26;
+  box-shadow: 0 0 30px rgba(220, 31, 38, 0.4);
+  border-top-right-radius: 6;
+  border-bottom-right-radius: 6;
+  aspect-ratio: 1;
+  height: 48px;
+  width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

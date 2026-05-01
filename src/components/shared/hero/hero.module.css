@@ -1,0 +1,57 @@
+.hero {
+  height: 100vh;
+  max-height: 100vh;
+  background-image: url('/bg/deblocar-hero-bg.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.heroContnet {
+  height: 100%;
+  width: 100%;
+  max-width: 1440px;
+  max-height: 1024px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20vh 32px 32px;
+}
+
+.heroIntro {
+  display: flex;
+  flex-direction: column;
+  gap: 64px
+}
+
+.heroTagList {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 64px;
+}
+
+.heroTagList li {
+  display: flex;
+  align-items: center;
+}
+
+.heroTagList li::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #DC1F26;
+  margin-right: 16px;
+  vertical-align: middle;
+  flex-shrink: 0;
+}

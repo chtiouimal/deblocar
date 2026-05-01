@@ -1,0 +1,50 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  position: absolute;
+  top: 32px;
+  padding: 0 32px;
+  z-index: 99;
+  width: 100%;
+  max-width: 1440px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.headerMenu {
+  display: flex;
+  align-items: center;
+  gap: 64px
+}
+
+.textMenuList {
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
+.textMenuList li a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+.textMenuList li a p {
+  color: var(--color-text);
+}
+
+.textMenuList li a:hover p {
+  color: var(--color-primary) !important;
+}
+
+.textMenuList {
+  gap: 64px;
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.4s ease;
+}

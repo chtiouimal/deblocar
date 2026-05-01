@@ -1,0 +1,83 @@
+
+.stepperTabsMobile {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin-bottom: 40px;
+  width: 100%;
+}
+
+.stepTabMobile {
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--mantine-font-family-headings);
+  font-size: 20px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.28);
+  transition: all 0.3s ease;
+  position: relative;
+  padding-left: 32px;
+  height: 52px;
+}
+
+.stepTabMobile:hover {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.activeTabMobile {
+  color: white;
+}
+
+.verticalLine {
+  position: absolute;
+  left: 6px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.verticalTickContainer {
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 3px;
+  height: 184px;
+  transition: transform 0.35s ease;
+  display: flex;
+  align-items: center;
+}
+
+.verticalTick {
+  width: 3px;
+  height: 40px;
+  display: flex;
+  background: #DC1F26;
+  box-shadow: 0 0 30px rgba(220, 31, 38, 0.4);
+  border-radius: 2px;
+  transition: transform 0.35s ease;
+}
+
+
+.stepItem {
+    position: relative;
+    height: 120px;
+    display: flex;
+    align-items: center;
+}
+
+.stepIcon {
+    position: absolute;
+    left: -160px
+}
+
+.stepIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

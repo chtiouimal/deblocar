@@ -18,23 +18,17 @@ const getDevice = (width: number): DeviceType => {
 };
 
 export const useViewport = (): ViewportInfo => {
-  const [viewport, setViewport] = useState<ViewportInfo>(() => {
-    const width = typeof window !== "undefined" ? window.innerWidth : 0;
-    const height = typeof window !== "undefined" ? window.innerHeight : 0;
-    const device = getDevice(width);
-
-    return {
-      width,
-      height,
-      device,
-      isMobile: device === "mobile",
-      isTablet: device === "tablet",
-      isDesktop: device === "desktop",
-    };
+  const [viewport, setViewport] = useState<ViewportInfo>({
+    width: 0,
+    height: 0,
+    device: "desktop",
+    isMobile: false,
+    isTablet: false,
+    isDesktop: true,
   });
 
   useEffect(() => {
-    const handleResize = () => {
+    const update = () => {
       const width = window.innerWidth;
       const height = window.innerHeight;
       const device = getDevice(width);
@@ -49,8 +43,9 @@ export const useViewport = (): ViewportInfo => {
       });
     };
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    update(); // run once on mount
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
   }, []);
 
   return viewport;

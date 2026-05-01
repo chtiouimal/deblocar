@@ -1,7 +1,9 @@
 :root {
   --font-primary: var(--font-montserrat);
   --font-secondary: var(--font-poppins);
-  --bg: "#0B0B0D"
+  --bg: #0B0B0D;
+  --color-text: #fff;
+  --color-primary: #DC1F26;
 }
 
 body {
@@ -11,4 +13,40 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-montserrat);
+  text-transform: uppercase;
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-text);
+  font-weight: 400;
+  opacity: 0.6;
+}
+
+a:hover {
+  color: var(--color-primary);
+  opacity: 1;
+}
+
+::-webkit-scrollbar {
+  width: 6px;   /* vertical scrollbar */
+  height: 6px;  /* horizontal scrollbar */
+}
+
+/* Track (background) */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Thumb (the moving part) */
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 10px;
+}
+
+/* Remove scrollbar arrows (up/down buttons) */
+::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
 }
