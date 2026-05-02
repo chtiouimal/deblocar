@@ -2,3 +2,44 @@
 .accordionControl:hover {
   background-color: transparent !important;
 }
+
+.accordionItem {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  padding: 20px 0;
+}
+
+.accordionChevron {
+  position: absolute;
+  right: 32;
+}
+
+.accordionPanel {
+  min-width: 500px;
+  padding: 12px 20% 0 0;
+}
+
+.accordionPanelContent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.accordionItemTitle {
+  width: 100%;
+  transition: width 0.35s ease;
+  max-width: 100%;
+  transition: max-width 0.35s ease;
+}
+
+
+.accordionControlContent {
+  width: 100%;
+  transition: width 0.35s ease;
+  max-width: 100%;
+  transition: max-width 0.35s ease;
+  display: flex;
+  align-items: center;
+  gap: 30%
+}

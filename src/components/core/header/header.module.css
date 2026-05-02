@@ -25,21 +25,26 @@
   align-items: center;
 }
 
-.textMenuList li a {
+.textMenuList li button {
   display: flex;
   align-items: center;
   justify-content: center;
   text-transform: uppercase;
   text-decoration: none;
   color: var(--color-text);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
 }
 
-.textMenuList li a p {
+.textMenuList li button p {
   color: var(--color-text);
+  opacity: 0.8;
 }
 
-.textMenuList li a:hover p {
+.textMenuList li button:hover p {
   color: var(--color-primary) !important;
+  opacity: 1;
 }
 
 .textMenuList {

@@ -1,7 +1,7 @@
 "use client"
 
 import { Button, Text } from "@mantine/core";
-import styles from "./buttoncta.module.css";
+import styles from "./cta.module.css";
 import { ArrowUpRightIcon } from "@phosphor-icons/react";
 
 interface ButtonCTAProps {

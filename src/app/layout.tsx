@@ -11,6 +11,7 @@ import {
 } from "@mantine/core";
 import { theme } from "@/theme";
 import Header from "@/components/core/header/Header";
+import Footer from "@/components/core/footer/Footer";
 
 // export const metadata = {
 //   title: "Deblocar",
@@ -48,7 +49,10 @@ export default function RootLayout({
       <body>
         <MantineProvider theme={theme} defaultColorScheme="dark">
           <Header />
-          {children}
+          <div style={{ position: "relative", paddingBottom: 180 }}>
+            {children}
+            <Footer />
+          </div>
         </MantineProvider>
       </body>
     </html>

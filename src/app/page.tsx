@@ -1,51 +1,72 @@
+"use client";
+
 import styles from "./page.module.css";
 import { Grid, GridCol, Text, Title } from "@mantine/core";
 import CustomTabs from "@/components/shared/tabs/CustomTabs";
 import ServicesCarousel from "@/components/shared/carousel/ServicesCarousel";
 import HeroSection from "@/components/shared/hero/HeroSection";
 import ProcessExpandable from "@/components/shared/process/ProcessExpandable";
+import SectionCTA from "@/components/shared/cta/SectionCTA";
+import { useEffect } from "react";
 
 export default function Home() {
-  return (
-    <div>
-      <HeroSection />
-      <section className={styles.splitSection}>
-        <div className={styles.splitSectionLeft} style={{ alignSelf: "end" }}>
-          <Title order={2} style={{ maxWidth: 350 }}>
-            Marques compatibles
-          </Title>
-          <Text size="md" fw={400} style={{ maxWidth: 310, opacity: 0.6 }}>
-            Nous intervenons exclusivement sur des marques premium équipées de
-            systèmes électroniques activables.
-          </Text>
-        </div>
-        <div className={styles.splitSectionRight}>
-          <CustomTabs />
-        </div>
-      </section>
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const section = params.get("section");
+    if (!section) return;
 
-      <section
-        className={styles.splitSection}
-        // style={{ justifyContent: "flex-start", gap: 120 }}
-      >
-        <div className={styles.carouselContainer}>
-          <ServicesCarousel />
-        </div>
-        <div
-          className={styles.splitSectionLeft}
-          style={{
-            alignSelf: "end",
-            paddingBottom: 120,
-          }}
-        >
-          <Title order={2} style={{ maxWidth: 350 }}>
-            Potentiel activé
-          </Title>
-          <Text size="md" fw={400} style={{ maxWidth: 310, opacity: 0.6 }}>
-            Activez les fonctionnalités déjà présentes dans votre véhicule.
-          </Text>
-        </div>
-      </section>
+    const tryScroll = () => {
+      const el = document.getElementById(section);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+        window.history.replaceState(null, "", "/");
+      } else {
+        requestAnimationFrame(tryScroll);
+      }
+    };
+
+    setTimeout(tryScroll, 300);
+  }, []);
+
+  return (
+    <div className={styles.page}>
+      <HeroSection />
+      <div className={styles.leftBg}>
+        <section id="marques" className={styles.splitSection}>
+          <div className={styles.splitSectionLeft} style={{ alignSelf: "end" }}>
+            <Title order={2} style={{ maxWidth: 350 }}>
+              Marques compatibles
+            </Title>
+            <Text size="md" fw={400} style={{ maxWidth: 310, opacity: 0.6 }}>
+              Nous intervenons exclusivement sur des marques premium équipées de
+              systèmes électroniques activables.
+            </Text>
+          </div>
+          <div className={styles.splitSectionRight}>
+            <CustomTabs />
+          </div>
+        </section>
+
+        <section id="services" className={styles.splitSection}>
+          <div className={styles.carouselContainer}>
+            <ServicesCarousel />
+          </div>
+          <div
+            className={styles.splitSectionLeft}
+            style={{
+              alignSelf: "end",
+              paddingBottom: 120,
+            }}
+          >
+            <Title order={2} style={{ maxWidth: 350 }}>
+              Potentiel activé
+            </Title>
+            <Text size="md" fw={400} style={{ maxWidth: 310, opacity: 0.6 }}>
+              Activez les fonctionnalités déjà présentes dans votre véhicule.
+            </Text>
+          </div>
+        </section>
+      </div>
 
       <section className={styles.centeredSection}>
         <div className={styles.centeredSectionContent}>
@@ -129,7 +150,7 @@ export default function Home() {
           </div>
         </div>
         <div className={styles.secondSubSection}>
-          <div>
+          <div style={{ zIndex: 2 }}>
             <Title
               order={2}
               style={{ textAlign: "center", textTransform: "initial" }}
@@ -147,27 +168,22 @@ export default function Home() {
               Nous la libérons.
             </Title>
           </div>
-          <div className={styles.secondSubSectionBg}></div>
+          <div className={styles.secondSubSectionBg} />
         </div>
       </section>
 
-      <section
-        style={{
-          minHeight: "100vh",
-          height: "100%",
-          paddingTop: 64,
-          maxWidth: 1440,
-          width: "100%",
-          margin: "0 auto",
-        }}
-      >
-        <Title order={2} style={{ padding: 32 }}>
-          Un processus clair,
-          <br />
-          précis et entièrement maîtrisé.
-        </Title>
-        <ProcessExpandable />
-      </section>
+      <div className={styles.rightBg}>
+        <section id="process" className={styles.processSection}>
+          <Title order={2} style={{ padding: 32 }}>
+            Un processus clair,
+            <br />
+            précis et entièrement maîtrisé.
+          </Title>
+          <ProcessExpandable />
+        </section>
+
+        <SectionCTA />
+      </div>
     </div>
   );
 }

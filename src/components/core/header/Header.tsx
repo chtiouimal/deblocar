@@ -1,12 +1,27 @@
+"use client";
+
 import Image from "next/image";
-import Link from "next/link"
+import Link from "next/link";
 import styles from "./header.module.css";
 import { Text } from "@mantine/core";
+import { usePathname, useRouter } from "next/navigation";
 
 function Header() {
+  const pathname = usePathname();
+  const router = useRouter();
+  const handleNavClick = (sectionId: string) => {
+    if (pathname === "/") {
+      document
+        .getElementById(sectionId)
+        ?.scrollIntoView({ behavior: "smooth" });
+    } else {
+      window.location.href = `/?section=${sectionId}`;
+    }
+  };
+
   return (
     <div className={styles.header}>
-      <Link href="/">
+      <Link href="/" style={{ opacity: 1 }}>
         <Image
           src="/deblocar-logo.png"
           alt="deblocar-logo"
@@ -17,25 +32,25 @@ function Header() {
       <div className={styles.headerMenu}>
         <ul className={styles.textMenuList}>
           <li>
-            <Link href="/">
+            <button onClick={() => handleNavClick("marques")}>
               <Text size="md" fw={400}>
-                Navigation
+                Marques
               </Text>
-            </Link>
+            </button>
           </li>
           <li>
-            <Link href="/">
+            <button onClick={() => handleNavClick("services")}>
               <Text size="md" fw={400}>
-                Navigation
+                Services
               </Text>
-            </Link>
+            </button>
           </li>
           <li>
-            <Link href="/">
+            <button onClick={() => handleNavClick("process")}>
               <Text size="md" fw={400}>
-                Navigation
+                Process
               </Text>
-            </Link>
+            </button>
           </li>
         </ul>
       </div>
@@ -43,4 +58,4 @@ function Header() {
   );
 }
 
-export default Header
+export default Header;

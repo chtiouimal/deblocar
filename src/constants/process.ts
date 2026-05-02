@@ -23,8 +23,8 @@ export const PROCESS = [
   {
     id: "04",
     label: "Optimisation débloquée",
-    title:
+    title: "Votre véhicule révèle enfin son plein potentiel.",
+    description:
       "Performances améliorées, options activées — une expérience transformée.",
-    description: "",
   },
 ];

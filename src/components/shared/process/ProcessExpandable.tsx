@@ -1,31 +1,39 @@
-import { Accordion, AccordionControl, AccordionItem, AccordionPanel, Text, Title } from '@mantine/core';
+"use client";
+
+import {
+  Accordion,
+  AccordionControl,
+  AccordionItem,
+  AccordionPanel,
+  Text,
+  Title,
+} from "@mantine/core";
 import styles from "./process.module.css";
-import { PROCESS } from '@/constants/process';
+import { PROCESS } from "@/constants/process";
+import { ArrowDownRightIcon } from "@phosphor-icons/react";
 
 function ProcessExpandable() {
   return (
     <Accordion
       order={3}
       transitionDuration={500}
-      classNames={{ control: styles.accordionControl }}
-      // style={{
-      //   display: "flex",
-      //   justifyContent: "space-between",
-      // }}
-      // add in inspect these styles it works but not here in the accordian m_fe19b709 m_9bd7b098 mantine-Accordion-item
+      classNames={{
+        control: styles.accordionControl,
+        item: styles.accordionItem,
+        chevron: styles.accordionChevron,
+        content: styles.accordionPanelContent,
+        itemTitle: styles.accordionItemTitle,
+      }}
+      chevron={<ArrowDownRightIcon size={32} weight="regular" />}
     >
       {PROCESS.map((process) => (
         <AccordionItem value={process.id} key={process.id}>
           <AccordionControl>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginRight: "40%",
-              }}
-            >
-              <Title order={2} style={{ opacity: 0.8, fontSize: 64 }}>
+            <div className={styles.accordionControlContent}>
+              <Title
+                order={2}
+                style={{ opacity: 0.8, fontSize: 64, minWidth: 85 }}
+              >
                 {process.id}
               </Title>
               <Text
@@ -41,7 +49,7 @@ function ProcessExpandable() {
               </Text>
             </div>
           </AccordionControl>
-          <AccordionPanel style={{ minWidth: 500 }}>
+          <AccordionPanel className={styles.accordionPanel}>
             <Text size="md" fw={400} style={{ maxWidth: 488, opacity: 0.8 }}>
               {process.title}
             </Text>
@@ -55,4 +63,4 @@ function ProcessExpandable() {
   );
 }
 
-export default ProcessExpandable
+export default ProcessExpandable;
