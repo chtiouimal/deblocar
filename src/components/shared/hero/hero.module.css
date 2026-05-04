@@ -55,3 +55,14 @@
   vertical-align: middle;
   flex-shrink: 0;
 }
+
+@media (max-width: 768px) {
+  .heroTagList {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start
+  }
+  .hero {
+    background-position: top right;
+  }
+}

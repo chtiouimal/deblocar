@@ -43,3 +43,35 @@
   align-items: center;
   gap: 30%
 }
+
+.accordionControlNumber {
+  opacity: 0.6;
+  min-width: 85px;
+}
+
+.accordionControlTitle {
+  opacity: 0.8;
+  line-height: "140%";
+  transition: transform 0.35s ease;
+}
+
+
+@media (max-width: 768px) {
+  .accordionControlContent {
+    gap: 20px
+  }
+  .accordionItem {
+    flex-direction: column;
+  }
+  .accordionPanel {
+    min-width: 90%;
+    padding: 12px 0 0 0;
+  }
+  .accordionControlNumber {
+    min-width: auto;
+  }
+  .accordionControlTitle {
+    max-width: 60%;
+    font-size: 16px;
+  }
+}

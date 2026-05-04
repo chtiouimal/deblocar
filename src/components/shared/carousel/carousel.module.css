@@ -97,4 +97,10 @@
     grid-template-columns: 1fr;
     grid-template-rows: auto;
   }
+  .controls {
+    justify-content: center;
+  }
+  .card * {
+    text-align: center;
+  }
 }

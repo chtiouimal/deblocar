@@ -47,6 +47,7 @@
   max-height: 1024px;
   margin: auto;
   padding: 32px;
+  gap: 32px;
 }
 
 .splitSectionLeft {
@@ -135,4 +136,43 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+}
+
+.serviceSectionIntro {
+  align-self: end;
+  padding-bottom: 120px;
+}
+
+
+@media (max-width: 768px) {
+  .splitSection {
+    flex-direction: column-reverse;
+    max-height: none;
+  }
+  .marqueSection {
+    flex-direction: column !important;
+  }
+  .splitSectionLeft {
+    padding-bottom: 64px !important;
+  }
+  .firstSubSection {
+    background: unset;
+    padding-bottom: 80px;
+    height: 100%;
+  }
+  .problemGirdText, .processSection h2, .splitSectionLeft * {
+    text-align: center;
+  }
+}
+
+@media (max-width: 1024px) {
+  .serviceSection {
+    flex-direction: column-reverse;
+    max-height: none;
+  }
+
+  .serviceSectionIntro {
+    align-self: flex-start;
+    padding-bottom: 0;
+  }
 }

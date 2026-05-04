@@ -27,12 +27,7 @@ function SectionCTA() {
         label="Demander un devis"
         onClick={() => router.push("/devis")}
       />
-      <img
-        src="/img/covered-car-showcase.png"
-        alt="covered-car-showcase"
-        height={376}
-        width={564}
-      />
+      <img src="/img/covered-car-showcase.png" alt="covered-car-showcase" />
     </section>
   );
 }

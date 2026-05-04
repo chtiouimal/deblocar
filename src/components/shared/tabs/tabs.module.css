@@ -1,5 +1,5 @@
 
-.stepperTabsMobile {
+.stepperTabsDesktop {
   display: flex;
   flex-direction: column;
   position: relative;
@@ -7,7 +7,7 @@
   width: 100%;
 }
 
-.stepTabMobile {
+.stepTabDesktop {
   background: transparent;
   border: none;
   text-align: left;
@@ -25,11 +25,11 @@
   height: 52px;
 }
 
-.stepTabMobile:hover {
+.stepTabDesktop:hover {
   color: rgba(255, 255, 255, 0.55);
 }
 
-.activeTabMobile {
+.activeTabDesktop {
   color: white;
 }
 
@@ -65,19 +65,41 @@
 
 
 .stepItem {
-    position: relative;
-    height: 120px;
-    display: flex;
-    align-items: center;
+  position: relative;
+  height: 120px;
+  display: flex;
+  align-items: center;
 }
 
 .stepIcon {
-    position: absolute;
-    left: -160px
+  position: absolute;
+  left: -160px
 }
 
 .stepIcon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stepperTabsMobile {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 64px;
+}
+
+.stepItemMobile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stepTabMoile {
+  color: rgba(255, 255, 255, 0.28);
+}
+
+.stepItemIconMobile {
+  transform: scale(0.5);
 }

@@ -32,7 +32,10 @@ export default function Home() {
     <div className={styles.page}>
       <HeroSection />
       <div className={styles.leftBg}>
-        <section id="marques" className={styles.splitSection}>
+        <section
+          id="marques"
+          className={`${styles.splitSection} ${styles.marqueSection}`}
+        >
           <div className={styles.splitSectionLeft} style={{ alignSelf: "end" }}>
             <Title order={2} style={{ maxWidth: 350 }}>
               Marques compatibles
@@ -47,16 +50,15 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="services" className={styles.splitSection}>
+        <section
+          id="services"
+          className={`${styles.splitSection} ${styles.serviceSection}`}
+        >
           <div className={styles.carouselContainer}>
             <ServicesCarousel />
           </div>
           <div
-            className={styles.splitSectionLeft}
-            style={{
-              alignSelf: "end",
-              paddingBottom: 120,
-            }}
+            className={`${styles.splitSectionLeft} ${styles.serviceSectionIntro}`}
           >
             <Title order={2} style={{ maxWidth: 350 }}>
               Potentiel activé
@@ -76,9 +78,9 @@ export default function Home() {
           </Title>
           <div className={styles.firstSubSection}>
             <Grid className={styles.problemGird}>
-              {/* First column — single item */}
               <GridCol
                 span={{ base: 12, md: 4 }}
+                className={styles.problemGirdText}
                 style={{
                   display: "flex",
                   flexDirection: "column",
@@ -104,7 +106,6 @@ export default function Home() {
                 </Text>
               </GridCol>
 
-              {/* Second column — inner grid */}
               <GridCol span={{ base: 12, md: 8 }}>
                 <Grid>
                   <GridCol span={{ base: 12, xs: 6 }} />

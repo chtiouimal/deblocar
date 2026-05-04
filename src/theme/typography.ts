@@ -9,12 +9,37 @@ export const typography = {
         fontSize: "clamp(2.625rem, 5vw, 4.5rem)",
         fontWeight: "400",
         lineHeight: "1.1",
-      }, // 72px
-      h2: { fontSize: "3rem", fontWeight: "400", lineHeight: "1.15" }, // 48px
-      h3: { fontSize: "1.5rem", fontWeight: "400", lineHeight: "1.2" }, // 24px
-      h4: { fontSize: "1.25rem", fontWeight: "400", lineHeight: "1.3" }, // 20px
-      h5: { fontSize: "1rem", fontWeight: "400", lineHeight: "1.4" }, // 16px
-      h6: { fontSize: "0.875rem", fontWeight: "400", lineHeight: "1.4" }, // 14px
+      },
+
+      h2: {
+        fontSize: "clamp(2rem, 4vw, 3rem)", // 32 → 48
+        fontWeight: "400",
+        lineHeight: "1.1",
+      },
+
+      h3: {
+        fontSize: "clamp(1.5rem, 3vw, 2rem)", // 24 → 32
+        fontWeight: "400",
+        lineHeight: "1.15",
+      },
+
+      h4: {
+        fontSize: "clamp(1.25rem, 2.2vw, 1.5rem)", // 20 → 24
+        fontWeight: "400",
+        lineHeight: "1.2",
+      },
+
+      h5: {
+        fontSize: "clamp(1rem, 1.8vw, 1.25rem)", // 16 → 20
+        fontWeight: "400",
+        lineHeight: "1.3",
+      },
+
+      h6: {
+        fontSize: "clamp(0.875rem, 1.5vw, 1rem)", // 14 → 16
+        fontWeight: "400",
+        lineHeight: "1.35",
+      },
     },
   },
 

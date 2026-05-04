@@ -3,6 +3,7 @@
     bottom: 0;
     width: 100%;
     padding: 0 32px;
+    z-index: 2;
 }
 
 .footerInner {
@@ -36,5 +37,13 @@
     list-style: none;
     display: flex;
     align-items: center;
-    gap: 16px
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+}
+
+@media (max-width: 768px) {
+  .footerContent {
+    flex-direction: column-reverse;
+  }
 }

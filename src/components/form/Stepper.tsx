@@ -19,8 +19,7 @@ type StepErrors = StepInfoErrors & StepServicesErrors;
 
 export default function Stepper() {
   const { data, updateClient, updateCar, setData } = useFormStore();
-  const { isMobile, isTablet, isDesktop, width, height, device } =
-    useViewport();
+  const { isMobile } = useViewport();
   const [step, setStep] = useState(0);
   const [stepErrors, setStepErrors] = useState<StepErrors>({});
   const [loading, setLoading] = useState(false);

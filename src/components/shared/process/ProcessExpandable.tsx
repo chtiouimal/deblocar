@@ -30,23 +30,16 @@ function ProcessExpandable() {
         <AccordionItem value={process.id} key={process.id}>
           <AccordionControl>
             <div className={styles.accordionControlContent}>
-              <Title
-                order={2}
-                style={{ opacity: 0.8, fontSize: 64, minWidth: 85 }}
-              >
+              <Title order={2} className={styles.accordionControlNumber}>
                 {process.id}
               </Title>
-              <Text
-                size="xl"
+              <Title
+                order={4}
                 fw={400}
-                style={{
-                  opacity: 0.8,
-                  fontSize: 24,
-                  transition: "transform 0.35s ease",
-                }}
+                className={styles.accordionControlTitle}
               >
                 {process.label}
-              </Text>
+              </Title>
             </div>
           </AccordionControl>
           <AccordionPanel className={styles.accordionPanel}>

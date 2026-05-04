@@ -43,5 +43,12 @@
   flex-direction: column;
   align-items: center;
   gap: 32px;
-  padding-top: 20vh
+  padding-top: 20vh;
+}
+
+.ctaSection img {
+  max-height: 376px;
+  max-width: 564px;
+  height: 100%;
+  width: 100%;
 }
