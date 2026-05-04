@@ -103,3 +103,63 @@
 .stepItemIconMobile {
   transform: scale(0.5);
 }
+
+.stepperTabsDesktopHorizontal {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 40px;
+  width: 100%;
+}
+
+.horizontalLine {
+  position: absolute;
+  left: 0;
+  /* top: 152px; */
+  bottom: 1px;
+  height: 1px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.horizontalTickContainer {
+  position: absolute;
+  left: 0;
+  /* top: 152px; */
+  bottom: 0;
+  width: 184px;
+  height: 3px;
+  transition: transform 0.35s ease;
+  display: flex;
+  align-items: center;
+}
+
+.horizontalTick {
+  width: 40px;
+  height: 3px;
+  display: flex;
+  background: #DC1F26;
+  box-shadow: 0 0 30px rgba(220, 31, 38, 0.4);
+  border-radius: 2px;
+  transition: transform 0.35s ease;
+}
+
+.horizontalstepItem {
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 64px;
+}
+
+.horizontalstepIcon {
+  height: 120px;
+}
+
+.horizontalstepTabDesktop {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 64px;
+}

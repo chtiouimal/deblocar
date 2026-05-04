@@ -7,7 +7,11 @@ import GlowingLogo from "@/components/cars/GlowingLogo";
 import { CARS_LOGO } from "@/constants/carsLogo";
 import { useViewport } from "@/hooks/useViewport";
 
-function CustomTabs() {
+interface CustomTabsProps {
+  direction?: "vertical" | "horizontal";
+}
+
+function CustomTabs({ direction = "vertical" }: CustomTabsProps) {
   const { isMobile } = useViewport();
   const [step, setStep] = useState(0);
   const stepLabels = CARS_LOGO.map((e) => {
@@ -24,7 +28,14 @@ function CustomTabs() {
     };
   });
 
-  const DesktopTabs = () => {
+  const DesktopTabs = () =>
+    direction === "horizontal" ? (
+      <HorizontalDesktopTabs />
+    ) : (
+      <VerticalDesktopTabs />
+    );
+
+  const VerticalDesktopTabs = () => {
     return (
       <div className={styles.stepperTabsDesktop}>
         {/* vertical background line */}
@@ -66,6 +77,62 @@ function CustomTabs() {
                 order={3}
                 fw={600}
                 className={`${styles.stepTabDesktop} ${
+                  step === index ? styles.activeTabDesktop : ""
+                }`}
+                style={{ color: step === index ? "#DC1F26" : undefined }}
+              >
+                {item.label}
+              </Title>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const HorizontalDesktopTabs = () => {
+    return (
+      <div className={styles.stepperTabsDesktopHorizontal}>
+        {/* vertical background line */}
+        <span className={styles.horizontalLine} />
+
+        {/* vertical tick that moves */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            gap: 64,
+            // padding: "32px 0",
+          }}
+        >
+          <span
+            className={styles.horizontalTickContainer}
+            style={{
+              position: "relative",
+              transform: `translateX(${step * 100}%)`,
+            }}
+          >
+            <span className={styles.horizontalTick} />
+          </span>
+          {stepLabels.map((item, index) => (
+            <div
+              key={index}
+              className={styles.horizontalstepItem}
+              onMouseEnter={() => setStep(index)}
+            >
+              <div
+                className={styles.horizontalstepIcon}
+                style={{ transform: step === index ? "Scale(2)" : "Scale(1)" }}
+              >
+                {item.icon(
+                  step === index ? "#DC1F26" : "#302D2D",
+                  step === index ? true : false,
+                )}
+              </div>
+              <Title
+                order={4}
+                fw={600}
+                className={`${styles.horizontalstepTabDesktop} ${
                   step === index ? styles.activeTabDesktop : ""
                 }`}
                 style={{ color: step === index ? "#DC1F26" : undefined }}

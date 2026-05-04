@@ -4,11 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "./header.module.css";
 import { Text } from "@mantine/core";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 function Header() {
   const pathname = usePathname();
-  const router = useRouter();
+  const isDevis = pathname === "/devis";
   const handleNavClick = (sectionId: string) => {
     if (pathname === "/") {
       document
@@ -29,31 +29,33 @@ function Header() {
           height={30}
         />
       </Link>
-      <div className={styles.headerMenu}>
-        <ul className={styles.textMenuList}>
-          <li>
-            <button onClick={() => handleNavClick("marques")}>
-              <Text size="md" fw={400}>
-                Marques
-              </Text>
-            </button>
-          </li>
-          <li>
-            <button onClick={() => handleNavClick("services")}>
-              <Text size="md" fw={400}>
-                Services
-              </Text>
-            </button>
-          </li>
-          <li>
-            <button onClick={() => handleNavClick("process")}>
-              <Text size="md" fw={400}>
-                Process
-              </Text>
-            </button>
-          </li>
-        </ul>
-      </div>
+      {!isDevis && (
+        <div className={styles.headerMenu}>
+          <ul className={styles.textMenuList}>
+            <li>
+              <button onClick={() => handleNavClick("marques")}>
+                <Text size="md" fw={400}>
+                  Marques
+                </Text>
+              </button>
+            </li>
+            <li>
+              <button onClick={() => handleNavClick("services")}>
+                <Text size="md" fw={400}>
+                  Services
+                </Text>
+              </button>
+            </li>
+            <li>
+              <button onClick={() => handleNavClick("process")}>
+                <Text size="md" fw={400}>
+                  Process
+                </Text>
+              </button>
+            </li>
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

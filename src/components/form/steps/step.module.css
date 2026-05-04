@@ -1,7 +1,7 @@
 .stepContainer {
     display: flex;
     flex-direction: column;
-    gap: 50px;
+    gap: 32px;
 }
 
 .step {
@@ -39,4 +39,10 @@
     font-size: 14px;
     font-weight: 300;
     color: rgba(255, 255, 255, 0.6);
+}
+
+.selectedServices {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
 }

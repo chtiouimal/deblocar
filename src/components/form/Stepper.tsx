@@ -9,11 +9,14 @@ import { useFormStore } from "@/hooks/useFormStore";
 import { validateStep1, validateStep2 } from "@/lib/validation/devisValidation";
 import { initialDevisFormData } from "@/constants/devis";
 import { StepInfoErrors, StepServicesErrors } from "@/types/devis";
-import { Button } from "@mantine/core";
+import { Button, Text } from "@mantine/core";
 import styles from "./stepper.module.css";
 import { colors } from "@/theme/colors";
 import { CheckIcon } from "@phosphor-icons/react";
 import { useViewport } from "@/hooks/useViewport";
+import InformationStep from "./steps/InformationStep";
+import ServiceStep from "./steps/ServiceStep";
+import ReviewStep from "./steps/ReviewStep";
 
 type StepErrors = StepInfoErrors & StepServicesErrors;
 
@@ -23,7 +26,7 @@ export default function Stepper() {
   const [step, setStep] = useState(0);
   const [stepErrors, setStepErrors] = useState<StepErrors>({});
   const [loading, setLoading] = useState(false);
-  const stepLabels = ["Informations client", "Services", "Finalisation"];
+  const stepLabels = ["Informations", "Services", "Finalisation"];
 
   const next = () => {
     let result;
@@ -96,7 +99,7 @@ export default function Stepper() {
   };
 
   const steps = [
-    <StepInfo
+    <InformationStep
       key="info"
       data={data}
       updateClient={updateClient}
@@ -104,24 +107,21 @@ export default function Stepper() {
       stepErrors={stepErrors}
     />,
 
-    <StepServices
+    <ServiceStep
       key="services"
       services={data.services}
       setServices={updateServices}
       stepError={stepErrors.services}
     />,
 
-    <StepReview key="review" data={data} />,
+    <ReviewStep key="review" data={data} />,
   ];
 
   return (
     <div className={styles.stepperContainer}>
-      {isMobile ? (
+      {/* {isMobile ? (
         <div className={styles.stepperTabsMobile}>
-          {/* vertical background line */}
           <span className={styles.verticalLine} />
-
-          {/* vertical tick that moves */}
           <span
             className={styles.verticalTick}
             style={{
@@ -141,42 +141,49 @@ export default function Stepper() {
               {step > index && (
                 <CheckIcon size={14} weight="thin" color={colors.primary} />
               )}
-              {label}
+              <Text size="md">{label}</Text>
             </button>
           ))}
         </div>
-      ) : (
-        <div className={styles.stepperTabs}>
-          {stepLabels.map((label, index) => (
-            <button
-              key={label}
-              type="button"
-              className={`${styles.stepTab} ${
-                step === index ? styles.activeTab : ""
-              }`}
-              // onClick={() => {
-              //   if (index <= step) setStep(index);
-              // }}
-              style={{ color: step > index ? "#DC1F26" : "#fff" }}
-            >
-              {step > index && (
-                <CheckIcon size={16} weight="thin" color={colors.primary} />
-              )}
-              {label}
-            </button>
-          ))}
-
-          {/* underline */}
-          <span
-            className={styles.activeLine}
-            style={{
-              transform: `translateX(${step * 100}%)`,
-            }}
+      ) : ( */}
+      <div className={styles.stepperTabs}>
+        {stepLabels.map((label, index) => (
+          <button
+            key={label}
+            type="button"
+            className={`${styles.stepTab} ${
+              step === index ? styles.activeTab : ""
+            }`}
+            // onClick={() => {
+            //   if (index <= step) setStep(index);
+            // }}
+            style={{ color: step > index ? "#DC1F26" : "#fff" }}
           >
-            <span className={styles.activeLineTic} />
-          </span>
-        </div>
-      )}
+            {step > index && (
+              <CheckIcon
+                size={16}
+                weight="thin"
+                color={colors.primary}
+                className={styles.stepLabelIcon}
+              />
+            )}
+            <Text size="md" fw={400}>
+              {label}
+            </Text>
+          </button>
+        ))}
+
+        {/* underline */}
+        <span
+          className={styles.activeLine}
+          style={{
+            transform: `translateX(${step * 100}%)`,
+          }}
+        >
+          <span className={styles.activeLineTic} />
+        </span>
+      </div>
+      {/* )} */}
       <div className={styles.stepperContent}>{steps[step]}</div>
 
       <div className={styles.stepperFooter}>
