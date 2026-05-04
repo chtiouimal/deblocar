@@ -55,7 +55,16 @@
 }
 
 @media (max-width: 768px) {
+  .header {
+    top: 16px;
+  }
+
   .headerMenu {
     display: none;
+  }
+
+  .header img {
+    height: 20px !important;
+    width: auto !important;
   }
 }

@@ -2,19 +2,17 @@
 
 import { Button, Text } from "@mantine/core";
 import styles from "./cta.module.css";
-import { ArrowUpRightIcon } from "@phosphor-icons/react";
+import { ArrowUpIcon, ArrowUpRightIcon } from "@phosphor-icons/react";
 
 interface ButtonCTAProps {
-    label: string;
-    onClick: () => void;
+  label: string;
+  onClick: () => void;
+  goUp?: boolean;
 }
 
-function ButtonCTA({label, onClick}: ButtonCTAProps) {
+function ButtonCTA({ label, onClick, goUp = false }: ButtonCTAProps) {
   return (
-    <button
-      className={styles.ctaContainer}
-      onClick={onClick}
-    >
+    <button className={styles.ctaContainer} onClick={onClick}>
       <div className={styles.ctaInnerContainer}>
         <div className={styles.ctaTextContainer}>
           <Text size="md" fw={400}>
@@ -22,7 +20,11 @@ function ButtonCTA({label, onClick}: ButtonCTAProps) {
           </Text>
         </div>
         <div className={styles.ctaIconContainer}>
-          <ArrowUpRightIcon size={20} weight="regular" />
+          {goUp ? (
+            <ArrowUpIcon size={20} weight="regular" />
+          ) : (
+            <ArrowUpRightIcon size={20} weight="regular" />
+          )}
         </div>
       </div>
     </button>

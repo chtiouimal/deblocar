@@ -4,11 +4,14 @@
   margin: 0 auto;
 }
 
-.heroSection {
+.bgTop {
   background-image: url('/bg/top-blur-bg.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.heroSection {
   height: 100vh;
   max-height: 100vh;
   display: flex;
@@ -81,6 +84,31 @@
   align-items: center;
   justify-content: space-around;
   min-height: 100vh;
+  padding: 64px 32px 32px;
+}
+
+.splitSection {
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  max-width: 1440px;
+  max-height: 1024px;
+  margin: auto;
+  padding: 32px;
+  gap: 32px;
+}
+
+.carouselContainer {
+  max-width: 700px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.serviceSectionIntro {
+  align-self: end;
+  padding-bottom: 120px;
 }
 
 @media (max-width: 768px) {
@@ -88,15 +116,16 @@
     flex-direction: column;
     max-height: unset;
     height: 100%;
+    padding: 0;
   }
   .heroSectionLeft {
     align-items: center;
     max-height: calc(100vh - 64px);
     min-height: calc(100vh - 64px);
-    padding-bottom: 32px;
+    padding: 64px 32px 32px;
   }
   .heroSectionRight {
-    min-height: calc(100vh - 64px);
+    min-height: 100%;
     margin: 0 auto;
   }
   .heroSectionLeft * {
@@ -104,5 +133,21 @@
   }
   .heroTagList {
     margin: auto 0;
+  }
+  .splitSection {
+    flex-direction: column-reverse;
+    max-height: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  .serviceSection {
+    flex-direction: column-reverse;
+    max-height: none;
+  }
+
+  .serviceSectionIntro {
+    align-self: flex-start;
+    padding-bottom: 0;
   }
 }

@@ -35,15 +35,15 @@
 
 .stepTab {
   margin-left: 32px;
+  padding: 0 0 28px 0;
   background: transparent;
   border: none;
-  padding: 0 0 28px 0;
   text-align: left;
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 16;
+  justify-content: flex-start;
+  gap: 8px;
   font-family: var(--mantine-font-family-headings);
   font-size: 20px;
   font-weight: 400;
@@ -142,13 +142,31 @@
 
 @media (max-width: 768px) {
   .stepperContent {
-    padding: 0;
+    padding: 0 16px;
     overflow: visible;
   }
   .stepperFooter {
     padding-right: 0;
   }
   .stepTab {
-    font-size: 16px
+    margin-left: 16px;
+    padding: 0 0 16px 0;
+    justify-content: flex-start;
+  }
+  .stepTab p {
+    font-size: 12px
+  }
+  .activeLineTic { 
+    margin-left: 16px;
+  }
+  .stepLabelIcon {
+    position: relative;
+    left: 0
+  }
+  .stepperFooter {
+    margin: 16px;
+  }
+  .stepperContainer {
+    max-height: unset;
   }
 }

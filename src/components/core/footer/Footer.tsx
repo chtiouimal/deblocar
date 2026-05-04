@@ -12,9 +12,8 @@ function Footer() {
   return (
     <footer className={styles.footer}>
       <div className={styles.footerInner}>
-        {isHome && (
-          <img src="/LOGO DEBLOCAR-01.png" alt="large-deblocar-logo" />
-        )}
+        {/* {isHome && ( */}
+        <img src="/LOGO DEBLOCAR-01.png" alt="large-deblocar-logo" />
         <div className={styles.footerContent}>
           <Text size="md" fw={400} style={{ opacity: 0.6 }}>
             © Deblocar — Tous droits réservés

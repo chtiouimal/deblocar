@@ -28,12 +28,12 @@ function CustomTabs({ direction = "vertical" }: CustomTabsProps) {
     };
   });
 
-  const DesktopTabs = () =>
-    direction === "horizontal" ? (
-      <HorizontalDesktopTabs />
-    ) : (
-      <VerticalDesktopTabs />
-    );
+  // const DesktopTabs = () =>
+  //   direction === "horizontal" ? (
+  //     <HorizontalDesktopTabs />
+  //   ) : (
+  //     <VerticalDesktopTabs />
+  //   );
 
   const VerticalDesktopTabs = () => {
     return (
@@ -90,61 +90,61 @@ function CustomTabs({ direction = "vertical" }: CustomTabsProps) {
     );
   };
 
-  const HorizontalDesktopTabs = () => {
-    return (
-      <div className={styles.stepperTabsDesktopHorizontal}>
-        {/* vertical background line */}
-        <span className={styles.horizontalLine} />
+  // const HorizontalDesktopTabs = () => {
+  //   return (
+  //     <div className={styles.stepperTabsDesktopHorizontal}>
+  //       {/* vertical background line */}
+  //       <span className={styles.horizontalLine} />
 
-        {/* vertical tick that moves */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            gap: 64,
-            // padding: "32px 0",
-          }}
-        >
-          <span
-            className={styles.horizontalTickContainer}
-            style={{
-              position: "relative",
-              transform: `translateX(${step * 100}%)`,
-            }}
-          >
-            <span className={styles.horizontalTick} />
-          </span>
-          {stepLabels.map((item, index) => (
-            <div
-              key={index}
-              className={styles.horizontalstepItem}
-              onMouseEnter={() => setStep(index)}
-            >
-              <div
-                className={styles.horizontalstepIcon}
-                style={{ transform: step === index ? "Scale(2)" : "Scale(1)" }}
-              >
-                {item.icon(
-                  step === index ? "#DC1F26" : "#302D2D",
-                  step === index ? true : false,
-                )}
-              </div>
-              <Title
-                order={4}
-                fw={600}
-                className={`${styles.horizontalstepTabDesktop} ${
-                  step === index ? styles.activeTabDesktop : ""
-                }`}
-                style={{ color: step === index ? "#DC1F26" : undefined }}
-              >
-                {item.label}
-              </Title>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
+  //       {/* vertical tick that moves */}
+  //       <div
+  //         style={{
+  //           display: "flex",
+  //           justifyContent: "space-between",
+  //           gap: 64,
+  //           // padding: "32px 0",
+  //         }}
+  //       >
+  //         <span
+  //           className={styles.horizontalTickContainer}
+  //           style={{
+  //             position: "relative",
+  //             transform: `translateX(${step * 100}%)`,
+  //           }}
+  //         >
+  //           <span className={styles.horizontalTick} />
+  //         </span>
+  //         {stepLabels.map((item, index) => (
+  //           <div
+  //             key={index}
+  //             className={styles.horizontalstepItem}
+  //             onMouseEnter={() => setStep(index)}
+  //           >
+  //             <div
+  //               className={styles.horizontalstepIcon}
+  //               style={{ transform: step === index ? "Scale(2)" : "Scale(1)" }}
+  //             >
+  //               {item.icon(
+  //                 step === index ? "#DC1F26" : "#302D2D",
+  //                 step === index ? true : false,
+  //               )}
+  //             </div>
+  //             <Title
+  //               order={4}
+  //               fw={600}
+  //               className={`${styles.horizontalstepTabDesktop} ${
+  //                 step === index ? styles.activeTabDesktop : ""
+  //               }`}
+  //               style={{ color: step === index ? "#DC1F26" : undefined }}
+  //             >
+  //               {item.label}
+  //             </Title>
+  //           </div>
+  //         ))}
+  //       </div>
+  //     </div>
+  //   );
+  // };
 
   const MobileTabs = () => {
     return (
@@ -163,7 +163,11 @@ function CustomTabs({ direction = "vertical" }: CustomTabsProps) {
     );
   };
 
-  return isMobile ? <MobileTabs /> : <DesktopTabs />;
+  return isMobile || direction === "horizontal" ? (
+    <MobileTabs />
+  ) : (
+    <VerticalDesktopTabs />
+  );
 }
 
 export default CustomTabs
