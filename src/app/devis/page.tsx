@@ -53,31 +53,64 @@ export default function Devis() {
         </section>
       </div>
 
-      <section className={styles.marqueSection}>
-        <Title order={2} style={{ textAlign: "center" }}>
-          Marques <br />
-          compatibles
-        </Title>
-        <CustomTabs direction="horizontal" />
-      </section>
-
-      <section className={`${styles.splitSection} ${styles.serviceSection}`}>
-        <div className={styles.carouselContainer}>
-          <VideoGrid />
-        </div>
-        <div
-          className={`${styles.splitSectionLeft} ${styles.serviceSectionIntro}`}
-        >
-          <Title order={2} style={{ maxWidth: 517 }}>
-            Résultats visibles immédiatement
+      <div className={styles.leftBg}>
+        <section className={styles.marqueSection}>
+          <Title order={2} style={{ textAlign: "center" }}>
+            Marques <br />
+            compatibles
           </Title>
-          <Text size="md" fw={400} style={{ maxWidth: 310, opacity: 0.6 }}>
-            Des centaines de véhicules déjà optimisés avec succès.
-          </Text>
-        </div>
-      </section>
+          <CustomTabs direction="horizontal" />
+        </section>
 
-      <section className={styles.howItWorks}></section>
+        <section className={`${styles.splitSection} ${styles.serviceSection}`}>
+          <div className={styles.carouselContainer}>
+            <VideoGrid />
+          </div>
+          <div
+            className={`${styles.splitSectionLeft} ${styles.serviceSectionIntro}`}
+          >
+            <Title order={2} style={{ maxWidth: 517 }}>
+              Résultats visibles immédiatement
+            </Title>
+            <Text size="md" fw={400} style={{ maxWidth: 310, opacity: 0.6 }}>
+              Des centaines de véhicules déjà optimisés avec succès.
+            </Text>
+          </div>
+        </section>
+
+        <section className={styles.howItWorks}>
+          <div className={styles.howItWorksIntro}>
+            <Title order={2} style={{ maxWidth: 456 }}>
+              Comment <br />
+              ça fonctionne ?
+            </Title>
+            <Text size="md" fw={400} style={{ maxWidth: 360, opacity: 0.6 }}>
+              Nous activons certaines fonctionnalités disponibles sur votre
+              véhicule grâce à une intervention logicielle sécurisée.
+            </Text>
+          </div>
+          <div className={styles.howItWorksIntro}>
+            <ul className={styles.howItWorksTagList}>
+              <li>
+                <Text size="sm" fw={400}>
+                  Sans modification physique.
+                </Text>
+              </li>
+              <li>
+                <Text size="sm" fw={400}>
+                  Sans démontage.
+                </Text>
+              </li>
+              <li>
+                <Text size="sm" fw={400}>
+                  Sans risque lorsque compatible.
+                </Text>
+              </li>
+            </ul>
+            <img src="/img/covered-car.png" alt="covered-car" />
+          </div>
+        </section>
+      </div>
 
       <DevisCTA />
     </div>

@@ -20,7 +20,7 @@ function Header() {
   };
 
   return (
-    <div className={styles.header}>
+    <div className={`${isDevis ? styles.headerDevis : styles.header}`}>
       <Link href="/" style={{ opacity: 1 }}>
         <Image
           src="/deblocar-logo.png"

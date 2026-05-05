@@ -7,7 +7,7 @@ import styles from "./cta.module.css";
 function DevisCTA() {
   return (
     <section
-      className={styles.ctaSection}
+      className={styles.ctaDevisSection}
       style={{ paddingLeft: 16, paddingRight: 16, paddingBottom: 120 }}
     >
       <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>

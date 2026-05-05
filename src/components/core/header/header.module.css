@@ -1,4 +1,4 @@
-.header {
+.header, .headerDevis {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -55,15 +55,19 @@
 }
 
 @media (max-width: 768px) {
-  .header {
+  .header, .headerDevis {
     top: 16px;
+  }
+  
+  .headerDevis {
+    justify-content: center;
   }
 
   .headerMenu {
     display: none;
   }
 
-  .header img {
+  .header img, .headerDevis img {
     height: 20px !important;
     width: auto !important;
   }

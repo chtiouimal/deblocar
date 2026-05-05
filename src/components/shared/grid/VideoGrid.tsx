@@ -49,6 +49,7 @@ export default function VideoGrid() {
               {slide.map((video) => (
                 <div className={styles.card} key={video.id}>
                   <VideoPlayer
+                    key={video.id}
                     url={video.url}
                     thumbnail={video.thumb}
                     // playButton={<MyCustomIcon />} optional

@@ -150,7 +150,7 @@ function CustomTabs({ direction = "vertical" }: CustomTabsProps) {
     return (
       <div className={styles.stepperTabsMobile}>
         {stepLabels.map((item, index) => (
-          <div className={styles.stepItemMobile}>
+          <div className={styles.stepItemMobile} key={index}>
             <div className={styles.stepItemIconMobile}>
               {item.icon("#302D2D", false)}
             </div>

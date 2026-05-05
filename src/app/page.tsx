@@ -70,6 +70,7 @@ export default function Home() {
         </section>
       </div>
 
+      {/* <div className={styles.centerBg}> */}
       <section className={styles.centeredSection}>
         <div className={styles.centeredSectionContent}>
           <Title order={2} style={{ textAlign: "center" }}>
@@ -151,27 +152,30 @@ export default function Home() {
           </div>
         </div>
         <div className={styles.secondSubSection}>
-          <div style={{ zIndex: 2 }}>
-            <Title
-              order={2}
-              style={{ textAlign: "center", textTransform: "initial" }}
-            >
-              Votre voiture est bridée.
-            </Title>
-            <Title
-              order={2}
-              style={{
-                textAlign: "center",
-                textTransform: "initial",
-                color: "#DC1F26",
-              }}
-            >
-              Nous la libérons.
-            </Title>
+          <div className={styles.carContainer}>
+            <div className={styles.carTextContainer}>
+              <Title
+                order={2}
+                style={{ textAlign: "center", textTransform: "initial" }}
+              >
+                Votre voiture est bridée.
+              </Title>
+              <Title
+                order={2}
+                style={{
+                  textAlign: "center",
+                  textTransform: "initial",
+                  color: "#DC1F26",
+                }}
+              >
+                Nous la libérons.
+              </Title>
+            </div>
+            <img src="/img/covered-car.png" alt="covered-car" />
           </div>
-          <div className={styles.secondSubSectionBg} />
         </div>
       </section>
+      {/* </div> */}
 
       <div className={styles.rightBg}>
         <section id="process" className={styles.processSection}>
