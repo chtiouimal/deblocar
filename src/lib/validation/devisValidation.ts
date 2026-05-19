@@ -1,4 +1,8 @@
-import { DevisFormData, StepInfoErrors, StepServicesErrors } from "@/types/devis";
+import {
+  DevisFormData,
+  StepInfoErrors,
+  StepServicesErrors,
+} from "@/types/devis";
 
 export const validateStep1 = (data: DevisFormData) => {
   const errors: StepInfoErrors = {};
@@ -59,3 +63,59 @@ export const validateStep2 = (data: DevisFormData) => {
     isValid: Object.keys(errors).length === 0,
   };
 };
+
+export function validateDevisBackend(body: any) {
+  const errors: Record<string, string> = {};
+
+  const { name, email, phone, brand, model, year, vin, services } = body;
+
+  // NAME
+  if (!name || typeof name !== "string" || name.trim().length < 2) {
+    errors.name = "Nom invalide";
+  }
+
+  // EMAIL (strong regex)
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email || !emailRegex.test(email)) {
+    errors.email = "Email invalide";
+  }
+
+  // PHONE (basic international-friendly)
+  const phoneRegex = /^[0-9+ ]{8,15}$/;
+  if (!phone || !phoneRegex.test(phone)) {
+    errors.phone = "Téléphone invalide";
+  }
+
+  // BRAND
+  if (!brand || brand.trim().length < 2) {
+    errors.brand = "Marque invalide";
+  }
+
+  // MODEL
+  if (!model || model.trim().length < 1) {
+    errors.model = "Modèle invalide";
+  }
+
+  // YEAR
+  const yearNum = Number(year);
+  const currentYear = new Date().getFullYear();
+
+  if (!yearNum || yearNum < 1980 || yearNum > currentYear + 1) {
+    errors.year = "Année invalide";
+  }
+
+  // VIN (17 chars strict)
+  if (!vin || vin.length !== 17) {
+    errors.vin = "VIN doit contenir 17 caractères";
+  }
+
+  // SERVICES
+  if (!Array.isArray(services) || services.length === 0) {
+    errors.services = "Sélectionnez au moins un service";
+  }
+
+  return {
+    isValid: Object.keys(errors).length === 0,
+    errors,
+  };
+}
