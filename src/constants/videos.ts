@@ -17,6 +17,6 @@ export const VIDEOS = [
   {
     id: 4,
     thumb: "/img/thumbnail.jpg",
-    url: "/videos/Reel2.mp4",
+    url: "/videos/Reel4.mp4",
   },
 ];
