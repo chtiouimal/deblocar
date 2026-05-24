@@ -2,6 +2,8 @@ import { transporter } from "@/lib/mailer";
 import { validateDevisBackend } from "@/lib/validation/devisValidation";
 import { clientEmailTemplate } from "@/templates/email";
 import { NextResponse } from "next/server";
+import { connectDB } from "@/lib/mongodb";
+import Devis from "@/models/Devis";
 
 export async function POST(req: Request) {
   try {
@@ -24,29 +26,22 @@ export async function POST(req: Request) {
 
     const formattedServices = services.join(", ");
 
-    // Optional Formspree backup
-    const formspreeUrl = process.env.FORMSPREE_URL;
+    // 🔌 CONNECT DB
+    await connectDB();
 
-    if (formspreeUrl) {
-      await fetch(formspreeUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          phone,
-          brand,
-          model,
-          year,
-          vin,
-          services: formattedServices,
-        }),
-      });
-    }
+    // 💾 SAVE TO MONGODB
+    await Devis.create({
+      name,
+      email,
+      phone,
+      brand,
+      model,
+      year,
+      vin,
+      services,
+    });
 
-    // EMAIL CLIENT
+    // 📩 EMAIL CLIENT
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
@@ -60,7 +55,7 @@ export async function POST(req: Request) {
       }),
     });
 
-    // EMAIL YOU
+    // 📩 EMAIL ADMIN
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER,
@@ -82,5 +77,40 @@ Services: ${formattedServices}
     console.error(error);
 
     return NextResponse.json({ message: "Server error" }, { status: 500 });
+  }
+}
+
+// GET ALL DEVIS
+export async function GET(req: Request) {
+  try {
+    await connectDB();
+
+    const { searchParams } = new URL(req.url);
+
+    const page = parseInt(searchParams.get("page") || "1");
+    const limit = parseInt(searchParams.get("limit") || "10");
+
+    const skip = (page - 1) * limit;
+
+    const [devis, total] = await Promise.all([
+      Devis.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
+
+      Devis.countDocuments(),
+    ]);
+
+    return NextResponse.json({
+      devis,
+      pagination: {
+        page,
+        limit,
+        total,
+        pages: Math.ceil(total / limit),
+      },
+    });
+  } catch (err) {
+    return NextResponse.json(
+      { message: "Error fetching devis" },
+      { status: 500 },
+    );
   }
 }

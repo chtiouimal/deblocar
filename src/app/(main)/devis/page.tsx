@@ -2,7 +2,6 @@ import { Text, Title } from "@mantine/core";
 import styles from "./page.module.css";
 import Stepper from "@/components/form/Stepper";
 import CustomTabs from "@/components/shared/tabs/CustomTabs";
-import ServicesCarousel from "@/components/shared/carousel/ServicesCarousel";
 import VideoGrid from "@/components/shared/grid/VideoGrid";
 import DevisCTA from "@/components/shared/cta/DevisCTA";
 
