@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StepInfo from "./steps/StepInfo";
 import StepServices from "./steps/StepServices";
 import StepReview from "./steps/StepReview";
@@ -20,13 +20,36 @@ import ReviewStep from "./steps/ReviewStep";
 
 type StepErrors = StepInfoErrors & StepServicesErrors;
 
+interface Service {
+  _id: string;
+  title: string;
+  description: string;
+}
+
 export default function Stepper() {
   const { data, updateClient, updateCar, setData } = useFormStore();
   const { isMobile } = useViewport();
+  const [services, setServices] = useState<Service[]>([]);
   const [step, setStep] = useState(0);
   const [stepErrors, setStepErrors] = useState<StepErrors>({});
   const [loading, setLoading] = useState(false);
   const stepLabels = ["Informations", "Services", "Finalisation"];
+
+  const fetchServices = async () => {
+    try {
+      setLoading(true);
+
+      const res = await fetch(`/api/services`);
+
+      const data = await res.json();
+
+      setServices(data.services);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const next = () => {
     let result;
@@ -55,44 +78,48 @@ export default function Stepper() {
     setData((prev) => ({ ...prev, services }));
   };
 
-const submitForm = async () => {
-  if (loading) return;
+  const submitForm = async () => {
+    if (loading) return;
 
-  setLoading(true);
+    setLoading(true);
 
-  try {
-    const res = await fetch("/api/devis", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: data.client.name,
-        email: data.client.email,
-        phone: data.client.phone,
-        brand: data.client.car.brand,
-        model: data.client.car.model,
-        year: data.client.car.year,
-        vin: data.client.car.vin,
-        services: data.services,
-      }),
-    });
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: data.client.name,
+          email: data.client.email,
+          phone: data.client.phone,
+          brand: data.client.car.brand,
+          model: data.client.car.model,
+          year: data.client.car.year,
+          vin: data.client.car.vin,
+          services: data.services,
+        }),
+      });
 
-    const responseData = await res.json();
+      const responseData = await res.json();
 
-    if (!res.ok) {
-      throw new Error(responseData.message || "Form submission failed");
+      if (!res.ok) {
+        throw new Error(responseData.message || "Form submission failed");
+      }
+
+      setData(initialDevisFormData);
+      setStepErrors({});
+      setStep(0);
+    } catch (err) {
+      console.error("Submit error:", err);
+    } finally {
+      setLoading(false);
     }
+  };
 
-    setData(initialDevisFormData);
-    setStepErrors({});
-    setStep(0);
-  } catch (err) {
-    console.error("Submit error:", err);
-  } finally {
-    setLoading(false);
-  }
-};
+  useEffect(() => {
+    fetchServices();
+  }, []);
 
   const steps = [
     <InformationStep
@@ -105,12 +132,13 @@ const submitForm = async () => {
 
     <ServiceStep
       key="services"
+      initial={services}
       services={data.services}
       setServices={updateServices}
       stepError={stepErrors.services}
     />,
 
-    <ReviewStep key="review" data={data} />,
+    <ReviewStep key="review" data={data} initial={services} />,
   ];
 
   return (

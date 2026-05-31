@@ -1,81 +1,79 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Table, Group, Button, Drawer, Loader, Badge, Pagination, UnstyledButton } from "@mantine/core";
-import { EyeIcon } from "@phosphor-icons/react";
+import { useGetDevisQuery } from "@/lib/api/devisApi";
+import {
+  Table,
+  Group,
+  Badge,
+  Pagination,
+  Drawer,
+  Loader,
+  Box,
+  UnstyledButton,
+} from "@mantine/core";
 
-type Devis = {
-  _id: string;
-  name: string;
-  email: string;
-  phone: string;
-  brand: string;
-  model: string;
-  year: string;
-  vin: string;
-  services: string[];
-  createdAt: string;
-};
+import { EyeIcon } from "@phosphor-icons/react";
+import { useState } from "react";
 
 export default function DevisPage() {
-  const [devis, setDevis] = useState<Devis[]>([]);
-  const [loading, setLoading] = useState(true);
-
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [selected, setSelected] = useState<any>(null);
 
-  const [selected, setSelected] = useState<Devis | null>(null);
+  const { data, isLoading } = useGetDevisQuery({ page, limit: 10 });
 
-  const fetchDevis = async (pageNumber = 1) => {
-    setLoading(true);
+  if (isLoading) {
+    return (
+      <Box
+        style={{
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Loader />
+      </Box>
+    );
+  }
 
-    const res = await fetch(`/api/devis?page=${pageNumber}&limit=10`);
-
-    const data = await res.json();
-
-    setDevis(data.devis);
-    setPage(data.pagination.page);
-    setTotalPages(data.pagination.pages);
-
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchDevis(1);
-  }, []);
-
-  if (loading) return <Loader />;
+  const devis = data?.devis || [];
+  const pagination = data?.pagination;
 
   return (
     <div style={{ padding: 20, width: "100%" }}>
-      {/* HEADER */}
       <Group justify="space-between" mb="md">
         <h2>Devis</h2>
       </Group>
 
-      {/* TABLE */}
       <Table striped highlightOnHover>
         <Table.Thead>
           <Table.Tr>
-            <Table.Th>Name</Table.Th>
-            <Table.Th>Email</Table.Th>
+            <Table.Th>Client</Table.Th>
             <Table.Th>Vehicle</Table.Th>
             <Table.Th>Services</Table.Th>
-            <Table.Th>Date</Table.Th>
+            <Table.Th>Prix</Table.Th>
             <Table.Th>Action</Table.Th>
           </Table.Tr>
         </Table.Thead>
 
         <Table.Tbody>
-          {devis.map((d) => (
+          {devis.map((d: any) => (
             <Table.Tr key={d._id}>
               <Table.Td>{d.name}</Table.Td>
-              <Table.Td>{d.email}</Table.Td>
+
               <Table.Td>
-                {d.brand} {d.model} ({d.year})
+                {d.brand} ({d.year})
               </Table.Td>
-              <Table.Td>{d.services.slice(0, 2).join(", ")}</Table.Td>
-              <Table.Td>{new Date(d.createdAt).toLocaleDateString()}</Table.Td>
+
+              <Table.Td>
+                {d.services.map((s: any) => (
+                  <Badge key={s._id} mr={5}>
+                    {s.title}
+                  </Badge>
+                ))}
+              </Table.Td>
+
+              <Table.Td>{d.totalPrice} TND</Table.Td>
 
               <Table.Td>
                 <UnstyledButton onClick={() => setSelected(d)}>
@@ -87,16 +85,14 @@ export default function DevisPage() {
         </Table.Tbody>
       </Table>
 
-      {/* PAGINATION */}
       <Group justify="center" mt="md">
         <Pagination
-          total={totalPages}
+          total={pagination?.pages || 1}
           value={page}
-          onChange={(p) => fetchDevis(p)}
+          onChange={setPage}
         />
       </Group>
 
-      {/* DETAILS DRAWER */}
       <Drawer
         opened={!!selected}
         onClose={() => setSelected(null)}
@@ -117,8 +113,7 @@ export default function DevisPage() {
             </div>
 
             <div>
-              <b>Vehicle:</b> {selected.brand} {selected.model} ({selected.year}
-              )
+              <b>Vehicle:</b> {selected.brand} ({selected.year})
             </div>
 
             <div>
@@ -127,9 +122,9 @@ export default function DevisPage() {
 
             <div>
               <b>Services:</b>{" "}
-              {selected.services.map((s, i) => (
-                <Badge key={i} mr={5}>
-                  {s}
+              {selected.services.map((s: any) => (
+                <Badge key={s._id} mr={5}>
+                  {s.title}
                 </Badge>
               ))}
             </div>

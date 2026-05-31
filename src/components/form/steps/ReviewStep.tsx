@@ -6,11 +6,21 @@ import { Grid, Text } from "@mantine/core";
 import { CheckIcon } from "@phosphor-icons/react";
 import { colors } from "@/theme/colors";
 
+interface Service {
+  _id: string;
+  title: string;
+  description: string;
+}
+
 type Props = {
+  initial: Service[];
   data: DevisFormData;
 };
 
-export default function ReviewStep({ data }: Props) {
+export default function ReviewStep({ data, initial }: Props) {
+  const selectedServices = initial.filter((service) =>
+    data.services.includes(service._id),
+  );
   return (
     <div className={styles.stepContainer}>
       <Grid
@@ -134,9 +144,9 @@ export default function ReviewStep({ data }: Props) {
             </Text>
           </Grid.Col>
           <div className={styles.selectedServices}>
-            {data.services.map((s) => (
+            {selectedServices.map((s) => (
               <div
-                key={s}
+                key={s._id}
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -146,7 +156,7 @@ export default function ReviewStep({ data }: Props) {
               >
                 <CheckIcon size={14} weight="thin" color={colors.primary} />
                 <Text size="md" className={styles.infoLabel}>
-                  {s}
+                  {s.title}
                 </Text>
               </div>
             ))}

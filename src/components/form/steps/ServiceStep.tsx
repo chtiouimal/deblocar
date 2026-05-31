@@ -4,14 +4,22 @@ import { AVAILABLE_SERVICES } from "@/constants/devis";
 import styles from "./step.module.css";
 import { Checkbox, Grid, Text } from "@mantine/core";
 
+interface Service {
+  _id: string;
+  title: string;
+  description: string;
+}
+
 type Props = {
   services: string[];
+  initial: Service[];
   setServices: (services: string[]) => void;
   stepError?: string;
 };
 
 export default function ServiceStep({
   services,
+  initial,
   setServices,
   stepError,
 }: Props) {
@@ -24,8 +32,8 @@ export default function ServiceStep({
   };
 
   const isValid = services.length > 0;
-  const col1 = AVAILABLE_SERVICES.slice(0, 7);
-  const col2 = AVAILABLE_SERVICES.slice(7);
+  const col1 = initial.slice(0, 7);
+  const col2 = initial.slice(7);
 
   return (
     <div className={styles.stepContainer}>
@@ -49,14 +57,14 @@ export default function ServiceStep({
             <Grid.Col span={{ base: 12, sm: 12, md: 6 }}>
               {col1.map((service) => (
                 <Checkbox
-                  key={service}
+                  key={service._id}
                   label={
                     <Text size="sm" fw={400}>
-                      {service}
+                      {service.title}
                     </Text>
                   }
-                  checked={services.includes(service)}
-                  onChange={() => toggleService(service)}
+                  checked={services.includes(service._id)}
+                  onChange={() => toggleService(service._id)}
                   color="#DC1F26"
                   style={{
                     marginBottom: 16,
@@ -71,14 +79,14 @@ export default function ServiceStep({
             <Grid.Col span={{ base: 12, sm: 12, md: 6 }}>
               {col2.map((service) => (
                 <Checkbox
-                  key={service}
+                  key={service._id}
                   label={
                     <Text size="sm" fw={400}>
-                      {service}
+                      {service.title}
                     </Text>
                   }
-                  checked={services.includes(service)}
-                  onChange={() => toggleService(service)}
+                  checked={services.includes(service._id)}
+                  onChange={() => toggleService(service._id)}
                   color="#DC1F26"
                   style={{
                     marginBottom: 16,

@@ -1,10 +1,14 @@
 import { transporter } from "@/lib/mailer";
 import { validateDevisBackend } from "@/lib/validation/devisValidation";
 import { clientEmailTemplate } from "@/templates/email";
+
 import { NextResponse } from "next/server";
+
 import { connectDB } from "@/lib/mongodb";
-import Devis from "@/models/Devis";
+
+import Lead from "@/models/Lead";
 import Service from "@/models/Service";
+import Status from "@/models/Status";
 
 export async function POST(req: Request) {
   try {
@@ -31,6 +35,7 @@ export async function POST(req: Request) {
       year,
       vin,
       services, // array of mongo ids
+      city = null,
     } = body;
 
     // 🔌 CONNECT DB
@@ -48,32 +53,36 @@ export async function POST(req: Request) {
     // ✉️ FORMATTED STRING FOR EMAIL
     const formattedServices = servicesNames.join(", ");
 
-    console.log("services sent: ", services);
-    console.log("services: ", servicesFromDB, servicesNames, formattedServices);
+    // 🔥 SCORE LOGIC
+    let score: "Froid" | "Tiède" | "Chaud" = "Tiède";
 
-    // 💰 TOTAL PRICE
-    const totalPrice = servicesFromDB.reduce(
-      (acc, service) => acc + service.price,
-      0,
-    );
+    if (services.length < 3) {
+      score = "Froid";
+    } else if (services.length > 6) {
+      score = "Chaud";
+    }
+    const defaultStatus = await Status.findOne({ label: "Nouveau" });
 
-    // 💾 SAVE DEVIS
-    await Devis.create({
+    // 💾 SAVE LEAD
+    await Lead.create({
       name,
       email,
       phone,
       brand,
       year,
       vin,
-      services, // ids
-      totalPrice,
+      services,
+      city,
+      score,
+      status: defaultStatus._id,
+      date: null,
     });
 
     // 📩 EMAIL CLIENT
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
-      subject: "Confirmation de votre demande de devis - Deblocar",
+      subject: "Confirmation de votre demande - Deblocar",
       text: clientEmailTemplate({
         name,
         brand,
@@ -87,7 +96,7 @@ export async function POST(req: Request) {
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER,
-      subject: "Nouvelle demande de devis",
+      subject: "Nouveau lead reçu",
       text: `
 Nom: ${name}
 Email: ${email}
@@ -96,7 +105,7 @@ Marque: ${brand}
 Année: ${year}
 VIN: ${vin}
 Services: ${formattedServices}
-Prix total: ${totalPrice} DT
+Score: ${score}
       `,
     });
 
@@ -110,44 +119,5 @@ Prix total: ${totalPrice} DT
     console.error(error);
 
     return NextResponse.json({ message: "Server error" }, { status: 500 });
-  }
-}
-
-// GET ALL DEVIS
-export async function GET(req: Request) {
-  try {
-    await connectDB();
-
-    const { searchParams } = new URL(req.url);
-
-    const page = parseInt(searchParams.get("page") || "1");
-    const limit = parseInt(searchParams.get("limit") || "10");
-
-    const skip = (page - 1) * limit;
-
-    const [devis, total] = await Promise.all([
-      Devis.find()
-        .populate("services")
-        .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit),
-
-      Devis.countDocuments(),
-    ]);
-
-    return NextResponse.json({
-      devis,
-      pagination: {
-        page,
-        limit,
-        total,
-        pages: Math.ceil(total / limit),
-      },
-    });
-  } catch (err) {
-    return NextResponse.json(
-      { message: "Error fetching devis" },
-      { status: 500 },
-    );
   }
 }

@@ -2,11 +2,18 @@ import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
+import { requireAuth } from "@/lib/requireAuth";
 
 // GET ALL USERS
 export async function GET(req: Request) {
   try {
     await connectDB();
+console.log("COOKIE:", req.headers.get("cookie"));
+    const auth = requireAuth(req);
+
+    if (!auth) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
 
     const { searchParams } = new URL(req.url);
 
@@ -47,6 +54,12 @@ export async function POST(req: Request) {
   try {
     await connectDB();
 
+    const auth = requireAuth(req);
+
+    if (!auth) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
     const { name, email, password } = await req.json();
 
     const existing = await User.findOne({ email });
@@ -54,7 +67,7 @@ export async function POST(req: Request) {
     if (existing) {
       return NextResponse.json(
         { message: "User already exists" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -74,7 +87,7 @@ export async function POST(req: Request) {
   } catch (err) {
     return NextResponse.json(
       { message: "Error creating user" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
