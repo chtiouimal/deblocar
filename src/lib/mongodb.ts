@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 
-// const MONGODB_URI = process.env.MONGODB_URI!;
-const MONGODB_URI =
-  "mongodb+srv://malek195790:IFtxm483QMXy7xdO@deblocar.wdlkwaa.mongodb.net/deblocar?appName=deblocar";
+const MONGODB_URI = process.env.MONGODB_URI!;
 
 if (!MONGODB_URI) {
   throw new Error("Missing MONGODB_URI");
