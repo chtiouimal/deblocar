@@ -13,7 +13,8 @@ import { useGetCitiesQuery } from "@/lib/api/citiesApi";
 import { useGetServicesQuery } from "@/lib/api/servicesApi";
 import { CAR_DATA } from "@/constants/devis";
 import { useGetStatusesQuery } from "@/lib/api/statusApi";
-// import { DateTimePicker } from "@mantine/dates";
+import { DatePickerInput } from "@mantine/dates";
+import { XIcon } from "@phosphor-icons/react";
 
 type Filters = {
   status: string;
@@ -40,10 +41,12 @@ export default function LeadsFilter({
   onApply,
   filters,
 }: Props) {
-  // local draft state (THIS is the key change)
   const [localFilters, setLocalFilters] = useState<Filters>(filters);
   const { data: citiesResponse } = useGetCitiesQuery();
-  const { data: servicesResponse = [] } = useGetServicesQuery({page: 1, limit: 1000});
+  const { data: servicesResponse = [] } = useGetServicesQuery({
+    page: 1,
+    limit: 1000,
+  });
   const { data: statuses = [] } = useGetStatusesQuery();
 
   const services = servicesResponse?.services || [];
@@ -124,13 +127,6 @@ export default function LeadsFilter({
           onChange={(v) => update("brand", v || "")}
           clearable
         />
-        <Select
-          label="Brand"
-          data={[]}
-          value={localFilters.brand}
-          onChange={(v) => update("brand", v || "")}
-          clearable
-        />
 
         {/* SCORE */}
         <Select
@@ -153,31 +149,33 @@ export default function LeadsFilter({
         />
 
         {/* DATE */}
-        {/* <DateTimePicker
+        <DatePickerInput
           label="Date"
           placeholder="Select date"
           value={localFilters.date ? new Date(localFilters.date) : null}
-          onChange={(v) =>
-            update("date", v ? v.toISOString().split("T")[0] : "")
-          }
+          onChange={(v) => update("date", v ? v.toString().split("T")[0] : "")}
           clearable
-        /> */}
+        />
+      </Stack>
 
-        {/* ACTIONS */}
-        <Group justify="space-between" mt="md">
-          <Button variant="light" color="red" onClick={handleReset}>
-            Reset
+      {/* ACTIONS */}
+      <Group justify="space-between" mt={32}>
+        <Button
+          className="textBtn"
+          leftSection={<XIcon size={20} weight="thin" />}
+          onClick={handleReset}
+        >
+          Reset
+        </Button>
+
+        <Group>
+          <Button variant="default" onClick={onClose} className="textBtn">
+            Cancel
           </Button>
 
-          <Group>
-            <Button variant="default" onClick={onClose}>
-              Cancel
-            </Button>
-
-            <Button onClick={handleApply}>Apply</Button>
-          </Group>
+          <Button onClick={handleApply}>Apply</Button>
         </Group>
-      </Stack>
+      </Group>
     </Drawer>
   );
 }

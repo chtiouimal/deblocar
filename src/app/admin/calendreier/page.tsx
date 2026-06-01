@@ -13,6 +13,7 @@ import {
   Title,
 } from "@mantine/core";
 import { useGetCalendarQuery } from "@/lib/api/calendarApi";
+import CustomLoader from "@/components/core/loading";
 
 function getDaysInMonth(month: number, year: number) {
   return new Date(year, month, 0).getDate();
@@ -57,18 +58,7 @@ export default function CalendarPage() {
   };
 
   if (isLoading) {
-    return (
-      <Box
-        style={{
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Loader />
-      </Box>
-    );
+    return <CustomLoader />;
   }
 
   return (

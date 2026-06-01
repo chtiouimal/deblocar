@@ -1,5 +1,6 @@
 "use client";
 
+import CustomLoader from "@/components/core/loading";
 import { useGetDevisQuery } from "@/lib/api/devisApi";
 import {
   Table,
@@ -22,18 +23,7 @@ export default function DevisPage() {
   const { data, isLoading } = useGetDevisQuery({ page, limit: 10 });
 
   if (isLoading) {
-    return (
-      <Box
-        style={{
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Loader />
-      </Box>
-    );
+    return <CustomLoader />;
   }
 
   const devis = data?.devis || [];

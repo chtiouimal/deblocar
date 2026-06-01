@@ -24,6 +24,7 @@ import {
   useUpdateServiceMutation,
   useDeleteServiceMutation,
 } from "@/lib/api/servicesApi";
+import CustomLoader from "@/components/core/loading";
 
 interface Service {
   _id: string;
@@ -96,6 +97,10 @@ export default function ServicesPage() {
 
     await deleteService(id);
   };
+
+  if (isLoading) {
+    return <CustomLoader />;
+  }
 
   return (
     <Stack p="lg">

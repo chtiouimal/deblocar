@@ -13,18 +13,22 @@ import { RootState } from "@/store/store";
 import { useLogoutMutation } from "@/lib/api/authApi";
 
 const mockdata = [
-  { label: "Dashboard", icon: ChartBarIcon, link: "dashboard" },
-  { icon: HouseIcon, label: "Leads", link: "lead" },
-  { icon: ArticleIcon, label: "Devis", link: "devis" },
-  { icon: CalendarDotsIcon, label: "Calendreier RDV", link: "calendreier" },
+  { label: "Dashboard", icon: ChartBarIcon, link: "/admin/dashboard" },
+  { icon: HouseIcon, label: "Leads", link: "/admin/lead" },
+  { icon: ArticleIcon, label: "Devis", link: "/admin/devis" },
+  {
+    icon: CalendarDotsIcon,
+    label: "Calendreier RDV",
+    link: "/admin/calendreier",
+  },
   {
     label: "Paramètres",
     icon: GearIcon,
     initiallyOpened: true,
     links: [
-      { label: "Services", link: "services" },
-      { label: "status", link: "status" },
-      { label: "Utilisateurs", link: "users" },
+      { label: "Services", link: "/admin/services" },
+      { label: "status", link: "/admin/status" },
+      { label: "Utilisateurs", link: "/admin/users" },
     ],
   },
 ];

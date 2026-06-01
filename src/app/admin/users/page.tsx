@@ -23,6 +23,7 @@ import {
   useUpdateUserMutation,
   useDeleteUserMutation,
 } from "@/lib/api/adminApi";
+import CustomLoader from "@/components/core/loading";
 
 type User = {
   _id: string;
@@ -109,19 +110,9 @@ export default function UsersPage() {
   // -------------------
   // LOADING
   // -------------------
-  if (isLoading)
-    return (
-      <Box
-        style={{
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Loader />
-      </Box>
-    );
+  if (isLoading) {
+    return <CustomLoader />;
+  }
 
   return (
     <div style={{ padding: 20, width: "100%" }}>

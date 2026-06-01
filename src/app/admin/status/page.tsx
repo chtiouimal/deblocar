@@ -22,6 +22,7 @@ import {
 } from "@/lib/api/statusApi";
 
 import { TrashIcon, PlusIcon } from "@phosphor-icons/react";
+import CustomLoader from "@/components/core/loading";
 
 type StatusForm = {
   label: string;
@@ -58,18 +59,7 @@ export default function StatusPage() {
   };
 
   if (isLoading) {
-    return (
-      <Box
-        style={{
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Loader />
-      </Box>
-    );
+    return <CustomLoader />;
   }
 
   return (
@@ -132,7 +122,7 @@ export default function StatusPage() {
           mt="sm"
           label="Color"
           placeholder="Pick status color"
-          value={form.color?? ""}
+          value={form.color ?? ""}
           onChange={(value) =>
             setForm({
               ...form,

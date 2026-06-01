@@ -3,6 +3,7 @@
 import { useParams } from "next/navigation";
 import { Loader, Box, Badge, Group } from "@mantine/core";
 import { useGetLeadByIdQuery } from "@/lib/api/leadsApi";
+import CustomLoader from "@/components/core/loading";
 
 export default function LeadDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -10,18 +11,7 @@ export default function LeadDetailsPage() {
   const { data, isLoading } = useGetLeadByIdQuery(id);
 
   if (isLoading) {
-    return (
-      <Box
-        style={{
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Loader />
-      </Box>
-    );
+    return <CustomLoader />;
   }
 
   const lead = data?.lead;

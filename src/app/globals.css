@@ -50,3 +50,12 @@ a:hover {
   width: 0;
   height: 0;
 }
+
+.textBtn {
+  background-color: transparent !important;
+  color: var(--color-text);
+}
+
+.textBtn:hover {
+  color: var(--color-primary);
+}

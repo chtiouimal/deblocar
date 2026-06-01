@@ -2,11 +2,17 @@
 
 import { useState } from "react";
 import { Table, Group, Loader, Pagination, Box, Badge, Button, Drawer, Stack, TextInput } from "@mantine/core";
-import { CalendarDotsIcon, EyeIcon } from "@phosphor-icons/react";
+import {
+  CalendarDotsIcon,
+  EyeIcon,
+  FadersHorizontalIcon,
+  XIcon,
+} from "@phosphor-icons/react";
 import Link from "next/link";
 import LeadsFilter from "@/components/filters/LeadsFilter";
 import { useCreateRdvMutation, useGetLeadsQuery } from "@/lib/api/leadsApi";
-
+import { DatePickerInput, TimeInput } from "@mantine/dates";
+import CustomLoader from "@/components/core/loading";
 
 export default function LeadPage() {
   const [page, setPage] = useState(1);
@@ -55,18 +61,7 @@ export default function LeadPage() {
   };
 
   if (isLoading) {
-    return (
-      <Box
-        style={{
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Loader />
-      </Box>
-    );
+    return <CustomLoader />;
   }
 
   const leads = data?.leads || [];
@@ -78,12 +73,22 @@ export default function LeadPage() {
         <h2>Leads</h2>
         <Group>
           {hasActiveFilters && (
-            <Button variant="light" color="red" onClick={resetFilters}>
+            <Button
+              className="textBtn"
+              leftSection={<XIcon size={20} weight="thin" />}
+              onClick={resetFilters}
+            >
               Reset filters
             </Button>
           )}
 
-          <Button onClick={() => setFilterOpen(true)}>Filters</Button>
+          <Button
+            className="textBtn"
+            leftSection={<FadersHorizontalIcon size={20} weight="thin" />}
+            onClick={() => setFilterOpen(true)}
+          >
+            Filters
+          </Button>
         </Group>
       </Group>
 
@@ -127,11 +132,18 @@ export default function LeadPage() {
               <Table.Td>{lead.date ?? "Non défini"}</Table.Td>
               <Table.Td>
                 <Group gap="xs">
-                  <Link href={`/admin/lead/${lead._id}`}>
-                    <EyeIcon size={20} />
+                  <Link
+                    href={`/admin/lead/${lead._id}`}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <EyeIcon size={24} />
                   </Link>
                   <CalendarDotsIcon
-                    style={{cursor: "pointer"}}
+                    style={{ cursor: "pointer" }}
                     size={20}
                     onClick={() => {
                       setSelectedLead(lead);
@@ -170,19 +182,26 @@ export default function LeadPage() {
       >
         <Stack>
           {/* DATE */}
-          <TextInput
+          <DatePickerInput
             label="Date"
-            type="date"
-            value={rdvForm.date}
-            onChange={(e) => setRdvForm({ ...rdvForm, date: e.target.value })}
+            placeholder="Choisir une date"
+            value={rdvForm.date ? new Date(rdvForm.date) : null}
+            onChange={(value) =>
+              setRdvForm({
+                ...rdvForm,
+                date: value ? value.toString().split("T")[0] : "",
+              })
+            }
+            clearable
           />
 
           {/* TIME */}
-          <TextInput
+          <TimeInput
             label="Heure"
-            type="time"
             value={rdvForm.time}
-            onChange={(e) => setRdvForm({ ...rdvForm, time: e.target.value })}
+            onChange={(e) =>
+              setRdvForm({ ...rdvForm, time: e.currentTarget.value })
+            }
           />
 
           {/* LOCATION */}
