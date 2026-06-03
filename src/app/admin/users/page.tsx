@@ -13,6 +13,7 @@ import {
   Modal,
   UnstyledButton,
   Box,
+  Text,
 } from "@mantine/core";
 
 import { PencilSimpleIcon, TrashIcon } from "@phosphor-icons/react";
@@ -118,15 +119,15 @@ export default function UsersPage() {
     <div style={{ padding: 20, width: "100%" }}>
       {/* HEADER */}
       <Group justify="space-between" mb="md">
-        <h2>Users</h2>
-        <Button onClick={openCreate}>Create User</Button>
+        <h2>Utilisateurs</h2>
+        <Button onClick={openCreate}>Créer un utilisateur</Button>
       </Group>
 
       {/* TABLE */}
-      <Table striped highlightOnHover>
+      <Table striped highlightOnHover withTableBorder>
         <Table.Thead>
           <Table.Tr>
-            <Table.Th>Name</Table.Th>
+            <Table.Th>Nom</Table.Th>
             <Table.Th>Email</Table.Th>
             <Table.Th>Actions</Table.Th>
           </Table.Tr>
@@ -155,19 +156,21 @@ export default function UsersPage() {
       </Table>
 
       {/* PAGINATION */}
-      <Group justify="center" mt="md">
-        <Pagination total={totalPages} value={page} onChange={setPage} />
-      </Group>
+      {totalPages > 1 && (
+        <Group justify="center" mt="md">
+          <Pagination total={totalPages} value={page} onChange={setPage} />
+        </Group>
+      )}
 
       {/* DRAWER */}
       <Drawer
         opened={opened}
         onClose={() => setOpened(false)}
-        title={editUser ? "Edit User" : "Create User"}
+        title={editUser ? "Modifier l'utilisateur" : "Créer un utilisateur"}
         position="right"
       >
         <TextInput
-          label="Name"
+          label="Nom"
           value={form.name}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
         />
@@ -182,14 +185,14 @@ export default function UsersPage() {
         {!editUser && (
           <PasswordInput
             mt="sm"
-            label="Password"
+            label="Mot de passe"
             value={form.password}
             onChange={(e) => setForm({ ...form, password: e.target.value })}
           />
         )}
 
         <Button fullWidth mt="md" onClick={saveUser}>
-          {editUser ? "Update" : "Create"}
+          {editUser ? "Modifier" : "Créer"}
         </Button>
       </Drawer>
 
@@ -197,19 +200,21 @@ export default function UsersPage() {
       <Modal
         opened={!!confirmDelete}
         onClose={() => setConfirmDelete(null)}
-        title="Confirm deletion"
+        title="Confirmation de suppression"
         centered
       >
-        <p>Are you sure you want to delete this user?</p>
+        <Text p={10}>Êtes-vous sûr de vouloir supprimer cet utilisateur ?</Text>
 
         <Group justify="flex-end" mt="md">
-          <Button variant="default" onClick={() => setConfirmDelete(null)}>
-            Cancel
+          <Button
+            variant="default"
+            onClick={() => setConfirmDelete(null)}
+            className="textBtn"
+          >
+            Annuler
           </Button>
 
-          <Button color="red" onClick={handleDelete}>
-            Delete
-          </Button>
+          <Button onClick={handleDelete}>Supprimer</Button>
         </Group>
       </Modal>
     </div>

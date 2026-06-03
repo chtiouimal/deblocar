@@ -62,10 +62,10 @@ export default function CalendarPage() {
   }
 
   return (
-    <Box p="lg">
+    <Box style={{ width: "100%", padding: 20 }}>
       {/* HEADER */}
       <Group justify="space-between" mb="md">
-        <Title order={2}>Calendar</Title>
+        <h2>Calendrier RDV</h2>
 
         <Group>
           <Select
@@ -115,7 +115,7 @@ export default function CalendarPage() {
               key={day}
               onClick={() => handleClick(day)}
               style={{
-                border: "1px solid #eee",
+                border: "0.25px solid #eee",
                 borderRadius: 8,
                 padding: 12,
                 minHeight: 80,

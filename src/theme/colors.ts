@@ -19,5 +19,6 @@ export const colors = {
   // base
   text: "#FFFFFF",
   background: "#0B0B0D",
+  secondaryBackground: "#151517",
   primary: "#DC1F26",
 };

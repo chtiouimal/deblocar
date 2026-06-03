@@ -6,9 +6,11 @@ import {
   Button,
   Drawer,
   Group,
+  Modal,
   Pagination,
   Stack,
   Table,
+  Text,
   TextInput,
   Textarea,
   Title,
@@ -51,6 +53,7 @@ export default function ServicesPage() {
 
   const [opened, setOpened] = useState(false);
   const [editingService, setEditingService] = useState<Service | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -91,11 +94,17 @@ export default function ServicesPage() {
     setOpened(false);
   };
 
-  const handleDelete = async (id: string) => {
-    const confirmed = confirm("Are you sure you want to delete this service?");
-    if (!confirmed) return;
+  // const handleDelete = async (id: string) => {
+  //   const confirmed = confirm("Are you sure you want to delete this service?");
+  //   if (!confirmed) return;
 
-    await deleteService(id);
+  //   await deleteService(id);
+  // };
+  const handleDelete = async () => {
+    if (!confirmDelete) return;
+
+    await deleteService(confirmDelete).unwrap();
+    setConfirmDelete(null);
   };
 
   if (isLoading) {
@@ -103,13 +112,13 @@ export default function ServicesPage() {
   }
 
   return (
-    <Stack p="lg">
+    <Stack style={{ width: "100%", padding: 20 }}>
       {/* HEADER */}
       <Group justify="space-between">
-        <Title order={2}>Services</Title>
+        <h2>Services</h2>
 
         <Button leftSection={<PlusIcon size={18} />} onClick={openCreate}>
-          Create Service
+          Créer un service
         </Button>
       </Group>
 
@@ -117,8 +126,8 @@ export default function ServicesPage() {
       <Table striped highlightOnHover withTableBorder>
         <Table.Thead>
           <Table.Tr>
-            <Table.Th>Title</Table.Th>
-            <Table.Th>Price</Table.Th>
+            <Table.Th>Service</Table.Th>
+            <Table.Th>Prix</Table.Th>
             <Table.Th>Status</Table.Th>
             <Table.Th>Actions</Table.Th>
           </Table.Tr>
@@ -145,13 +154,15 @@ export default function ServicesPage() {
                     <PencilSimpleIcon size={18} />
                   </ActionIcon>
 
-                  <ActionIcon
-                    color="red"
-                    variant="subtle"
-                    onClick={() => handleDelete(service._id)}
-                  >
-                    <TrashIcon size={18} />
-                  </ActionIcon>
+                  {!service.isDeleted && (
+                    <ActionIcon
+                      color="red"
+                      variant="subtle"
+                      onClick={() => setConfirmDelete(service._id)}
+                    >
+                      <TrashIcon size={18} />
+                    </ActionIcon>
+                  )}
                 </Group>
               </Table.Td>
             </Table.Tr>
@@ -168,12 +179,12 @@ export default function ServicesPage() {
       <Drawer
         opened={opened}
         onClose={() => setOpened(false)}
-        title={editingService ? "Update Service" : "Create Service"}
+        title={editingService ? "Modifier le service" : "Créer un service"}
         position="right"
       >
         <Stack>
           <TextInput
-            label="Title"
+            label="Service"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
@@ -186,7 +197,7 @@ export default function ServicesPage() {
           />
 
           <TextInput
-            label="Price"
+            label="Prix"
             value={price === null ? "" : String(price)}
             onChange={(e) =>
               setPrice(e.target.value ? Number(e.target.value) : null)
@@ -194,10 +205,32 @@ export default function ServicesPage() {
           />
 
           <Button onClick={handleSubmit}>
-            {editingService ? "Update" : "Create"}
+            {editingService ? "Modifier" : "Créer"}
           </Button>
         </Stack>
       </Drawer>
+
+      {/* DELETE MODAL */}
+      <Modal
+        opened={!!confirmDelete}
+        onClose={() => setConfirmDelete(null)}
+        title="Confirmation de suppression"
+        centered
+      >
+        <Text p={10}>Êtes-vous sûr de vouloir supprimer ce service ?</Text>
+
+        <Group justify="flex-end" p={10}>
+          <Button
+            variant="default"
+            onClick={() => setConfirmDelete(null)}
+            className="textBtn"
+          >
+            Annuler
+          </Button>
+
+          <Button onClick={handleDelete}>Supprimer</Button>
+        </Group>
+      </Modal>
     </Stack>
   );
 }

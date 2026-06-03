@@ -23,6 +23,7 @@ export async function GET(
 
     const lead = await Lead.findById(id)
       .populate("services", "title price")
+      .populate("status", "label color")
       .populate("city", "name");
 
     if (!lead) {

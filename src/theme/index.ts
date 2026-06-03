@@ -13,6 +13,7 @@ export const theme = createTheme({
   other: {
     text: colors.text,
     background: colors.background,
+    secondaryBackground: colors.secondaryBackground,
     primary: colors.primary,
   },
   components,

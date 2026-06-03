@@ -13,6 +13,7 @@ import {
   TextInput,
   Badge,
   ColorInput,
+  Text,
 } from "@mantine/core";
 
 import {
@@ -72,16 +73,16 @@ export default function StatusPage() {
           leftSection={<PlusIcon size={18} />}
           onClick={() => setOpened(true)}
         >
-          Create Status
+          Créer un status
         </Button>
       </Group>
 
       {/* TABLE */}
-      <Table striped highlightOnHover>
+      <Table striped highlightOnHover withTableBorder>
         <Table.Thead>
           <Table.Tr>
-            <Table.Th>Label</Table.Th>
-            <Table.Th>Color</Table.Th>
+            <Table.Th>Status</Table.Th>
+            <Table.Th>Couleur</Table.Th>
             <Table.Th>Action</Table.Th>
           </Table.Tr>
         </Table.Thead>
@@ -108,20 +109,26 @@ export default function StatusPage() {
       {/* CREATE DRAWER */}
       <Drawer
         opened={opened}
-        onClose={() => setOpened(false)}
-        title="Create Status"
+        onClose={() => {
+          setOpened(false);
+          setForm({
+            label: "",
+            color: "",
+          });
+        }}
+        title="Créer un status"
         position="right"
       >
         <TextInput
-          label="Label"
+          label="Status"
           value={form.label}
           onChange={(e) => setForm({ ...form, label: e.target.value })}
         />
 
         <ColorInput
           mt="sm"
-          label="Color"
-          placeholder="Pick status color"
+          label="Couleur"
+          placeholder="Choisir la couleur du statut"
           value={form.color ?? ""}
           onChange={(value) =>
             setForm({
@@ -132,7 +139,7 @@ export default function StatusPage() {
         />
 
         <Button fullWidth mt="md" onClick={handleCreate}>
-          Create
+          Créer
         </Button>
       </Drawer>
 
@@ -140,19 +147,21 @@ export default function StatusPage() {
       <Modal
         opened={!!confirmDelete}
         onClose={() => setConfirmDelete(null)}
-        title="Confirm deletion"
+        title="Confirmation de suppression"
         centered
       >
-        <p>Are you sure you want to delete this status?</p>
+        <Text p={10}>Êtes-vous sûr de vouloir supprimer ce status ?</Text>
 
         <Group justify="flex-end" mt="md">
-          <Button variant="default" onClick={() => setConfirmDelete(null)}>
-            Cancel
+          <Button
+            variant="default"
+            onClick={() => setConfirmDelete(null)}
+            className="textBtn"
+          >
+            Annuler
           </Button>
 
-          <Button color="red" onClick={handleDelete}>
-            Delete
-          </Button>
+          <Button onClick={handleDelete}>Supprimer</Button>
         </Group>
       </Modal>
     </div>

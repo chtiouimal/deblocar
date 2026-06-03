@@ -13,6 +13,7 @@ import LeadsFilter from "@/components/filters/LeadsFilter";
 import { useCreateRdvMutation, useGetLeadsQuery } from "@/lib/api/leadsApi";
 import { DatePickerInput, TimeInput } from "@mantine/dates";
 import CustomLoader from "@/components/core/loading";
+import CustomScore from "@/components/shared/score";
 
 export default function LeadPage() {
   const [page, setPage] = useState(1);
@@ -92,7 +93,7 @@ export default function LeadPage() {
         </Group>
       </Group>
 
-      <Table striped highlightOnHover>
+      <Table striped highlightOnHover withTableBorder>
         <Table.Thead>
           <Table.Tr>
             <Table.Th>Nom</Table.Th>
@@ -117,19 +118,9 @@ export default function LeadPage() {
               </Table.Td>
 
               <Table.Td>
-                <Badge
-                  color={
-                    lead.score === "Chaud"
-                      ? "red"
-                      : lead.score === "Tiède"
-                        ? "yellow"
-                        : "blue"
-                  }
-                >
-                  {lead.score}
-                </Badge>
+                <CustomScore value={lead.score} />
               </Table.Td>
-              <Table.Td>{lead.date ?? "Non défini"}</Table.Td>
+              <Table.Td>{lead?.date?.split("T")[0] ?? "Non défini"}</Table.Td>
               <Table.Td>
                 <Group gap="xs">
                   <Link
@@ -157,13 +148,15 @@ export default function LeadPage() {
         </Table.Tbody>
       </Table>
 
-      <Group justify="center" mt="md">
-        <Pagination
-          total={pagination?.pages || 1}
-          value={page}
-          onChange={(p) => setPage(p)}
-        />
-      </Group>
+      {pagination?.pages > 1 && (
+        <Group justify="center" mt="md">
+          <Pagination
+            total={pagination?.pages || 1}
+            value={page}
+            onChange={(p) => setPage(p)}
+          />
+        </Group>
+      )}
       <LeadsFilter
         opened={filterOpen}
         onClose={() => setFilterOpen(false)}
@@ -177,7 +170,7 @@ export default function LeadPage() {
       <Drawer
         opened={rdvDrawer}
         onClose={() => setRdvDrawer(false)}
-        title="Planifier RDV"
+        title="Planifier un RDV"
         position="right"
       >
         <Stack>
@@ -235,7 +228,7 @@ export default function LeadPage() {
               });
             }}
           >
-            Confirmer RDV
+            Confirmer le RDV
           </Button>
         </Stack>
       </Drawer>

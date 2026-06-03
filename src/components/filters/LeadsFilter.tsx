@@ -90,7 +90,7 @@ export default function LeadsFilter({
     <Drawer
       opened={opened}
       onClose={onClose}
-      title="Filtres Leads"
+      title="Filtres des Leads"
       position="right"
       size="md"
     >
@@ -109,7 +109,7 @@ export default function LeadsFilter({
 
         {/* CITY */}
         <Select
-          label="City"
+          label="Ville"
           data={cities.map((c) => ({
             value: c._id,
             label: c.name,
@@ -121,7 +121,7 @@ export default function LeadsFilter({
 
         {/* BRAND */}
         <Select
-          label="Brand"
+          label="Voiture"
           data={BRAND_OPTIONS}
           value={localFilters.brand}
           onChange={(v) => update("brand", v || "")}
@@ -164,16 +164,17 @@ export default function LeadsFilter({
           className="textBtn"
           leftSection={<XIcon size={20} weight="thin" />}
           onClick={handleReset}
+          style={{ padding: "0 16px" }}
         >
-          Reset
+          Réinitialiser
         </Button>
 
         <Group>
           <Button variant="default" onClick={onClose} className="textBtn">
-            Cancel
+            Annuler
           </Button>
 
-          <Button onClick={handleApply}>Apply</Button>
+          <Button onClick={handleApply}>Appliquer</Button>
         </Group>
       </Group>
     </Drawer>

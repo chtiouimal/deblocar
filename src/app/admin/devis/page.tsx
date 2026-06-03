@@ -11,9 +11,13 @@ import {
   Loader,
   Box,
   UnstyledButton,
+  Scroller,
+  OverflowList,
+  Flex,
+  Text,
 } from "@mantine/core";
 
-import { EyeIcon } from "@phosphor-icons/react";
+import { CalendarDotsIcon, EyeIcon } from "@phosphor-icons/react";
 import { useState } from "react";
 
 export default function DevisPage() {
@@ -35,7 +39,7 @@ export default function DevisPage() {
         <h2>Devis</h2>
       </Group>
 
-      <Table striped highlightOnHover>
+      <Table striped highlightOnHover withTableBorder>
         <Table.Thead>
           <Table.Tr>
             <Table.Th>Client</Table.Th>
@@ -56,11 +60,26 @@ export default function DevisPage() {
               </Table.Td>
 
               <Table.Td>
-                {d.services.map((s: any) => (
-                  <Badge key={s._id} mr={5}>
-                    {s.title}
-                  </Badge>
-                ))}
+                <OverflowList
+                  data={d.services.map((s: any) => s.title)}
+                  style={{ maxWidth: 500 }}
+                  gap={4}
+                  renderOverflow={(items) => (
+                    <Badge
+                      style={{
+                        backgroundColor: "transparent",
+                        opacity: 0.6,
+                        fontWeight: 400,
+                        textTransform: "lowercase",
+                      }}
+                    >
+                      +{items.length} plus
+                    </Badge>
+                  )}
+                  renderItem={(item, index) => (
+                    <Badge key={index}>{item}</Badge>
+                  )}
+                />
               </Table.Td>
 
               <Table.Td>{d.totalPrice} TND</Table.Td>
@@ -75,53 +94,92 @@ export default function DevisPage() {
         </Table.Tbody>
       </Table>
 
-      <Group justify="center" mt="md">
-        <Pagination
-          total={pagination?.pages || 1}
-          value={page}
-          onChange={setPage}
-        />
-      </Group>
+      {pagination?.pages > 1 && (
+        <Group justify="center" mt="md">
+          <Pagination
+            total={pagination?.pages || 1}
+            value={page}
+            onChange={setPage}
+          />
+        </Group>
+      )}
 
       <Drawer
         opened={!!selected}
         onClose={() => setSelected(null)}
-        title="Devis details"
+        title="Details devis"
         position="right"
         size="md"
       >
         {selected && (
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            <div>
-              <b>Name:</b> {selected.name}
-            </div>
-            <div>
-              <b>Email:</b> {selected.email}
-            </div>
-            <div>
-              <b>Phone:</b> {selected.phone}
-            </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+            {selected.date && (
+              <Badge
+                leftSection={<CalendarDotsIcon />}
+                style={{ backgroundColor: "rgba(255,255,255,0.4)" }}
+              >
+                {selected.date.split("T")[0]}
+              </Badge>
+            )}
+            <Flex direction="column" gap={10}>
+              <Flex gap={8} align="flex-end">
+                <Text fz={14} fw={200} style={{ opacity: 0.6, minWidth: 100 }}>
+                  Nom:
+                </Text>
+                <Text>{selected.name}</Text>
+              </Flex>
+              <Flex gap={8} align="flex-end">
+                <Text fz={14} fw={200} style={{ opacity: 0.6, minWidth: 100 }}>
+                  Email:
+                </Text>
+                <Text>{selected.email}</Text>
+              </Flex>
+              <Flex gap={8} align="flex-end">
+                <Text fz={14} fw={200} style={{ opacity: 0.6, minWidth: 100 }}>
+                  Télephone:
+                </Text>
+                <Text>{selected.phone}</Text>
+              </Flex>
+            </Flex>
 
-            <div>
-              <b>Vehicle:</b> {selected.brand} ({selected.year})
-            </div>
+            <Flex direction="column" gap={10}>
+              <Flex gap={8} align="flex-end">
+                <Text fz={14} fw={200} style={{ opacity: 0.6, minWidth: 100 }}>
+                  Véhicule:
+                </Text>
+                <Text>{selected.brand}</Text>
+              </Flex>
+              <Flex gap={8} align="flex-end">
+                <Text fz={14} fw={200} style={{ opacity: 0.6, minWidth: 100 }}>
+                  N° de chasis:
+                </Text>
+                <Text>{selected.vin}</Text>
+              </Flex>
+            </Flex>
 
-            <div>
-              <b>VIN:</b> {selected.vin}
-            </div>
+            <Flex direction="column" gap={10}>
+              <Flex gap={8} align="flex-end">
+                <Text fz={14} fw={200} style={{ opacity: 0.6, minWidth: 100 }}>
+                  Services:
+                </Text>
+              </Flex>
+              <Flex wrap="wrap" gap={8}>
+                {selected.services.map((s: any) => (
+                  <Badge key={s._id} mr={5}>
+                    {s.title}
+                  </Badge>
+                ))}
+              </Flex>
+            </Flex>
 
-            <div>
-              <b>Services:</b>{" "}
-              {selected.services.map((s: any) => (
-                <Badge key={s._id} mr={5}>
-                  {s.title}
-                </Badge>
-              ))}
-            </div>
-
-            <div>
-              <b>Date:</b> {new Date(selected.createdAt).toLocaleString()}
-            </div>
+            <Flex direction="column" gap={10}>
+              <Flex gap={8} align="flex-end">
+                <Text fz={14} fw={200} style={{ opacity: 0.6, minWidth: 100 }}>
+                  Prix total:
+                </Text>
+                <Text>{selected.totalPrice} TND</Text>
+              </Flex>
+            </Flex>
           </div>
         )}
       </Drawer>

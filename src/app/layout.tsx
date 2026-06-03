@@ -10,8 +10,8 @@ import {
   mantineHtmlProps,
 } from "@mantine/core";
 import { theme } from "@/theme";
-import Header from "@/components/core/header/Header";
-import Footer from "@/components/core/footer/Footer";
+import "dayjs/locale/fr";
+import { DatesProvider } from "@mantine/dates";
 
 // export const metadata = {
 //   title: "Deblocar",
@@ -48,7 +48,14 @@ export default function RootLayout({
       </head>
       <body>
         <MantineProvider theme={theme} defaultColorScheme="dark">
-          {children}
+          <DatesProvider
+            settings={{
+              locale: "fr",
+              firstDayOfWeek: 1, // Monday
+            }}
+          >
+            {children}
+          </DatesProvider>
         </MantineProvider>
       </body>
     </html>
