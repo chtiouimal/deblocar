@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
         $lte: end,
       },
     })
-      .select("_id date name location")
+      .select("_id date name location brand phone")
       .sort({ date: 1 });
 
     return NextResponse.json({

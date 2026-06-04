@@ -11,6 +11,7 @@ import { useAuthInit } from "@/hooks/useAuthInit";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { useLogoutMutation } from "@/lib/api/authApi";
+import { colors } from "@/theme/colors";
 
 const mockdata = [
   { label: "Dashboard", icon: ChartBarIcon, link: "/admin/dashboard" },
@@ -137,45 +138,45 @@ function AdminLayout({ children }: { children: React.ReactNode }) {
   ));
 
   return (
-      <main className={classes.main}>
-        <nav className={classes.navbar}>
-          <div className={classes.header}>
-            <Group justify="space-between">
-              <Link href="/admin/dashboard" style={{ opacity: 1 }}>
-                <Image
-                  src="/deblocar-logo.png"
-                  alt="deblocar-logo"
-                  width={192}
-                  height={30}
-                />
-              </Link>
-            </Group>
-          </div>
+    <main className={classes.main}>
+      <nav
+        className={classes.navbar}
+        style={{ backgroundColor: colors.secondaryBackground }}
+      >
+        <div className={classes.header}>
+          <Group justify="space-between">
+            <Link href="/admin/dashboard" style={{ opacity: 1 }}>
+              <Image
+                src="/deblocar-logo.png"
+                alt="deblocar-logo"
+                width={192}
+                height={30}
+              />
+            </Link>
+          </Group>
+        </div>
 
-          <ScrollArea className={classes.links}>
-            <div className={classes.linksInner}>{links}</div>
-          </ScrollArea>
+        <ScrollArea className={classes.links}>
+          <div className={classes.linksInner}>{links}</div>
+        </ScrollArea>
 
-          <div className={classes.footer}>
-            {/* <UserButton /> */}
-            <Stack justify="center" gap={0}>
-              {/* <NavbarLink icon={IconSwitchHorizontal} label="Change account" /> */}
-              <UnstyledButton
-                onClick={handleLogout}
-                className={classes.control}
-              >
-                <Group gap={10}>
-                  <ThemeIcon variant="light" size={30}>
-                    <SignOutIcon size={18} />
-                  </ThemeIcon>
-                  Logout
-                </Group>
-              </UnstyledButton>
-            </Stack>
-          </div>
-        </nav>
-        {children}
-      </main>
+        <div className={classes.footer}>
+          {/* <UserButton /> */}
+          <Stack justify="center" gap={0} mb={20}>
+            {/* <NavbarLink icon={IconSwitchHorizontal} label="Change account" /> */}
+            <UnstyledButton onClick={handleLogout} className={classes.control}>
+              <Group gap={10}>
+                <ThemeIcon variant="light" size={30}>
+                  <SignOutIcon size={18} />
+                </ThemeIcon>
+                Logout
+              </Group>
+            </UnstyledButton>
+          </Stack>
+        </div>
+      </nav>
+      <div style={{ width: "100%", overflow: "auto" }}>{children}</div>
+    </main>
   );
 }
 

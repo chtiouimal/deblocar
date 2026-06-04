@@ -18,7 +18,7 @@ export async function POST(
     }
 
     const { id } = await context.params;
-    const { date, location } = await req.json();
+    const { date, time, location } = await req.json();
 
     await connectDB();
 
@@ -44,6 +44,7 @@ export async function POST(
       (acc: number, service: any) => acc + service.price,
       0,
     );
+    const fullDate = new Date(`${date}T${time}:00.000Z`);
 
     // 4. CREATE DEVIS
     const devis = await Devis.create({
@@ -56,13 +57,13 @@ export async function POST(
       vin: lead.vin,
       services: lead.services.map((s: any) => s._id),
       totalPrice,
-      date,
+      date: fullDate,
       location,
     });
 
     // 5. UPDATE LEAD (FIXED)
     lead.status = rdvStatus._id; // ✅ ObjectId, not string
-    lead.date = date;
+    lead.date = fullDate;
     await lead.save();
 
     return NextResponse.json({
