@@ -48,13 +48,13 @@ export async function GET(req: NextRequest) {
     // Requested services from all leads (in range)
     const leadsRequested = await Lead.find({
       createdAt: { $gte: start, $lte: end },
-    }).populate("services", "name");
+    }).populate("services", "title");
 
     const requestedCount: Record<string, number> = {};
     for (const lead of leadsRequested) {
       for (const service of lead.services as any[]) {
-        const name = service.name;
-        requestedCount[name] = (requestedCount[name] || 0) + 1;
+        const title = service.title;
+        requestedCount[title] = (requestedCount[title] || 0) + 1;
       }
     }
 
@@ -69,13 +69,13 @@ export async function GET(req: NextRequest) {
     const devis = await Devis.find({
       leadId: { $in: soldLeadIds },
       createdAt: { $gte: start, $lte: end },
-    }).populate("services", "name");
+    }).populate("services", "title");
 
     const soldCount: Record<string, number> = {};
     for (const d of devis) {
       for (const service of d.services as any[]) {
-        const name = service.name;
-        soldCount[name] = (soldCount[name] || 0) + 1;
+        const title = service.title;
+        soldCount[title] = (soldCount[title] || 0) + 1;
       }
     }
 
@@ -85,13 +85,13 @@ export async function GET(req: NextRequest) {
     );
 
     const services = allServices
-      .map((name) => ({
-        name,
-        requested: requestedCount[name] || 0,
-        sold: soldCount[name] || 0,
+      .map((title) => ({
+        name: title,
+        requested: requestedCount[title] || 0,
+        sold: soldCount[title] || 0,
       }))
       .sort((a, b) => b.requested - a.requested)
-      .slice(0, 8); // top 8
+      .slice(0, 8);
 
     return NextResponse.json({ services });
   } catch (error) {

@@ -13,6 +13,7 @@ import {
   Legend,
 } from "recharts";
 import { useGetServicesChartQuery } from "@/lib/api/dashboardApi";
+import { colors } from "@/theme/colors";
 
 interface Props {
   queryParams: {
@@ -26,7 +27,7 @@ interface Props {
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <Paper withBorder p="sm" radius="md" shadow="sm">
+      <Paper p="sm" shadow="sm">
         <Text fw={600} size="sm" mb={4}>
           {label}
         </Text>
@@ -45,7 +46,7 @@ export default function ServicesChart({ queryParams }: Props) {
   const { data, isLoading } = useGetServicesChartQuery(queryParams);
 
   return (
-    <Paper withBorder radius="md" p="lg" h="100%">
+    <Paper p="lg" h="100%">
       <Group mb="lg">
         <ThemeIcon variant="light" color="orange" size="sm">
           <WrenchIcon size={14} />
@@ -82,7 +83,10 @@ export default function ServicesChart({ queryParams }: Props) {
               tickLine={false}
             />
 
-            <Tooltip content={<CustomTooltip />} cursor={{ fill: "#f8f9fa" }} />
+            <Tooltip
+              content={<CustomTooltip />}
+              cursor={{ fill: colors.background }}
+            />
 
             <Legend
               formatter={(value) => (

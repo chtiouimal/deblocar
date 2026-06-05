@@ -1,3 +1,5 @@
+import { colors } from "./colors";
+
 export const components = {
   Button: {
     defaultProps: {
@@ -358,6 +360,17 @@ export const components = {
         color: "rgba(255,255,255,0.8)",
         cursor: "pointer",
         paddingLeft: "2px",
+      },
+    },
+  },
+  Paper: {
+    defaultProps: {
+      radius: "sm",
+    },
+
+    styles: {
+      root: {
+        backgroundColor: colors.secondaryBackground,
       },
     },
   },

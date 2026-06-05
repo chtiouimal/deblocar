@@ -15,6 +15,7 @@ import {
   ThemeIcon,
   Badge,
   Skeleton,
+  Flex,
 } from "@mantine/core";
 import {
   UsersIcon,
@@ -23,6 +24,7 @@ import {
   TrendUpIcon,
   ClockIcon,
   MapPinIcon,
+  CarProfileIcon,
 } from "@phosphor-icons/react";
 import { useGetDashboardQuery } from "@/lib/api/dashboardApi";
 import {
@@ -33,6 +35,7 @@ import {
 import "@mantine/dates/styles.css";
 import LeadsRdvsChart from "@/components/dashboard/LeadsRdvsChart";
 import ServicesChart from "@/components/dashboard/ServicesChart";
+import { colors } from "@/theme/colors";
 
 function formatCurrency(value: number) {
   return new Intl.NumberFormat("fr-TN", {
@@ -62,7 +65,7 @@ interface StatCardProps {
 
 function StatCard({ label, value, icon, color, loading }: StatCardProps) {
   return (
-    <Paper withBorder radius="md" p="lg">
+    <Paper p="lg">
       <Group justify="space-between" align="flex-start">
         <Stack gap={4}>
           <Text size="sm" c="dimmed">
@@ -161,7 +164,7 @@ function DashboardPage() {
       </Group>
 
       {/* STAT CARDS */}
-      <Grid mb="xl">
+      <Grid mb="md">
         <Grid.Col span={{ base: 12, sm: 6, lg: 3 }}>
           <StatCard
             label="Leads aujourd'hui"
@@ -203,60 +206,116 @@ function DashboardPage() {
         </Grid.Col>
       </Grid>
 
-      {/* UPCOMING RDVS */}
-      <Paper withBorder radius="md" p="lg">
-        <Group mb="md">
-          <ThemeIcon variant="light" color="blue" size="sm">
-            <CalendarCheckIcon size={14} />
-          </ThemeIcon>
-          <Title order={4}>Prochains RDVs</Title>
-        </Group>
-
-        <Stack gap="sm">
-          {isLoading ? (
-            Array.from({ length: 3 }).map((_, i) => (
-              <Skeleton key={i} height={48} radius="sm" />
-            ))
-          ) : data?.upcomingRdvs?.length === 0 ? (
-            <Text c="dimmed" size="sm">
-              Aucun RDV à venir
-            </Text>
-          ) : (
-            data?.upcomingRdvs?.map((rdv: any) => (
-              <Paper key={rdv._id} withBorder radius="sm" p="sm">
-                <Group justify="space-between">
-                  <Stack gap={2}>
-                    <Text fw={600} size="sm">
-                      {rdv.name}
-                    </Text>
-                    <Group gap={4}>
-                      <MapPinIcon size={12} />
-                      <Text size="xs" c="dimmed">
-                        {rdv.location || "Pas de lieu"}
-                      </Text>
-                    </Group>
-                  </Stack>
-                  <Badge variant="light" color="blue" size="sm">
-                    <Group gap={4}>
-                      <ClockIcon size={11} />
-                      {formatDate(rdv.date)}
-                    </Group>
-                  </Badge>
-                </Group>
-              </Paper>
-            ))
-          )}
-        </Stack>
-      </Paper>
-
-      <Grid mb="xl" mt="xl">
-        <Grid.Col span={{ base: 12, lg: 7 }}>
+      <Grid mb="md">
+        <Grid.Col
+          span={{ base: 12, md: 6, lg: 7 }}
+          style={{ display: "flex", flexDirection: "column" }}
+        >
           <LeadsRdvsChart queryParams={queryParams} />
         </Grid.Col>
-        <Grid.Col span={{ base: 12, lg: 5 }}>
-          <ServicesChart queryParams={queryParams} />
+        <Grid.Col span={{ base: 12, md: 6, lg: 5 }}>
+          {/* UPCOMING RDVS */}
+          <Paper p="lg">
+            <Group mb="md">
+              <ThemeIcon variant="light" color="blue" size="sm">
+                <CalendarCheckIcon size={14} />
+              </ThemeIcon>
+              <Title order={4}>Prochains RDVs</Title>
+            </Group>
+
+            <Stack gap="sm">
+              {isLoading ? (
+                Array.from({ length: 3 }).map((_, i) => (
+                  <Skeleton key={i} height={48} radius="sm" />
+                ))
+              ) : data?.upcomingRdvs?.length === 0 ? (
+                <Text c="dimmed" size="sm">
+                  Aucun RDV à venir
+                </Text>
+              ) : (
+                data?.upcomingRdvs?.map((rdv: any) => (
+                  <Flex key={rdv._id} style={{ width: "100%" }}>
+                    <Paper
+                      withBorder
+                      p="sm"
+                      style={{
+                        aspectRatio: 1,
+                        borderTopRightRadius: 0,
+                        borderBottomRightRadius: 0,
+                        borderRight: 0,
+                        width: 80,
+                        height: "auto",
+                      }}
+                    >
+                      <Flex
+                        direction="column"
+                        justify="center"
+                        align="center"
+                        style={{ width: "100%", height: "100%" }}
+                      >
+                        <Title order={4} style={{ textAlign: "center" }}>
+                          {new Date(rdv.date).getDate()}
+                        </Title>
+                        <Text
+                          fz={12}
+                          style={{ textAlign: "center", opacity: 0.6 }}
+                        >
+                          {new Date(rdv.date).toLocaleDateString("fr-FR", {
+                            month: "short",
+                          })}
+                        </Text>
+                      </Flex>
+                    </Paper>
+                    <Paper
+                      withBorder
+                      p="sm"
+                      style={{
+                        borderTopLeftRadius: 0,
+                        borderBottomLeftRadius: 0,
+                        width: "100%",
+                      }}
+                    >
+                      <Flex
+                        direction="column"
+                        justify="space-between"
+                        gap={8}
+                        style={{ height: "100%" }}
+                      >
+                        <Flex gap={8} justify="space-between" wrap="wrap">
+                          <Text fw={600} size="sm">
+                            {rdv.name}
+                          </Text>
+                          <Badge variant="light" color="blue" size="sm">
+                            <Group gap={4}>
+                              <ClockIcon size={11} />
+                              {formatDate(rdv.date)}
+                            </Group>
+                          </Badge>
+                        </Flex>
+                        <Flex gap={8} wrap="wrap">
+                          <Group gap={4}>
+                            <MapPinIcon size={12} />
+                            <Text size="xs" c="dimmed">
+                              {rdv.location || "Pas de lieu"}
+                            </Text>
+                          </Group>
+                          <Group gap={4}>
+                            <CarProfileIcon size={12} />
+                            <Text size="xs" c="dimmed">
+                              {rdv.brand || "aucune véhicule"}
+                            </Text>
+                          </Group>
+                        </Flex>
+                      </Flex>
+                    </Paper>
+                  </Flex>
+                ))
+              )}
+            </Stack>
+          </Paper>
         </Grid.Col>
       </Grid>
+      <ServicesChart queryParams={queryParams} />
     </div>
   );
 }
