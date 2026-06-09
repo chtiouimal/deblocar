@@ -96,9 +96,7 @@ export default function InformationStep({
           </div>
         </Grid.Col>
         <Grid.Col span={{ base: 12 }}>
-          <Grid
-            style={{ "--grid-gutter": "120px" } as React.CSSProperties}
-          >
+          <Grid style={{ "--grid-gutter": "120px" } as React.CSSProperties}>
             <Grid.Col span={{ base: 12, md: 6 }}>
               <Select
                 comboboxProps={{ withinPortal: true }}
@@ -121,8 +119,11 @@ export default function InformationStep({
               />
             </Grid.Col>
 
-            <Grid.Col span={{ base: 12, md: 6 }} style={{marginTop: width > 991 ? 0 : -16 }}>
-              <Select
+            <Grid.Col
+              span={{ base: 12, md: 6 }}
+              style={{ marginTop: width > 991 ? 0 : -16 }}
+            >
+              {/* <Select
                 comboboxProps={{ withinPortal: true }}
                 data={models}
                 value={data.client.car.model}
@@ -137,12 +138,7 @@ export default function InformationStep({
                 placeholder="Modèle"
                 error={getError("model")}
                 style={{ marginBottom: 20 }}
-              />
-            </Grid.Col>
-          </Grid>
-
-          <Grid style={{ "--grid-gutter": "32px" } as React.CSSProperties}>
-            <Grid.Col span={{ base: 12 }}>
+              /> */}
               <TextInput
                 placeholder="Année"
                 value={data.client.car.year}
@@ -150,8 +146,13 @@ export default function InformationStep({
                 error={getError("year")}
                 style={{ marginBottom: 20 }}
               />
+            </Grid.Col>
+          </Grid>
+
+          <Grid style={{ "--grid-gutter": "32px" } as React.CSSProperties}>
+            <Grid.Col span={{ base: 12 }}>
               <TextInput
-                placeholder="VIN"
+                placeholder="Numéro de châssis"
                 value={data.client.car.vin}
                 onChange={(e) => handleCarChange("vin", e.target.value)}
                 error={getError("vin")}

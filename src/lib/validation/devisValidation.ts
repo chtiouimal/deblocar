@@ -31,9 +31,9 @@ export const validateStep1 = (data: DevisFormData) => {
   }
 
   // Model
-  if (!client.car.model.trim()) {
-    errors.model = "Modèle obligatoire";
-  }
+  // if (!client.car.model.trim()) {
+  //   errors.model = "Modèle obligatoire";
+  // }
 
   // Year
   if (!client.car.year.trim()) {
@@ -67,7 +67,7 @@ export const validateStep2 = (data: DevisFormData) => {
 export function validateDevisBackend(body: any) {
   const errors: Record<string, string> = {};
 
-  const { name, email, phone, brand, model, year, vin, services } = body;
+  const { name, email, phone, brand, year, vin, services } = body;
 
   // NAME
   if (!name || typeof name !== "string" || name.trim().length < 2) {
@@ -92,9 +92,9 @@ export function validateDevisBackend(body: any) {
   }
 
   // MODEL
-  if (!model || model.trim().length < 1) {
-    errors.model = "Modèle invalide";
-  }
+  // if (!model || model.trim().length < 1) {
+  //   errors.model = "Modèle invalide";
+  // }
 
   // YEAR
   const yearNum = Number(year);

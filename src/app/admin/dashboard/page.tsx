@@ -74,7 +74,7 @@ function StatCard({ label, value, icon, color, loading }: StatCardProps) {
           {loading ? (
             <Skeleton height={32} width={80} />
           ) : (
-            <Title order={2}>{value}</Title>
+            <Title order={3}>{value}</Title>
           )}
         </Stack>
         <ThemeIcon variant="light" color={color} size="lg" radius="md">
@@ -215,7 +215,7 @@ function DashboardPage() {
         </Grid.Col>
         <Grid.Col span={{ base: 12, md: 6, lg: 5 }}>
           {/* UPCOMING RDVS */}
-          <Paper p="lg">
+          <Paper p="lg" style={{ height: "100%" }}>
             <Group mb="md">
               <ThemeIcon variant="light" color="blue" size="sm">
                 <CalendarCheckIcon size={14} />

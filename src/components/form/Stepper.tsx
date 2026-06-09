@@ -94,7 +94,7 @@ export default function Stepper() {
           email: data.client.email,
           phone: data.client.phone,
           brand: data.client.car.brand,
-          model: data.client.car.model,
+          // model: data.client.car.model,
           year: data.client.car.year,
           vin: data.client.car.vin,
           services: data.services,

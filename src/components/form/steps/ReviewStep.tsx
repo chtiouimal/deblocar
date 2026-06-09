@@ -38,7 +38,7 @@ export default function ReviewStep({ data, initial }: Props) {
               span={{ base: 12 }}
               style={{
                 display: "flex",
-                alignItems: "flex-end",
+                alignItems: "center",
                 gap: 16,
               }}
             >
@@ -51,7 +51,7 @@ export default function ReviewStep({ data, initial }: Props) {
               span={{ base: 12 }}
               style={{
                 display: "flex",
-                alignItems: "flex-end",
+                alignItems: "center",
                 gap: 16,
               }}
             >
@@ -64,7 +64,7 @@ export default function ReviewStep({ data, initial }: Props) {
               span={{ base: 12 }}
               style={{
                 display: "flex",
-                alignItems: "flex-end",
+                alignItems: "center",
                 gap: 16,
               }}
             >
@@ -75,7 +75,7 @@ export default function ReviewStep({ data, initial }: Props) {
             </Grid.Col>
           </Grid>
         </Grid.Col>
-        <Grid.Col span={{ base: 12 }}>
+        <Grid.Col span={{ base: 12 }} style={{ paddingBottom: 32 }}>
           <Grid.Col span={{ base: 12, sm: 12 }}>
             <Text size="md" fw={500} style={{ paddingBottom: 32 }}>
               Informations véhicule
@@ -86,7 +86,7 @@ export default function ReviewStep({ data, initial }: Props) {
               span={{ base: 12 }}
               style={{
                 display: "flex",
-                alignItems: "flex-end",
+                alignItems: "center",
                 gap: 16,
               }}
             >
@@ -95,7 +95,7 @@ export default function ReviewStep({ data, initial }: Props) {
               </Text>
               <Text size="sm">{data.client.car.brand || "N/A"}</Text>
             </Grid.Col>
-            <Grid.Col
+            {/* <Grid.Col
               span={{ base: 12 }}
               style={{
                 display: "flex",
@@ -107,12 +107,12 @@ export default function ReviewStep({ data, initial }: Props) {
                 Modèle:
               </Text>
               <Text size="sm">{data.client.car.model || "N/A"}</Text>
-            </Grid.Col>
+            </Grid.Col> */}
             <Grid.Col
               span={{ base: 12 }}
               style={{
                 display: "flex",
-                alignItems: "flex-end",
+                alignItems: "center",
                 gap: 16,
               }}
             >
@@ -125,12 +125,12 @@ export default function ReviewStep({ data, initial }: Props) {
               span={{ base: 12 }}
               style={{
                 display: "flex",
-                alignItems: "flex-end",
+                alignItems: "center",
                 gap: 16,
               }}
             >
               <Text size="md" className={styles.infoLabel}>
-                VIN:
+                Numéro de châssis:
               </Text>
               <Text size="sm">{data.client.car.vin || "N/A"}</Text>
             </Grid.Col>
