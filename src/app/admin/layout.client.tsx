@@ -1,9 +1,32 @@
 "use client"
 
-import { Box, Collapse, Group, ScrollArea, Stack, Text, ThemeIcon, Tooltip, UnstyledButton } from "@mantine/core";
+import {
+  ActionIcon,
+  Box,
+  Burger,
+  Collapse,
+  Drawer,
+  Group,
+  ScrollArea,
+  Stack,
+  Text,
+  ThemeIcon,
+  Tooltip,
+  UnstyledButton,
+} from "@mantine/core";
 import { useEffect, useState } from "react";
 import classes from "./layout.module.css";
-import { ArticleIcon, CalendarDotsIcon, CaretRightIcon, ChartBarIcon, GearIcon, HouseIcon, SignOutIcon, UsersIcon } from "@phosphor-icons/react";
+import {
+  ArticleIcon,
+  CalendarDotsIcon,
+  CaretRightIcon,
+  ChartBarIcon,
+  GearIcon,
+  HouseIcon,
+  SignOutIcon,
+  UsersIcon,
+  XIcon,
+} from "@phosphor-icons/react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -12,6 +35,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { useLogoutMutation } from "@/lib/api/authApi";
 import { colors } from "@/theme/colors";
+import { useDisclosure } from "@mantine/hooks";
 
 const mockdata = [
   { label: "Dashboard", icon: ChartBarIcon, link: "/admin/dashboard" },
@@ -111,6 +135,8 @@ function LinksGroup({
 function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
+  const [opened, { open, close }] = useDisclosure(false);
+
   const { user, loading } = useSelector((state: RootState) => state.auth);
 
   const [logout] = useLogoutMutation();
@@ -137,44 +163,71 @@ function AdminLayout({ children }: { children: React.ReactNode }) {
     <LinksGroup {...item} key={item.label} />
   ));
 
+  const SidebarContent = (
+    <nav
+      className={classes.navbar}
+      style={{ backgroundColor: colors.secondaryBackground }}
+    >
+      <ActionIcon
+        onClick={close}
+        variant="subtle"
+        hiddenFrom="md"
+        style={{ position: "absolute", right: 32, top: 32 }}
+      >
+        <XIcon size={18} />
+      </ActionIcon>
+      <Box className={classes.header}>
+        <Group justify="space-between">
+          <Link href="/admin/dashboard" style={{ opacity: 1 }}>
+            <Image
+              src="/deblocar-logo.png"
+              alt="deblocar-logo"
+              width={192}
+              height={30}
+            />
+          </Link>
+        </Group>
+      </Box>
+
+      <ScrollArea className={classes.links}>
+        <div className={classes.linksInner}>{links}</div>
+      </ScrollArea>
+
+      <div className={classes.footer}>
+        {/* <UserButton /> */}
+        <Stack justify="center" gap={0} mb={20}>
+          {/* <NavbarLink icon={IconSwitchHorizontal} label="Change account" /> */}
+          <UnstyledButton onClick={handleLogout} className={classes.control}>
+            <Group gap={10}>
+              <ThemeIcon variant="light" size={30}>
+                <SignOutIcon size={18} />
+              </ThemeIcon>
+              Logout
+            </Group>
+          </UnstyledButton>
+        </Stack>
+      </div>
+    </nav>
+  );
+
   return (
     <main className={classes.main}>
-      <nav
-        className={classes.navbar}
-        style={{ backgroundColor: colors.secondaryBackground }}
+      <Box className={classes.sidebarDesktop} visibleFrom="md">
+        {SidebarContent}
+      </Box>
+      <Drawer
+        opened={opened}
+        onClose={close}
+        withCloseButton={false}
+        size="100%"
+        hiddenFrom="md"
+        position="right"
       >
-        <div className={classes.header}>
-          <Group justify="space-between">
-            <Link href="/admin/dashboard" style={{ opacity: 1 }}>
-              <Image
-                src="/deblocar-logo.png"
-                alt="deblocar-logo"
-                width={192}
-                height={30}
-              />
-            </Link>
-          </Group>
-        </div>
-
-        <ScrollArea className={classes.links}>
-          <div className={classes.linksInner}>{links}</div>
-        </ScrollArea>
-
-        <div className={classes.footer}>
-          {/* <UserButton /> */}
-          <Stack justify="center" gap={0} mb={20}>
-            {/* <NavbarLink icon={IconSwitchHorizontal} label="Change account" /> */}
-            <UnstyledButton onClick={handleLogout} className={classes.control}>
-              <Group gap={10}>
-                <ThemeIcon variant="light" size={30}>
-                  <SignOutIcon size={18} />
-                </ThemeIcon>
-                Logout
-              </Group>
-            </UnstyledButton>
-          </Stack>
-        </div>
-      </nav>
+        {SidebarContent}
+      </Drawer>
+      <Group hiddenFrom="md" p="sm">
+        <Burger opened={opened} onClick={open} size="sm" />
+      </Group>
       <div style={{ width: "100%", overflow: "auto" }}>{children}</div>
     </main>
   );
