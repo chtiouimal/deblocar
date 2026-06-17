@@ -1,7 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { Table, Group, Loader, Pagination, Box, Badge, Button, Drawer, Stack, TextInput } from "@mantine/core";
+import {
+  Table,
+  Group,
+  Loader,
+  Pagination,
+  Box,
+  Badge,
+  Button,
+  Drawer,
+  Stack,
+  TextInput,
+  Select,
+  MultiSelect,
+} from "@mantine/core";
 import {
   CalendarDotsIcon,
   EyeIcon,
@@ -10,10 +23,16 @@ import {
 } from "@phosphor-icons/react";
 import Link from "next/link";
 import LeadsFilter from "@/components/filters/LeadsFilter";
-import { useCreateRdvMutation, useGetLeadsQuery } from "@/lib/api/leadsApi";
+import {
+  useCreateLeadMutation,
+  useCreateRdvMutation,
+  useGetLeadsQuery,
+} from "@/lib/api/leadsApi";
 import { DatePickerInput, TimeInput } from "@mantine/dates";
 import CustomLoader from "@/components/core/loading";
 import CustomScore from "@/components/shared/score";
+import { CAR_DATA } from "@/constants/devis";
+import { useGetServicesQuery } from "@/lib/api/servicesApi";
 
 export default function LeadPage() {
   const [page, setPage] = useState(1);
@@ -25,6 +44,35 @@ export default function LeadPage() {
     location: "",
   });
   const [createRdv] = useCreateRdvMutation();
+  const [createLead] = useCreateLeadMutation();
+  const [opened, setOpened] = useState(false);
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    brand: "",
+    year: "",
+    vin: "",
+    services: [],
+  });
+
+  const saveLead = async () => {
+    await createLead(form).unwrap();
+    setOpened(false);
+  };
+
+  const openCreate = () => {
+    setForm({
+      name: "",
+      email: "",
+      phone: "",
+      brand: "",
+      year: "",
+      vin: "",
+      services: [],
+    });
+    setOpened(true);
+  };
 
   const [filterOpen, setFilterOpen] = useState(false);
   const [filters, setFilters] = useState({
@@ -49,6 +97,11 @@ export default function LeadPage() {
     limit: 10,
     ...filters,
   });
+  const { data: servicesData, isLoading: servicesLoading } =
+    useGetServicesQuery({
+      page,
+      limit: 100,
+    });
 
   const resetFilters = () => {
     setFilters({
@@ -60,6 +113,17 @@ export default function LeadPage() {
       date: "",
     });
   };
+
+  const carOptions = Object.keys(CAR_DATA ?? {}).map((key) => ({
+    value: key,
+    label: key,
+  }));
+
+  const serviceOptions =
+    servicesData?.services?.map((s: any) => ({
+      value: s._id,
+      label: s.title,
+    })) || [];
 
   if (isLoading) {
     return <CustomLoader />;
@@ -90,6 +154,7 @@ export default function LeadPage() {
           >
             Filters
           </Button>
+          <Button onClick={openCreate}>Créer un devis</Button>
         </Group>
       </Group>
 
@@ -231,6 +296,72 @@ export default function LeadPage() {
             Confirmer le RDV
           </Button>
         </Stack>
+      </Drawer>
+
+      {/* DRAWER LEAD CREATION */}
+      <Drawer
+        opened={opened}
+        onClose={() => setOpened(false)}
+        title="Créer un devis"
+        position="right"
+      >
+        <TextInput
+          label="Nom"
+          value={form.name}
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
+        />
+
+        <TextInput
+          mt="sm"
+          label="Email"
+          value={form.email}
+          onChange={(e) => setForm({ ...form, email: e.target.value })}
+        />
+
+        <TextInput
+          mt="sm"
+          label="Télephone"
+          value={form.phone}
+          onChange={(e) => setForm({ ...form, phone: e.target.value })}
+        />
+
+        <Select
+          comboboxProps={{ withinPortal: true }}
+          data={carOptions}
+          value={form.brand}
+          label="Marque"
+          onChange={(value) => setForm({ ...form, brand: value || "" })}
+        />
+
+        <TextInput
+          mt="sm"
+          label="Année"
+          value={form.year}
+          onChange={(e) => setForm({ ...form, year: e.target.value })}
+        />
+
+        <TextInput
+          mt="sm"
+          label="Numéro de châssis"
+          value={form.vin}
+          onChange={(e) => setForm({ ...form, vin: e.target.value })}
+        />
+
+        <MultiSelect
+          mt="sm"
+          label="Services"
+          // placeholder="Sélectionner des services"
+          data={serviceOptions}
+          value={form.services}
+          onChange={(value) => setForm({ ...form, services: value })}
+          searchable
+          nothingFoundMessage="Aucun service trouvé"
+          disabled={servicesLoading}
+        />
+
+        <Button fullWidth mt="md" onClick={saveLead}>
+          Créer
+        </Button>
       </Drawer>
     </div>
   );

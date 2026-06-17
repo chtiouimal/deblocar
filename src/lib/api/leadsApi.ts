@@ -37,6 +37,14 @@ export const leadsApi = baseApi.injectEndpoints({
       query: (id: string) => `/admin/lead/${id}`,
       providesTags: ["Leads"],
     }),
+    createLead: builder.mutation({
+      query: ({ id, ...body }) => ({
+        url: `/lead`,
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Leads", "Devis", "Calendar"],
+    }),
     createRdv: builder.mutation({
       query: ({ id, ...body }) => ({
         url: `/admin/lead/${id}/create-rdv`,
@@ -48,5 +56,9 @@ export const leadsApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetLeadsQuery, useGetLeadByIdQuery, useCreateRdvMutation } =
-  leadsApi;
+export const {
+  useGetLeadsQuery,
+  useGetLeadByIdQuery,
+  useCreateRdvMutation,
+  useCreateLeadMutation,
+} = leadsApi;
