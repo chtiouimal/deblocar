@@ -2,7 +2,8 @@ export type Car = {
   brand: string;
   model: string;
   year: string;
-  vin: string;
+  vin?: string;
+  mPoste?: string;
 };
 
 export type Client = {
@@ -25,6 +26,7 @@ export type StepInfoErrors = {
   model?: string;
   year?: string;
   vin?: string;
+  mPoste?: string;
 };
 
 export type StepServicesErrors = {

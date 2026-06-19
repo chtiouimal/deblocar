@@ -34,6 +34,59 @@ import CustomScore from "@/components/shared/score";
 import { CAR_DATA } from "@/constants/devis";
 import { useGetServicesQuery } from "@/lib/api/servicesApi";
 
+const VIN_REQUIRED_BRANDS = ["BMW", "Mercedes"];
+
+function validateLeadForm(form: any) {
+  const errors: Record<string, string> = {};
+
+  // NAME
+  if (!form.name || form.name.trim().length < 2) {
+    errors.name = "Nom invalide";
+  }
+
+  // EMAIL
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!form.email || !emailRegex.test(form.email)) {
+    errors.email = "Email invalide";
+  }
+
+  // PHONE
+  const phoneRegex = /^[0-9+ ]{8,15}$/;
+  if (!form.phone || !phoneRegex.test(form.phone)) {
+    errors.phone = "Téléphone invalide";
+  }
+
+  // BRAND
+  if (!form.brand || form.brand.trim().length < 2) {
+    errors.brand = "Marque invalide";
+  }
+
+  // YEAR
+  const yearNum = Number(form.year);
+  const currentYear = new Date().getFullYear();
+  if (!yearNum || yearNum < 1980 || yearNum > currentYear + 1) {
+    errors.year = "Année invalide";
+  }
+
+  // VIN
+  const requiresVin = VIN_REQUIRED_BRANDS.includes(form.brand);
+  if (requiresVin) {
+    if (!form.vin || form.vin.length !== 17) {
+      errors.vin = "VIN doit contenir 17 caractères";
+    }
+  }
+
+  // SERVICES
+  if (!Array.isArray(form.services) || form.services.length === 0) {
+    errors.services = "Sélectionnez au moins un service";
+  }
+
+  return {
+    isValid: Object.keys(errors).length === 0,
+    errors,
+  };
+}
+
 export default function LeadPage() {
   const [page, setPage] = useState(1);
   const [selectedLead, setSelectedLead] = useState<any>(null);
@@ -53,10 +106,17 @@ export default function LeadPage() {
     brand: "",
     year: "",
     vin: "",
-    services: [],
+    mPoste: "",
+    services: [] as string[],
   });
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
   const saveLead = async () => {
+    const { isValid, errors } = validateLeadForm(form);
+    setFormErrors(errors);
+
+    if (!isValid) return;
+
     await createLead(form).unwrap();
     setOpened(false);
   };
@@ -69,8 +129,10 @@ export default function LeadPage() {
       brand: "",
       year: "",
       vin: "",
+      mPoste: "",
       services: [],
     });
+    setFormErrors({});
     setOpened(true);
   };
 
@@ -112,6 +174,15 @@ export default function LeadPage() {
       services: [],
       date: "",
     });
+  };
+
+  const updateField = (field: string, value: any) => {
+    const newForm = { ...form, [field]: value };
+    setForm(newForm);
+
+    // re-validate just this field on every change
+    const { errors } = validateLeadForm(newForm);
+    setFormErrors((prev) => ({ ...prev, [field]: errors[field] }));
   };
 
   const carOptions = Object.keys(CAR_DATA ?? {}).map((key) => ({
@@ -308,55 +379,71 @@ export default function LeadPage() {
         <TextInput
           label="Nom"
           value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
+          onChange={(e) => updateField("name", e.target.value)}
+          error={formErrors.name}
         />
 
         <TextInput
           mt="sm"
           label="Email"
           value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
+          onChange={(e) => updateField("email", e.target.value)}
+          error={formErrors.email}
         />
 
         <TextInput
           mt="sm"
           label="Télephone"
           value={form.phone}
-          onChange={(e) => setForm({ ...form, phone: e.target.value })}
+          onChange={(e) => updateField("phone", e.target.value)}
+          error={formErrors.phone}
         />
 
         <Select
+          mt="sm"
           comboboxProps={{ withinPortal: true }}
           data={carOptions}
           value={form.brand}
           label="Marque"
-          onChange={(value) => setForm({ ...form, brand: value || "" })}
+          onChange={(value) => updateField("brand", value || "")}
+          error={formErrors.brand}
         />
 
         <TextInput
           mt="sm"
           label="Année"
           value={form.year}
-          onChange={(e) => setForm({ ...form, year: e.target.value })}
+          onChange={(e) => updateField("year", e.target.value)}
+          error={formErrors.year}
         />
 
-        <TextInput
-          mt="sm"
-          label="Numéro de châssis"
-          value={form.vin}
-          onChange={(e) => setForm({ ...form, vin: e.target.value })}
-        />
+        {form.brand === "BMW" || form.brand === "Mercedes" ? (
+          <TextInput
+            mt="sm"
+            label="Numéro de châssis"
+            value={form.vin}
+            onChange={(e) => updateField("vin", e.target.value)}
+            error={formErrors.vin}
+          />
+        ) : (
+          <TextInput
+            mt="sm"
+            label="Modèle de poste"
+            value={form.mPoste}
+            onChange={(e) => updateField("mPoste", e.target.value)}
+          />
+        )}
 
         <MultiSelect
           mt="sm"
           label="Services"
-          // placeholder="Sélectionner des services"
           data={serviceOptions}
           value={form.services}
-          onChange={(value) => setForm({ ...form, services: value })}
+          onChange={(value) => updateField("services", value)}
           searchable
           nothingFoundMessage="Aucun service trouvé"
           disabled={servicesLoading}
+          error={formErrors.services}
         />
 
         <Button fullWidth mt="md" onClick={saveLead}>

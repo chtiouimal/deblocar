@@ -23,15 +23,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const {
-      name,
-      email,
-      phone,
-      brand,
-      year,
-      vin,
-      services, // array of mongo ids
-    } = body;
+    const { name, email, phone, brand, year, vin, mPoste, services } = body;
 
     // 🔌 CONNECT DB
     await connectDB();
@@ -48,14 +40,20 @@ export async function POST(req: Request) {
     // ✉️ FORMATTED STRING FOR EMAIL
     const formattedServices = servicesNames.join(", ");
 
-    console.log("services sent: ", services);
-    console.log("services: ", servicesFromDB, servicesNames, formattedServices);
+    console.log("vin: ", vin);
+    console.log("mPoste: ", mPoste);
 
     // 💰 TOTAL PRICE
     const totalPrice = servicesFromDB.reduce(
       (acc, service) => acc + service.price,
       0,
     );
+
+    // 🧠 NORMALIZE CAR DATA (IMPORTANT FIX)
+    const isLuxury = brand === "BMW" || brand === "Mercedes";
+
+    const finalVin = isLuxury ? vin : null;
+    const finalMPoste = isLuxury ? null : mPoste;
 
     // 💾 SAVE DEVIS
     await Devis.create({
@@ -64,10 +62,27 @@ export async function POST(req: Request) {
       phone,
       brand,
       year,
-      vin,
-      services, // ids
+      vin: finalVin,
+      mPoste: finalMPoste,
+      services,
       totalPrice,
     });
+
+    console.log(
+      "data send to the email template: ",
+      {
+        name,
+        brand,
+        year,
+        vin: finalVin,
+        mPoste: finalMPoste,
+        services: formattedServices,
+      },
+      vin,
+      mPoste,
+      finalVin,
+      finalMPoste,
+    );
 
     // 📩 EMAIL CLIENT
     await transporter.sendMail({
@@ -78,7 +93,8 @@ export async function POST(req: Request) {
         name,
         brand,
         year,
-        vin,
+        vin: finalVin,
+        mPoste: finalMPoste,
         services: formattedServices,
       }),
     });
@@ -94,7 +110,7 @@ Email: ${email}
 Téléphone: ${phone}
 Marque: ${brand}
 Année: ${year}
-VIN: ${vin}
+${finalVin ? `Numéro de châssis: ${finalVin}` : finalMPoste ? `Modèle de poste: ${finalMPoste}` : `Informations véhicule : Non renseigné`}
 Services: ${formattedServices}
 Prix total: ${totalPrice} DT
       `,

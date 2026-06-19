@@ -151,13 +151,23 @@ export default function InformationStep({
 
           <Grid style={{ "--grid-gutter": "32px" } as React.CSSProperties}>
             <Grid.Col span={{ base: 12 }}>
-              <TextInput
-                placeholder="Numéro de châssis"
-                value={data.client.car.vin}
-                onChange={(e) => handleCarChange("vin", e.target.value)}
-                error={getError("vin")}
-                style={{ marginBottom: 20 }}
-              />
+              {data.client.car.brand === "BMW" ||
+              data.client.car.brand === "Mercedes" ? (
+                <TextInput
+                  placeholder="Numéro de châssis"
+                  value={data.client.car.vin}
+                  onChange={(e) => handleCarChange("vin", e.target.value)}
+                  error={getError("vin")}
+                  style={{ marginBottom: 20 }}
+                />
+              ) : (
+                <TextInput
+                  placeholder="Modèle de poste"
+                  value={data.client.car.mPoste}
+                  onChange={(e) => handleCarChange("mPoste", e.target.value)}
+                  style={{ marginBottom: 20 }}
+                />
+              )}
             </Grid.Col>
           </Grid>
         </Grid.Col>

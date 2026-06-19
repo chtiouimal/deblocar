@@ -16,7 +16,8 @@ const DevisSchema = new Schema(
     // model: { type: String, required: true },
     year: { type: String, required: true },
 
-    vin: { type: String, required: true },
+    vin: { type: String, default: null },
+    mPoste: { type: String, default: null },
     services: [
       {
         type: mongoose.Schema.Types.ObjectId,

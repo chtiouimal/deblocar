@@ -34,7 +34,8 @@ export async function POST(req: Request) {
       brand,
       year,
       vin,
-      services, // array of mongo ids
+      mPoste,
+      services,
       city = null,
     } = body;
 
@@ -61,7 +62,14 @@ export async function POST(req: Request) {
     } else if (services.length > 6) {
       score = "Chaud";
     }
+
     const defaultStatus = await Status.findOne({ label: "Nouveau" });
+
+    // 🧠 NORMALIZE CAR DATA (IMPORTANT FIX)
+    const isLuxury = brand === "BMW" || brand === "Mercedes";
+
+    const finalVin = isLuxury ? vin : null;
+    const finalMPoste = isLuxury ? null : mPoste;
 
     // 💾 SAVE LEAD
     await Lead.create({
@@ -70,7 +78,8 @@ export async function POST(req: Request) {
       phone,
       brand,
       year,
-      vin,
+      vin: finalVin,
+      mPoste: finalMPoste,
       services,
       city,
       score,
@@ -87,7 +96,8 @@ export async function POST(req: Request) {
         name,
         brand,
         year,
-        vin,
+        vin: finalVin,
+        mPoste: finalMPoste,
         services: formattedServices,
       }),
     });
@@ -103,7 +113,7 @@ Email: ${email}
 Téléphone: ${phone}
 Marque: ${brand}
 Année: ${year}
-VIN: ${vin}
+${finalVin ? `Numéro de châssis: ${finalVin}` : finalMPoste ? `Modèle de poste: ${finalMPoste}` : `Informations véhicule : Non renseigné`}
 Services: ${formattedServices}
 Score: ${score}
       `,

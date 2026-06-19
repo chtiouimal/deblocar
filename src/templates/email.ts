@@ -1,4 +1,5 @@
 export function clientEmailTemplate(data: any) {
+  console.log("email data: ", data);
   return `
 Bonjour ${data.name},
 
@@ -7,7 +8,13 @@ Nous avons bien reçu les informations concernant votre véhicule :
 
 Marque : ${data.brand}
 Année : ${data.year}
-Numéro de châssis : ${data.vin}
+${
+  data.vin
+    ? `Numéro de châssis : ${data.vin}`
+    : data.mPoste
+      ? `Modèle de poste : ${data.mPoste}`
+      : `Informations véhicule : Non renseigné`
+}
 Service demandé : ${data.services}
 
 Notre équipe va vérifier la faisabilité de l’intervention selon le modèle de votre véhicule et les options disponibles.

@@ -29,8 +29,9 @@ const LeadSchema = new Schema(
 
     vin: {
       type: String,
-      required: true,
+      default: null,
     },
+    mPoste: { type: String, default: null },
 
     services: [
       {
@@ -45,7 +46,7 @@ const LeadSchema = new Schema(
       ref: "City",
       default: null,
     },
-    
+
     status: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Status",

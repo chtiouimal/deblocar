@@ -79,12 +79,21 @@ export default function LeadDetailsPage() {
             </Text>
             <Text>{lead.brand}</Text>
           </Flex>
-          <Flex gap={8} align="flex-end">
-            <Text fz={14} fw={200} style={{ opacity: 0.6, minWidth: 100 }}>
-              N° de chasis:
-            </Text>
-            <Text>{lead.vin}</Text>
-          </Flex>
+          {lead.vin ? (
+            <Flex gap={8} align="flex-end">
+              <Text fz={14} fw={200} style={{ opacity: 0.6, minWidth: 100 }}>
+                N° de chasis:
+              </Text>
+              <Text>{lead.vin}</Text>
+            </Flex>
+          ) : (
+            <Flex gap={8} align="flex-end">
+              <Text fz={14} fw={200} style={{ opacity: 0.6, minWidth: 100 }}>
+                M. de poste:
+              </Text>
+              <Text>{lead.mPoste}</Text>
+            </Flex>
+          )}
         </Grid.Col>
       </Grid>
       <Flex direction="column" gap={16}>

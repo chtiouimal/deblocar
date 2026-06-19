@@ -121,19 +121,36 @@ export default function ReviewStep({ data, initial }: Props) {
               </Text>
               <Text size="sm">{data.client.car.year || "N/A"}</Text>
             </Grid.Col>
-            <Grid.Col
-              span={{ base: 12 }}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 16,
-              }}
-            >
-              <Text size="md" className={styles.infoLabel}>
-                Numéro de châssis:
-              </Text>
-              <Text size="sm">{data.client.car.vin || "N/A"}</Text>
-            </Grid.Col>
+            {data.client.car.brand === "BMW" ||
+            data.client.car.brand === "Mercedes" ? (
+              <Grid.Col
+                span={{ base: 12 }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 16,
+                }}
+              >
+                <Text size="md" className={styles.infoLabel}>
+                  Numéro de châssis:
+                </Text>
+                <Text size="sm">{data.client.car.vin || "N/A"}</Text>
+              </Grid.Col>
+            ) : (
+              <Grid.Col
+                span={{ base: 12 }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 16,
+                }}
+              >
+                <Text size="md" className={styles.infoLabel}>
+                  Modèle de poste:
+                </Text>
+                <Text size="sm">{data.client.car.mPoste || "N/A"}</Text>
+              </Grid.Col>
+            )}
           </Grid>
         </Grid.Col>
 

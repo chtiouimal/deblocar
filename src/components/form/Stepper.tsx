@@ -95,7 +95,8 @@ export default function Stepper() {
           phone: data.client.phone,
           brand: data.client.car.brand,
           year: data.client.car.year,
-          vin: data.client.car.vin,
+          vin: data.client.car.vin ?? null,
+          mPoste: data.client.car.mPoste ?? null,
           services: data.services,
         }),
       });

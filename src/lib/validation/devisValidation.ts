@@ -4,6 +4,8 @@ import {
   StepServicesErrors,
 } from "@/types/devis";
 
+const VIN_REQUIRED_BRANDS = ["BMW", "Mercedes"];
+
 export const validateStep1 = (data: DevisFormData) => {
   const errors: StepInfoErrors = {};
 
@@ -41,9 +43,16 @@ export const validateStep1 = (data: DevisFormData) => {
   }
 
   // VIN strict (17 chars)
-  if (client.car.vin.length !== 17) {
-    errors.vin = "VIN doit contenir 17 caractères";
+  // VIN → ONLY for BMW / Mercedes
+  const requiresVin = VIN_REQUIRED_BRANDS.includes(client.car.brand);
+
+  if (requiresVin) {
+    if (!client.car.vin || client.car.vin.length !== 17) {
+      errors.vin = "VIN doit contenir 17 caractères";
+    }
   }
+
+  // mPoste → always optional → NO validation needed
 
   return {
     errors,
@@ -105,8 +114,13 @@ export function validateDevisBackend(body: any) {
   }
 
   // VIN (17 chars strict)
-  if (!vin || vin.length !== 17) {
-    errors.vin = "VIN doit contenir 17 caractères";
+  // VIN → ONLY BMW / Mercedes
+  const requiresVin = VIN_REQUIRED_BRANDS.includes(brand);
+
+  if (requiresVin) {
+    if (!vin || vin.length !== 17) {
+      errors.vin = "VIN doit contenir 17 caractères";
+    }
   }
 
   // SERVICES

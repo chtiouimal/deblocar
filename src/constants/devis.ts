@@ -10,6 +10,7 @@ export const initialDevisFormData: DevisFormData = {
       model: "",
       year: "",
       vin: "",
+      mPoste: "",
     },
   },
   services: [],
@@ -20,6 +21,7 @@ export const CAR_DATA = {
   Mercedes: ["C-Class", "E-Class", "S-Class", "AMG GT"],
   Mazda: ["CX-5", "Mazda 3", "Mazda 6"],
   Kia: ["Sportage", "Sorento", "Picanto"],
+  Audi: ["A3", "A4", "A5"],
 };
 
 export const AVAILABLE_SERVICES = [
