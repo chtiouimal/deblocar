@@ -2,7 +2,20 @@ import { CAR_DATA } from "@/constants/devis";
 import { VIN_REQUIRED_BRANDS } from "@/lib/validation/devisValidation";
 import { validateBrand, validateField, validateMPoste, validateVin, validateYear } from "@/lib/validation/fieldValidation";
 import { DevisFormData, StepInfoErrors } from "@/types/devis";
-import { Select, Stack, Text, TextInput } from "@mantine/core"
+import {
+  Box,
+  Button,
+  Flex,
+  Grid,
+  GridCol,
+  Select,
+  Stack,
+  Text,
+  TextInput,
+  Tooltip,
+} from "@mantine/core";
+import { InfoIcon, QuestionIcon } from "@phosphor-icons/react";
+import { useState } from "react";
 
 type CarInformationProps = {
   data: DevisFormData;
@@ -53,6 +66,9 @@ function CarInformation({
     }));
   };
 
+  const [openVin, setOpenVin] = useState(false);
+  const [openMPoste, setOpenMPoste] = useState(false);
+
   return (
     <Stack>
       <Text fz={14} opacity={0.6}>
@@ -96,20 +112,70 @@ function CarInformation({
 
         {data.client.car.brand === "BMW" ||
         data.client.car.brand === "Mercedes" ? (
-          <TextInput
-            placeholder="Numéro de châssis"
-            value={data.client.car.vin}
-            onChange={(e) => handleCarChange("vin", e.target.value)}
-            error={getError("vin")}
-            style={{ marginBottom: 20 }}
-          />
+          <Grid w="100%">
+            <GridCol span={11}>
+              <TextInput
+                placeholder="Numéro de châssis"
+                value={data.client.car.vin}
+                onChange={(e) => handleCarChange("vin", e.target.value)}
+                error={getError("vin")}
+                style={{ marginBottom: 20 }}
+              />
+            </GridCol>
+            <GridCol span={1} align="center">
+              <Tooltip
+                withArrow
+                multiline
+                w={260}
+                opened={openVin}
+                label="Ce numéro nous permet de vérifier les options disponibles sur votre véhicule."
+              >
+                <Button
+                  onClick={() => setOpenVin((o) => !o)}
+                  variant="transparent"
+                  style={{ backgroundColor: "transparent", padding: 0 }}
+                >
+                  <InfoIcon
+                    size={20}
+                    weight="fill"
+                    style={{ opacity: 0.6, cursor: "pointer" }}
+                  />
+                </Button>
+              </Tooltip>
+            </GridCol>
+          </Grid>
         ) : (
-          <TextInput
-            placeholder="Modèle de poste"
-            value={data.client.car.mPoste}
-            onChange={(e) => handleCarChange("mPoste", e.target.value)}
-            style={{ marginBottom: 20 }}
-          />
+          <Grid w="100%">
+            <GridCol span={11}>
+              <TextInput
+                placeholder="Modèle de poste"
+                value={data.client.car.mPoste}
+                onChange={(e) => handleCarChange("mPoste", e.target.value)}
+                style={{ marginBottom: 20 }}
+              />
+            </GridCol>
+            <GridCol span={1} align="center">
+              <Tooltip
+                opened={openMPoste}
+                withArrow
+                multiline
+                w={260}
+                label="Si vous le connaissez, indiquez le modèle de votre poste multimédia. Sinon, notre équipe vous guidera par WhatsApp pour l’identifier."
+              >
+                <Button
+                  onClick={() => setOpenMPoste((o) => !o)}
+                  variant="transparent"
+                  style={{ backgroundColor: "transparent", padding: 0 }}
+                >
+                  <InfoIcon
+                    size={20}
+                    weight="fill"
+                    style={{ opacity: 0.6, cursor: "pointer" }}
+                  />
+                </Button>
+              </Tooltip>
+            </GridCol>
+          </Grid>
         )}
       </Stack>
     </Stack>
