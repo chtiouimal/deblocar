@@ -20,8 +20,13 @@ export const CAR_DATA = {
   BMW: ["M3", "M4", "X5", "i8"],
   Mercedes: ["C-Class", "E-Class", "S-Class", "AMG GT"],
   Mazda: ["CX-5", "Mazda 3", "Mazda 6"],
-  Kia: ["Sportage", "Sorento", "Picanto"],
+  // Kia: ["Sportage", "Sorento", "Picanto"],
   Audi: ["A3", "A4", "A5"],
+  Volkswagen: ["Golf 3"],
+  Skoda: ["Fabia", "Scala", "Superb"],
+  Cupra: ["Born"],
+  BYD: ["BYD ATTO 2", "BYD ATTO 3"],
+  Volvo: ["Volvo EX30", "Volvo EX40"],
 };
 
 export const AVAILABLE_SERVICES = [

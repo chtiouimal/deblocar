@@ -29,6 +29,20 @@ export type StepInfoErrors = {
   mPoste?: string;
 };
 
+export type StepClientErrors = {
+  name?: string;
+  email?: string;
+  phone?: string;
+};
+
+export type StepCarErrors = {
+  brand?: string;
+  model?: string;
+  year?: string;
+  vin?: string;
+  mPoste?: string;
+};
+
 export type StepServicesErrors = {
   services?: string;
 };

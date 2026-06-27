@@ -3,8 +3,17 @@ import {
   StepInfoErrors,
   StepServicesErrors,
 } from "@/types/devis";
+import {
+  validateBrand,
+  validateEmail,
+  validateMPoste,
+  validateName,
+  validatePhone,
+  validateVin,
+  validateYear,
+} from "./fieldValidation";
 
-const VIN_REQUIRED_BRANDS = ["BMW", "Mercedes"];
+export const VIN_REQUIRED_BRANDS = ["BMW", "Mercedes"];
 
 export const validateStep1 = (data: DevisFormData) => {
   const errors: StepInfoErrors = {};
@@ -66,6 +75,71 @@ export const validateStep2 = (data: DevisFormData) => {
   if (data.services.length === 0) {
     errors.services = "Sélectionnez au moins un service";
   }
+
+  return {
+    errors,
+    isValid: Object.keys(errors).length === 0,
+  };
+};
+
+export const validateCarInformation = (data: DevisFormData) => {
+  const errors: StepInfoErrors = {};
+
+  const { client } = data;
+
+  const brandError = validateBrand(client.car.brand);
+  if (brandError) errors.brand = brandError;
+
+  const yearError = validateYear(client.car.year);
+  if (yearError) errors.year = yearError;
+
+  // VIN strict (17 chars)
+  // VIN → ONLY for BMW / Mercedes
+  const requiresVin = VIN_REQUIRED_BRANDS.includes(client.car.brand);
+
+  // VIN / mPoste (conditional)
+  if (requiresVin) {
+    const vinError = validateVin(client.car.vin);
+    if (vinError) errors.vin = vinError;
+  } else {
+    const mPosteError = validateMPoste(client.car.mPoste);
+    if (mPosteError) errors.mPoste = mPosteError;
+  }
+
+  // mPoste → always optional → NO validation needed
+
+  return {
+    errors,
+    isValid: Object.keys(errors).length === 0,
+  };
+};
+
+export const validateServices = (data: DevisFormData) => {
+  const errors: StepServicesErrors = {};
+
+  if (data.services.length === 0) {
+    errors.services = "Sélectionnez au moins un service";
+  }
+
+  return {
+    errors,
+    isValid: Object.keys(errors).length === 0,
+  };
+};
+
+export const validateClientInformation = (data: DevisFormData) => {
+  const errors: StepInfoErrors = {};
+
+  const { client } = data;
+
+  const nameError = validateName(client.name);
+  if (nameError) errors.name = nameError;
+
+  const emailError = validateEmail(client.email);
+  if (emailError) errors.email = emailError;
+
+  const phoneError = validatePhone(client.phone);
+  if (phoneError) errors.phone = phoneError;
 
   return {
     errors,

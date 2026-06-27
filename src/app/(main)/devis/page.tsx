@@ -4,6 +4,7 @@ import Stepper from "@/components/form/Stepper";
 import CustomTabs from "@/components/shared/tabs/CustomTabs";
 import VideoGrid from "@/components/shared/grid/VideoGrid";
 import DevisCTA from "@/components/shared/cta/DevisCTA";
+import DevisStepper from "@/components/stepper";
 
 export default function Devis() {
   return (
@@ -47,7 +48,8 @@ export default function Devis() {
             </div>
           </div>
           <div className={styles.heroSectionRight} id="form">
-            <Stepper />
+            {/* <Stepper /> */}
+            <DevisStepper />
           </div>
         </section>
       </div>
