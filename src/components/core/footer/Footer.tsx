@@ -21,7 +21,7 @@ function Footer() {
           <ul>
             <li>
               <Link
-                href="https://www.facebook.com"
+                href=" https://www.facebook.com/profile.php?id=61587995278933"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -30,7 +30,7 @@ function Footer() {
             </li>
             <li>
               <Link
-                href="https://www.instagram.com"
+                href="https://instagram.com/deblocar"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -39,7 +39,7 @@ function Footer() {
             </li>
             <li>
               <Link
-                href="https://www.whatsapp.com"
+                href="https://wa.me/21655410596?text=Bonjour%20je%20souhaite%20vous%20contacter"
                 target="_blank"
                 rel="noopener noreferrer"
               >

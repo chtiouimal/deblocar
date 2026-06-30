@@ -10,6 +10,7 @@
     "seed:admin": "tsx src/scripts/seedAdmin.ts"
   },
   "dependencies": {
+    "@mantine/carousel": "^9.1.0",
     "@mantine/core": "^9.1.0",
     "@mantine/dates": "^9.1.0",
     "@mantine/hooks": "^9.1.0",
@@ -19,6 +20,8 @@
     "bcryptjs": "^3.0.3",
     "dayjs": "^1.11.21",
     "dotenv": "^17.4.2",
+    "embla-carousel": "^8.6.0",
+    "embla-carousel-react": "^8.6.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.6.2",
     "next": "16.2.4",

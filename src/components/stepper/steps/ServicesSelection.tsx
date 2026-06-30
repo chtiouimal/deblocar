@@ -1,5 +1,14 @@
 import { colors } from "@/theme/colors";
-import { CheckboxCard, CheckboxGroup, CheckboxIndicator, Grid, GridCol, Group, Stack, Text } from "@mantine/core"
+import {
+  CheckboxCard,
+  CheckboxGroup,
+  Grid,
+  GridCol,
+  Group,
+  Stack,
+  Text,
+} from "@mantine/core";
+import styles from "./steps.module.css";
 
 interface Service {
   _id: string;
@@ -20,7 +29,6 @@ function ServicesSelection({
   setServices,
   stepError,
 }: Props) {
-
   const cards = initial.map((item) => {
     const exists = services.some((service) => service === item._id);
     return (
@@ -38,6 +46,7 @@ function ServicesSelection({
               ? colors.glowingRed[5]
               : "rgba(255,255,255,0.2)",
           }}
+          className={styles.serviceCard}
         >
           <Group wrap="nowrap" align="center" justify="center">
             {/* <CheckboxIndicator /> */}
@@ -49,7 +58,8 @@ function ServicesSelection({
           </Group>
         </CheckboxCard>
       </GridCol>
-    );});
+    );
+  });
 
   return (
     <Stack>

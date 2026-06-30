@@ -91,3 +91,48 @@
   transform: scale(1.1);
   transition: transform 0.2s ease;
 }
+
+.slide {
+  transform: scale(0.4);
+  opacity: 0.4;
+  filter: blur(1px);
+  transition: all 0.4s ease;
+}
+
+.activeSlide {
+  transform: scale(1);
+  opacity: 1;
+  filter: blur(0);
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  /* justify-content: center; */
+  gap: 32px;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0.8;
+}
+
+.btn:hover:not(:disabled) {
+  /* border-color: #DC1F26; */
+  color: #DC1F26;
+}
+
+.btn:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}

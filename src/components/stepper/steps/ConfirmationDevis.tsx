@@ -34,7 +34,7 @@ function ConfirmationDevis() {
             </Text>
           </ListItem>
         </List> */}
-        <ul className={styles.heroTagList}>
+        <ul className={styles.heroTagList} style={{ flexDirection: "column" }}>
           <li>
             <Text size="sm" fw={400}>
               la faisabilité de l’intervention
@@ -59,7 +59,7 @@ function ConfirmationDevis() {
         <Text fz={14} opacity={0.8}>
           À très vite,
         </Text>
-        <Text fz={14}>
+        <Text fz={14} opacity={0.8}>
           L’équipe Deblocar
         </Text>
       </Stack>

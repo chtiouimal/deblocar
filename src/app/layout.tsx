@@ -1,6 +1,7 @@
 "use client";
 
 import "@mantine/core/styles.css";
+import "@mantine/carousel/styles.css";
 import "./globals.css";
 import { Montserrat, Poppins } from "next/font/google";
 

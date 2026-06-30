@@ -92,7 +92,7 @@ export async function POST(req: Request) {
       from: process.env.EMAIL_USER,
       to: email,
       subject: "Confirmation de votre demande - Deblocar",
-      text: clientEmailTemplate({
+      html: clientEmailTemplate({
         name,
         brand,
         year,

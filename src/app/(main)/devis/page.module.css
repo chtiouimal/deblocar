@@ -12,7 +12,7 @@
   background-size: cover;
 }
 
-.heroSection, .marqueSection {
+.heroSection, .subHeroContent, .marqueSection {
   max-width: 1440px;
   max-height: 1024px;
   margin: 0 auto;
@@ -51,9 +51,9 @@
   margin: 0;
   list-style: none;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
-  gap: 16px;
+  gap: 32px;
 }
 
 .heroTagList li {
@@ -185,6 +185,15 @@
   margin-right: 16px;
   vertical-align: middle;
   flex-shrink: 0;
+}
+
+.subHero {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 64px;
+  height: 100vh;
+  max-height: 100vh;
 }
 
 @media (max-width: 768px) {
