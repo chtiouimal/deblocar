@@ -126,6 +126,13 @@
   padding-bottom: 120px;
 }
 
+.resultsVideos {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .howItWorks {
   min-height: 100vh;
   display: flex;

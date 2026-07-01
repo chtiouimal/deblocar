@@ -6,6 +6,7 @@ import VideoGrid from "@/components/shared/grid/VideoGrid";
 import DevisCTA from "@/components/shared/cta/DevisCTA";
 import DevisStepper from "@/components/stepper";
 import VideoCarousel from "@/components/videos/VideoCarousel";
+import ResultsVideos from "@/components/results/ResultsVideos";
 
 export default function Devis() {
   return (
@@ -185,11 +186,15 @@ export default function Devis() {
           </div>
         </section> */}
 
-        <section style={{ margin: "120px 0" }}>
+        <section className={styles.resultsVideos}>
+          <ResultsVideos />
+        </section>
+
+        {/* <section style={{ margin: "120px 0" }}>
           <Flex direction="column" gap={16}>
             <VideoCarousel />
           </Flex>
-        </section>
+        </section> */}
 
         <section className={styles.howItWorks}>
           <div className={styles.howItWorksIntro}>
