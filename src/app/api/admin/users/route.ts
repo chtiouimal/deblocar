@@ -8,7 +8,6 @@ import { requireAuth } from "@/lib/requireAuth";
 export async function GET(req: Request) {
   try {
     await connectDB();
-console.log("COOKIE:", req.headers.get("cookie"));
     const auth = requireAuth(req);
 
     if (!auth) {

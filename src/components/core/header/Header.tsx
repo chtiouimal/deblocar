@@ -23,7 +23,7 @@ function Header() {
     <div className={`${isDevis ? styles.headerDevis : styles.header}`}>
       <Link href="/" style={{ opacity: 1 }}>
         <Image
-          src="/deblocar-logo.png"
+          src="/Deblocar_small.svg"
           alt="deblocar-logo"
           width={192}
           height={30}

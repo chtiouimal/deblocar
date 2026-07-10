@@ -13,7 +13,7 @@ function Footer() {
   return (
     <footer className={styles.footer}>
       <div className={styles.footerInner}>
-        <img src="/LOGO DEBLOCAR-01.png" alt="large-deblocar-logo" />
+        <img src="/Deblocar_large.svg" alt="large-deblocar-logo" />
         <div className={styles.footerContent}>
           <Text size="md" fw={400} style={{ opacity: 0.6 }}>
             © Deblocar — Tous droits réservés
