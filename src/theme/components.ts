@@ -59,6 +59,41 @@ export const components = {
       },
     },
   },
+  NumberInput: {
+    defaultProps: {
+      variant: "unstyled",
+    },
+    styles: {
+      root: {
+        position: "relative",
+      },
+      input: {
+        borderTop: "none",
+        borderLeft: "none",
+        borderRight: "none",
+        borderBottom: "0.5px solid rgba(244, 239, 231, 0.1)",
+        borderRadius: 0,
+        backgroundColor: "transparent",
+        padding: "10px 0",
+        transition: "border-color 0.2s ease",
+      },
+      label: {
+        fontSize: "10px",
+        fontWeight: 500,
+        letterSpacing: "0.1em",
+        textTransform: "uppercase" as const,
+        color: "rgba(255, 255, 255, 0.6)",
+        marginBottom: "6px",
+      },
+      error: {
+        position: "absolute",
+        bottom: "-16px",
+        left: 0,
+        fontSize: 10,
+        whiteSpace: "nowrap",
+      },
+    },
+  },
   Textarea: {
     defaultProps: {
       variant: "unstyled",

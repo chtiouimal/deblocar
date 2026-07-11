@@ -54,6 +54,7 @@ const mockdata = [
       { label: "Services", link: "/admin/services" },
       { label: "status", link: "/admin/status" },
       { label: "Utilisateurs", link: "/admin/users" },
+      { label: "Commercials", link: "/admin/retail" },
     ],
   },
 ];

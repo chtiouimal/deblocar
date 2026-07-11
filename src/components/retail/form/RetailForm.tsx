@@ -1,12 +1,27 @@
 import { useRetailAuthDrawer } from "@/hooks/useRetailAuthDrawer";
 import { useLazyGetGenerateCodeQuery } from "@/lib/retailApi/parametersApi";
 import { RootRetailState } from "@/retailStore/retailStore";
-import { Button, Select, Stack, TextInput } from "@mantine/core";
+import {
+  RetailParameters,
+  RetailRegions,
+  RetailVersions,
+} from "@/types/retail";
+import {
+  Button,
+  Flex,
+  Grid,
+  GridCol,
+  Select,
+  Stack,
+  Text,
+  TextInput,
+  Title,
+} from "@mantine/core";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
 interface RetailFormProps {
-  data: any[];
+  data: RetailParameters | null;
 }
 
 function RetailForm({ data }: RetailFormProps) {
@@ -14,36 +29,26 @@ function RetailForm({ data }: RetailFormProps) {
   const { user } = useSelector((state: RootRetailState) => state.retailAuth);
   const [formData, setFormData] = useState({
     vin: "",
-    hu: "",
+    hu: data?.shortName ?? "",
     region: "",
     version: "",
   });
 
-  const [selectedImage, setSelectedImage] = useState("");
-
-  const [getGenerateCode, { data: generatedCode , isLoading, error }] =
+  const [getGenerateCode, { data: generatedCode, isLoading, error }] =
     useLazyGetGenerateCodeQuery();
 
-  const selectedNtg = data?.find((item) => item.shortName === formData.hu);
-
-  const selectedRegion = selectedNtg?.regions?.find(
+  const selectedRegion = data?.regions?.find(
     (region: any) => region.shortName === formData.region,
   );
 
-  const ngtOptions =
-    data?.map((item) => ({
-      value: item.shortName,
-      label: item.ntgName,
-    })) ?? [];
-
   const regionOptions =
-    selectedNtg?.regions?.map((region: any) => ({
+    data?.regions?.map((region: RetailRegions) => ({
       label: region.displayName,
       value: region.shortName,
     })) ?? [];
 
   const versionOptions =
-    selectedRegion?.versions?.map((version: any) => ({
+    selectedRegion?.versions?.map((version: RetailVersions) => ({
       label: version.displayName,
       value: version.shortName,
     })) ?? [];
@@ -72,12 +77,6 @@ function RetailForm({ data }: RetailFormProps) {
         version: "",
       }),
     }));
-
-    if (name === "hu") {
-      const selected = data.find((item) => item.shortName === value);
-
-      setSelectedImage(selected?.images?.[0] ?? "");
-    }
   };
 
   const handleSubmit = async () => {
@@ -86,57 +85,70 @@ function RetailForm({ data }: RetailFormProps) {
       return;
     }
 
-  try {
-    const result = await getGenerateCode({
-      hu: formData.hu,
-      region: formData.region,
-      version: formData.version,
-      // vin: formData.vin,
-      vin: "XXXXXXXXXXXXXXXXX",
-    }).unwrap();
+    try {
+      const result = await getGenerateCode({
+        hu: formData.hu,
+        region: formData.region,
+        version: formData.version,
+        // vin: formData.vin,
+        vin: "XXXXXXXXXXXXXXXXX",
+      }).unwrap();
 
-    console.log("PIN:", result.pin);
-  } catch (error) {
-    console.error(error);
-  }
+      console.log("PIN:", result.pin);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
-    <Stack>
-      <TextInput
-        label="VIN"
-        name="vin"
-        value={formData.vin}
-        onChange={handleInputChange}
-      />
+    <Grid>
+      <GridCol span={{ base: 12, md: 8 }}>
+        {data?.images[0] && (
+          <img
+            src={data?.images[0]}
+            alt="NTG"
+            width="100%"
+            style={{ maxHeight: "75vh" }}
+          />
+        )}
+      </GridCol>
+      <GridCol span={{ base: 12, md: 4 }} p="0 32px 32px">
+        <Flex direction="column" justify="space-between" h="100%">
+          <Flex direction="column" gap={16} mb={64}>
+            <Title order={3}>{data?.ntgName}</Title>
+            <Text fw={600}>{data?.tokenCost} tokens</Text>
+            <Text>{data?.displayName}</Text>
+          </Flex>
+          <Stack>
+            <TextInput
+              label="VIN"
+              name="vin"
+              value={formData.vin}
+              onChange={handleInputChange}
+            />
 
-      <Select
-        label="NTG"
-        data={ngtOptions}
-        value={formData.hu}
-        onChange={(value) => handleSelectChange("hu", value)}
-      />
+            <Select
+              label="Region"
+              data={regionOptions}
+              value={formData.region}
+              disabled={!formData.hu}
+              onChange={(value) => handleSelectChange("region", value)}
+            />
 
-      <Select
-        label="Region"
-        data={regionOptions}
-        value={formData.region}
-        disabled={!formData.hu}
-        onChange={(value) => handleSelectChange("region", value)}
-      />
-
-      <Select
-        label="Version"
-        data={versionOptions}
-        value={formData.version}
-        disabled={!formData.region}
-        onChange={(value) => handleSelectChange("version", value)}
-      />
-      <Button mt={32} onClick={handleSubmit}>
-        Envoyer
-      </Button>
-      {selectedImage && <img src={selectedImage} alt="NTG" width={200} />}
-    </Stack>
+            <Select
+              label="Version"
+              data={versionOptions}
+              value={formData.version}
+              disabled={!formData.region}
+              onChange={(value) => handleSelectChange("version", value)}
+            />
+            <Button mt={32} onClick={handleSubmit}>
+              {isLoading ? "En cours" : "Envoyer"}
+            </Button>
+          </Stack>
+        </Flex>
+      </GridCol>
+    </Grid>
   );
 }
 

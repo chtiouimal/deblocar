@@ -15,6 +15,7 @@ export const baseApi = createApi({
     "Devis",
     "Calendar",
     "Dashboard",
+    "Retail",
   ],
   endpoints: () => ({}),
 });

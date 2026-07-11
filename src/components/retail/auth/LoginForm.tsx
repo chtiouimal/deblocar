@@ -1,7 +1,7 @@
 import { useRetailAuthDrawer } from "@/hooks/useRetailAuthDrawer";
 import { setRetailUser } from "@/retailStore/retailAuthSlice";
-import { Button, Stack, TextInput } from "@mantine/core"
-import { useState } from "react"
+import { Button, PasswordInput, Stack, TextInput } from "@mantine/core";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 function LoginForm() {
@@ -9,8 +9,8 @@ function LoginForm() {
   const { close } = useRetailAuthDrawer();
   const [loginForm, setLoginForm] = useState({
     email: "",
-    password: ""
-  })
+    password: "",
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -23,36 +23,36 @@ function LoginForm() {
     }));
   };
 
-const handleSubmit = async () => {
-  setLoading(true);
-  setError("");
+  const handleSubmit = async () => {
+    setLoading(true);
+    setError("");
 
-  try {
-    const res = await fetch("/api/retail/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify(loginForm),
-    });
+    try {
+      const res = await fetch("/api/retail/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(loginForm),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (!res.ok) {
-      throw new Error(data.message);
+      if (!res.ok) {
+        throw new Error(data.message);
+      }
+
+      dispatch(setRetailUser(data.user));
+
+      close();
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
+  };
 
-    dispatch(setRetailUser(data.user));
-
-    close();
-  } catch (err: any) {
-    setError(err.message);
-  } finally {
-    setLoading(false);
-  }
-};
-  
   return (
     <Stack>
       <TextInput
@@ -61,13 +61,15 @@ const handleSubmit = async () => {
         value={loginForm.email}
         onChange={handleInputChange}
       />
-      <TextInput
+      <PasswordInput
         label="Mot de passe"
         name="password"
         value={loginForm.password}
         onChange={handleInputChange}
       />
-      <Button onClick={handleSubmit} mt={32}>{!loading ? "Se connecter" : "en cours ..."}</Button>
+      <Button onClick={handleSubmit} mt={32}>
+        {!loading ? "Se connecter" : "en cours ..."}
+      </Button>
     </Stack>
   );
 }

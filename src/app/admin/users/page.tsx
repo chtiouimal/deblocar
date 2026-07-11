@@ -45,7 +45,6 @@ export default function UsersPage() {
     password: "",
   });
 
-  // ✅ RTK QUERY
   const { data, isLoading } = useGetUsersQuery({
     page,
     limit: 10,

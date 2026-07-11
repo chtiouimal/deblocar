@@ -1,4 +1,5 @@
 import { Schema, model, models, Types } from "mongoose";
+import "@/models/RetailUser";
 
 export interface IRetailWallet {
   retailUserId: Types.ObjectId;

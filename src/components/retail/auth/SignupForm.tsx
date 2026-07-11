@@ -1,7 +1,7 @@
 import { useRetailAuthDrawer } from "@/hooks/useRetailAuthDrawer";
 import { setRetailUser } from "@/retailStore/retailAuthSlice";
-import { Button, Stack, TextInput } from "@mantine/core"
-import { useState } from "react"
+import { Button, PasswordInput, Stack, TextInput } from "@mantine/core";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 function SignupForm() {
@@ -10,8 +10,8 @@ function SignupForm() {
   const [signupForm, setSignupForm] = useState({
     name: "",
     email: "",
-    password: ""
-  })
+    password: "",
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -33,7 +33,11 @@ function SignupForm() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name: signupForm.name, email: signupForm.email, password: signupForm.password }),
+        body: JSON.stringify({
+          name: signupForm.name,
+          email: signupForm.email,
+          password: signupForm.password,
+        }),
         credentials: "include",
       });
 
@@ -51,8 +55,8 @@ function SignupForm() {
     } finally {
       setLoading(false);
     }
-  }
-  
+  };
+
   return (
     <Stack>
       <TextInput
@@ -67,7 +71,7 @@ function SignupForm() {
         value={signupForm.email}
         onChange={handleInputChange}
       />
-      <TextInput
+      <PasswordInput
         label="Mot de passe"
         name="password"
         value={signupForm.password}
