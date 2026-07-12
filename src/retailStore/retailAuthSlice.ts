@@ -30,6 +30,12 @@ const retailAuthSlice = createSlice({
       state.loading = action.payload;
     },
 
+    updateBalance(state, action: PayloadAction<number>) {
+      if (state.user) {
+        state.user.balance = action.payload;
+      }
+    },
+
     logout(state) {
       state.user = null;
       state.loading = false;
@@ -37,5 +43,6 @@ const retailAuthSlice = createSlice({
   },
 });
 
-export const { setRetailUser, setLoading, logout } = retailAuthSlice.actions;
+export const { setRetailUser, setLoading, updateBalance, logout } =
+  retailAuthSlice.actions;
 export default retailAuthSlice.reducer;

@@ -6,7 +6,7 @@ export const parametersApi = retailBaseApi.injectEndpoints({
       query: () => "/retail/parameters",
     }),
     getGenerateCode: builder.query<
-      { pin: string },
+      { pin: string; balance: number },
       {
         hu: string;
         region: string;
@@ -18,6 +18,14 @@ export const parametersApi = retailBaseApi.injectEndpoints({
         url: "/retail/generate",
         params,
       }),
+
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+
+          dispatch(retailBaseApi.util.invalidateTags(["RetailTransactions"]));
+        } catch {}
+      },
     }),
   }),
 });

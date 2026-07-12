@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { verifyRetailToken } from "@/lib/auth";
 import { connectDB } from "@/lib/mongodb";
 import RetailWallet from "@/models/RetailWallet";
+import RetailUser from "@/models/RetailUser";
 
 export async function GET(req: Request) {
   try {
@@ -24,6 +25,8 @@ export async function GET(req: Request) {
 
     const decoded = verifyRetailToken(token);
 
+    const user = await RetailUser.findById(decoded.userId).select("name email");
+
     const wallet = await RetailWallet.findOne({
       retailUserId: decoded.userId,
     });
@@ -31,7 +34,8 @@ export async function GET(req: Request) {
     return NextResponse.json({
       user: {
         id: decoded.userId,
-        email: decoded.email,
+        name: user?.name,
+        email: user?.email,
         balance: wallet?.balance ?? 0,
       },
     });

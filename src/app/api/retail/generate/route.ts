@@ -6,8 +6,6 @@ import RetailUser from "@/models/RetailUser";
 import { requireRetailAuth } from "@/lib/requireAuth";
 import { transporter } from "@/lib/mailer";
 
-const GENERATION_COST = 3;
-
 export async function GET(req: Request) {
   try {
     const auth = requireRetailAuth(req);
@@ -37,17 +35,6 @@ export async function GET(req: Request) {
       );
     }
 
-    // Check balance
-    if (wallet.balance < GENERATION_COST) {
-      return NextResponse.json(
-        {
-          message: "Insufficient tokens",
-          balance: wallet.balance,
-        },
-        { status: 400 },
-      );
-    }
-
     const { searchParams } = new URL(req.url);
 
     const hu = searchParams.get("hu");
@@ -55,17 +42,61 @@ export async function GET(req: Request) {
     const version = searchParams.get("version");
     const vin = searchParams.get("vin");
 
+    if (!hu || !region || !version || !vin) {
+      return NextResponse.json(
+        { message: "Missing required parameters" },
+        { status: 400 },
+      );
+    }
+
     const apiKey = process.env.MBTOOLS_API_KEY;
 
     if (!apiKey) {
       return NextResponse.json({ message: "API key missing" }, { status: 500 });
     }
 
+    // Fetch MBTools parameters to get token cost
+    const parametersResponse = await fetch("https://api.mbtools.com/map", {
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    if (!parametersResponse.ok) {
+      return NextResponse.json(
+        { message: "Unable to fetch parameters" },
+        { status: 500 },
+      );
+    }
+
+    const parameters = await parametersResponse.json();
+
+    const selectedHu = parameters.find((item: any) => item.shortName === hu);
+
+    if (!selectedHu) {
+      return NextResponse.json({ message: "Invalid HU" }, { status: 400 });
+    }
+
+    const generationCost = selectedHu.tokenCost;
+
+    // Check balance
+    if (wallet.balance < generationCost) {
+      return NextResponse.json(
+        {
+          message: "Insufficient tokens",
+          balance: wallet.balance,
+          required: generationCost,
+        },
+        { status: 400 },
+      );
+    }
+
+    // Generate PIN
     const params = new URLSearchParams({
-      hu: hu ?? "",
-      region: region ?? "",
-      version: version ?? "",
-      vin: vin ?? "",
+      hu,
+      region,
+      version,
+      vin,
       apiKey,
     });
 
@@ -79,7 +110,6 @@ export async function GET(req: Request) {
     }
 
     const data = await response.json();
-
     const pin = data.pin;
 
     // Send email
@@ -94,6 +124,9 @@ Your map PIN has been generated successfully.
 
 PIN: ${pin}
 
+Tokens used: ${generationCost}
+Remaining balance: ${wallet.balance - generationCost}
+
 Thank you.
       `,
     });
@@ -101,7 +134,7 @@ Thank you.
     // Deduct tokens
     const balanceBefore = wallet.balance;
 
-    wallet.balance -= GENERATION_COST;
+    wallet.balance -= generationCost;
 
     await wallet.save();
 
@@ -109,15 +142,16 @@ Thank you.
     await RetailTokenTransaction.create({
       retailUserId: auth.userId,
       type: "consume",
-      amount: GENERATION_COST,
+      amount: generationCost,
       balanceBefore,
       balanceAfter: wallet.balance,
-      note: "Map pin generation",
+      note: `Map pin generation (${selectedHu.ntgName})`,
     });
 
     return NextResponse.json({
       ...data,
       balance: wallet.balance,
+      tokensUsed: generationCost,
     });
   } catch (error) {
     console.error(error);

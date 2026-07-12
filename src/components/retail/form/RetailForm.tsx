@@ -1,5 +1,6 @@
 import { useRetailAuthDrawer } from "@/hooks/useRetailAuthDrawer";
 import { useLazyGetGenerateCodeQuery } from "@/lib/retailApi/parametersApi";
+import { updateBalance } from "@/retailStore/retailAuthSlice";
 import { RootRetailState } from "@/retailStore/retailStore";
 import {
   RetailParameters,
@@ -18,13 +19,14 @@ import {
   Title,
 } from "@mantine/core";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 interface RetailFormProps {
   data: RetailParameters | null;
 }
 
 function RetailForm({ data }: RetailFormProps) {
+  const dispatch = useDispatch();
   const { open } = useRetailAuthDrawer();
   const { user } = useSelector((state: RootRetailState) => state.retailAuth);
   const [formData, setFormData] = useState({
@@ -93,6 +95,8 @@ function RetailForm({ data }: RetailFormProps) {
         // vin: formData.vin,
         vin: "XXXXXXXXXXXXXXXXX",
       }).unwrap();
+
+      dispatch(updateBalance(result.balance));
 
       console.log("PIN:", result.pin);
     } catch (error) {

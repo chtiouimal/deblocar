@@ -60,7 +60,10 @@ function RetailGrid({ data }: RetailGridProps) {
         // title={selectedRetail?.ntgName}
         withCloseButton={false}
       >
-        <Box p="32px" style={{ maxWidth: 1440, margin: "0 auto", maxHeight: "100vh" }}>
+        <Box
+          p="32px"
+          style={{ maxWidth: 1440, margin: "0 auto", maxHeight: "100vh" }}
+        >
           <Flex mb={32} justify="space-between" w="100%">
             <Link href="/" style={{ opacity: 1 }}>
               <Image

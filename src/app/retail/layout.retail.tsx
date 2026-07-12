@@ -39,8 +39,13 @@ function RetailLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <main>
-      <Flex justify="space-between" align="center" p={32}>
+    <main className="leftBg" style={{ minHeight: "100vh" }}>
+      <Flex
+        justify="space-between"
+        align="center"
+        p={32}
+        style={{ maxWidth: 1440, margin: "0 auto" }}
+      >
         <Link href="/" style={{ opacity: 1 }}>
           <Image
             src="/Deblocar_small.svg"
@@ -55,7 +60,9 @@ function RetailLayout({ children }: { children: React.ReactNode }) {
               <CoinsIcon size={26} weight="thin" />
               {user.balance}
             </Flex>
-            <Avatar radius="xl" />
+            <Link href="/retail/profile">
+              <Avatar radius="xl" />
+            </Link>
             <UnstyledButton onClick={handleLogout}>
               Se déconnecter
             </UnstyledButton>
