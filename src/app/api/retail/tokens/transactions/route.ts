@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import RetailTokenTransaction from "@/models/RetailTokenTransaction";
 import { requireRetailAuth } from "@/lib/requireAuth";
+import { Types } from "mongoose";
 
 export async function GET(req: Request) {
   try {
@@ -21,26 +22,75 @@ export async function GET(req: Request) {
 
     const skip = (page - 1) * limit;
 
+    const userId = new Types.ObjectId(auth.userId);
+
+    // History filter (with optional type)
     const filter: any = {
-      retailUserId: auth.userId,
+      retailUserId: userId,
     };
 
-    // filter by transaction type
     if (type) {
       filter.type = type;
     }
 
-    const [transactions, total] = await Promise.all([
+    // Stats should not depend on the selected tab/filter
+    const statsFilter = {
+      retailUserId: userId,
+    };
+
+    const [transactions, total, consumed, topups] = await Promise.all([
+      // Paginated transactions
       RetailTokenTransaction.find(filter)
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit),
 
+      // Total transactions with current filter
       RetailTokenTransaction.countDocuments(filter),
+
+      // Total consumed tokens
+      RetailTokenTransaction.aggregate([
+        {
+          $match: {
+            ...statsFilter,
+            type: "consume",
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            totalConsumed: {
+              $sum: "$amount",
+            },
+          },
+        },
+      ]),
+
+      // Total topup tokens
+      RetailTokenTransaction.aggregate([
+        {
+          $match: {
+            ...statsFilter,
+            type: "topup",
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            totalTopups: {
+              $sum: "$amount",
+            },
+          },
+        },
+      ]),
     ]);
 
     return NextResponse.json({
       transactions,
+
+      totalConsumed: consumed[0]?.totalConsumed ?? 0,
+      totalTopups: topups[0]?.totalTopups ?? 0,
+
       pagination: {
         page,
         limit,

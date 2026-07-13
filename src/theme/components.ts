@@ -405,7 +405,18 @@ export const components = {
 
     styles: {
       root: {
-        backgroundColor: colors.secondaryBackground,
+        backgroundColor: "rgba(255, 255, 255, 0.07)",
+      },
+    },
+  },
+  Tabs: {
+    styles: {
+      root: {
+        "--tab-border-width": "0 0 3px 0",
+      },
+      list: {
+        "--tab-border-color": "rgba(255,255,255,0.1)",
+        "--tabs-color": colors.glowingRed[5],
       },
     },
   },

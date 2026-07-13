@@ -5,13 +5,14 @@ import { useState } from "react";
 import RetailForm from "../form/RetailForm";
 import Link from "next/link";
 import { XIcon } from "@phosphor-icons/react";
+import CustomLoader from "@/components/core/loading";
 
 interface RetailGridProps {
   data: RetailParameters[];
+  isLoading: boolean;
 }
 
-function RetailGrid({ data }: RetailGridProps) {
-    
+function RetailGrid({ data, isLoading }: RetailGridProps) {
   const [opened, { open, close }] = useDisclosure(false);
   const [selectedRetail, setSelectedRetail] = useState<RetailParameters | null>(
     null,
@@ -46,11 +47,15 @@ function RetailGrid({ data }: RetailGridProps) {
   return (
     <>
       <Grid>
-        {data?.map((e, i) => (
-          <GridCol span={{ base: 6, md: 4 }} key={i}>
-            <RetailCard data={e} />
-          </GridCol>
-        ))}
+        {isLoading ? (
+          <CustomLoader />
+        ) : (
+          data?.map((e, i) => (
+            <GridCol span={{ base: 6, md: 4 }} key={i}>
+              <RetailCard data={e} />
+            </GridCol>
+          ))
+        )}
       </Grid>
       <Drawer
         opened={opened}

@@ -1,5 +1,6 @@
 "use client"
 
+import CustomLoader from "@/components/core/loading";
 import AuthRetailForm from "@/components/retail/auth/AuthRetailForm";
 import { useAuthRetailInit } from "@/hooks/useAuthInit";
 import { useRetailAuthDrawer } from "@/hooks/useRetailAuthDrawer";
@@ -35,7 +36,7 @@ function RetailLayout({ children }: { children: React.ReactNode }) {
   };
 
   if (loading) {
-    return <span>Loading...</span>;
+    return <CustomLoader />;
   }
 
   return (

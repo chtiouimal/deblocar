@@ -7,6 +7,7 @@ import { Box } from "@mantine/core";
 
 function RetailView() {
   const { data, isLoading, error } = useGetParametersQuery();
+
   return (
     <div
       style={{
@@ -20,7 +21,7 @@ function RetailView() {
       {/* <Box maw="300" style={{margin: "auto"}}>
         <RetailForm data={data} />
       </Box> */}
-      <RetailGrid data={data} />
+      <RetailGrid data={data} isLoading={isLoading} />
     </div>
   );
 }

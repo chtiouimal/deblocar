@@ -36,6 +36,7 @@ import { RootState } from "@/store/store";
 import { useLogoutMutation } from "@/lib/api/authApi";
 import { colors } from "@/theme/colors";
 import { useDisclosure } from "@mantine/hooks";
+import CustomLoader from "@/components/core/loading";
 
 const mockdata = [
   { label: "Dashboard", icon: ChartBarIcon, link: "/admin/dashboard" },
@@ -157,7 +158,7 @@ function AdminLayout({ children }: { children: React.ReactNode }) {
   };
 
   if (loading || !user) {
-    return <span>Loading...</span>;
+    return <CustomLoader />;
   }
 
   const links = mockdata.map((item) => (

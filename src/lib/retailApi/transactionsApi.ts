@@ -12,6 +12,8 @@ export const transactionsApi = retailBaseApi.injectEndpoints({
           total: number;
           pages: number;
         };
+        totalConsumed: number;
+        totalTopups: number;
       },
       {
         page?: number;
