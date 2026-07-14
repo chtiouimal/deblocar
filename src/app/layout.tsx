@@ -13,6 +13,8 @@ import {
 import { theme } from "@/theme";
 import "dayjs/locale/fr";
 import { DatesProvider } from "@mantine/dates";
+import { Notifications } from "@mantine/notifications";
+import "@mantine/notifications/styles.css";
 
 // export const metadata = {
 //   title: "Deblocar",
@@ -49,6 +51,7 @@ export default function RootLayout({
       </head>
       <body>
         <MantineProvider theme={theme} defaultColorScheme="dark">
+          <Notifications position="top-center" />
           <DatesProvider
             settings={{
               locale: "fr",

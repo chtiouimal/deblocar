@@ -28,6 +28,7 @@ import { initialDevisFormData } from "@/constants/devis";
 import ConfirmationDevis from "./steps/ConfirmationDevis";
 import { useRouter } from "next/navigation";
 import { useDisclosure } from "@mantine/hooks";
+import { notify } from "@/lib/notifications";
 
 type StepErrors = StepInfoErrors & StepServicesErrors;
 
@@ -169,8 +170,13 @@ function DevisStepper() {
       setData(initialDevisFormData);
       setStepErrors({});
       setStep(4);
-    } catch (err) {
-      console.error("Submit error:", err);
+      notify.success({
+        message: "Devis créé avec succès",
+      });
+    } catch (err: any) {
+      notify.error({
+        message: err?.data?.message ?? "Une erreur est survenue.",
+      });
     } finally {
       setLoading(false);
     }

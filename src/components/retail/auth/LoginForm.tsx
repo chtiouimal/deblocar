@@ -1,4 +1,5 @@
 import { useRetailAuthDrawer } from "@/hooks/useRetailAuthDrawer";
+import { notify } from "@/lib/notifications";
 import { setRetailUser } from "@/retailStore/retailAuthSlice";
 import { Button, PasswordInput, Stack, TextInput } from "@mantine/core";
 import { useState } from "react";
@@ -23,7 +24,8 @@ function LoginForm() {
     }));
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setLoading(true);
     setError("");
 
@@ -45,16 +47,27 @@ function LoginForm() {
 
       dispatch(setRetailUser(data.user));
 
+      notify.success({
+        // title: "Connexion réussie",
+        // message: "Bienvenue sur votre espace Deblocar.",
+        message: "Connexion réussie",
+      });
+
       close();
     } catch (err: any) {
       setError(err.message);
+      notify.error({
+        title: "Échec de la connexion",
+        message:
+          err?.data?.message ?? "Adresse e-mail ou mot de passe incorrect.",
+      });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Stack>
+    <form onSubmit={handleSubmit}>
       <TextInput
         label="Email"
         name="email"
@@ -67,10 +80,10 @@ function LoginForm() {
         value={loginForm.password}
         onChange={handleInputChange}
       />
-      <Button onClick={handleSubmit} mt={32}>
+      <Button type="submit" mt={32} w="100%">
         {!loading ? "Se connecter" : "en cours ..."}
       </Button>
-    </Stack>
+    </form>
   );
 }
 

@@ -1,4 +1,5 @@
 import { useRetailAuthDrawer } from "@/hooks/useRetailAuthDrawer";
+import { notify } from "@/lib/notifications";
 import { useLazyGetGenerateCodeQuery } from "@/lib/retailApi/parametersApi";
 import { updateBalance } from "@/retailStore/retailAuthSlice";
 import { RootRetailState } from "@/retailStore/retailStore";
@@ -97,10 +98,24 @@ function RetailForm({ data }: RetailFormProps) {
       }).unwrap();
 
       dispatch(updateBalance(result.balance));
+      notify.success({
+        message: "Le code a été généré avec succès.",
+      });
+    } catch (err: any) {
+      const message =
+        err?.data?.message || "Une erreur est survenue lors de la génération.";
 
-      console.log("PIN:", result.pin);
-    } catch (error) {
-      console.error(error);
+      if (err?.data?.message === "Insufficient tokens") {
+        notify.warning({
+          title: "Solde insuffisant",
+          message: "Vous n'avez pas assez de crédits pour générer ce code.",
+        });
+      } else {
+        notify.error({
+          title: "Erreur",
+          message,
+        });
+      }
     }
   };
 

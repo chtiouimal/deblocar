@@ -27,6 +27,7 @@ import {
   useDeleteServiceMutation,
 } from "@/lib/api/servicesApi";
 import CustomLoader from "@/components/core/loading";
+import { notify } from "@/lib/notifications";
 
 interface Service {
   _id: string;
@@ -87,8 +88,14 @@ export default function ServicesPage() {
         id: editingService._id,
         ...payload,
       });
+      notify.success({
+        message: "Service modifié avec succès.",
+      });
     } else {
       await createService(payload);
+      notify.success({
+        message: "Service créé avec succès.",
+      });
     }
 
     setOpened(false);
@@ -105,6 +112,10 @@ export default function ServicesPage() {
 
     await deleteService(confirmDelete).unwrap();
     setConfirmDelete(null);
+    notify.success({
+      title: "Suppression réussie",
+      message: "Le service a été supprimé avec succès.",
+    });
   };
 
   if (isLoading) {
@@ -141,7 +152,7 @@ export default function ServicesPage() {
 
               <Table.Td>
                 <Badge color={service.isDeleted ? "red" : "green"}>
-                  {service.isDeleted ? "Deleted" : "Active"}
+                  {service.isDeleted ? "Supprimé" : "Actif"}
                 </Badge>
               </Table.Td>
 

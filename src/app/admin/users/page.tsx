@@ -25,6 +25,7 @@ import {
   useDeleteUserMutation,
 } from "@/lib/api/adminApi";
 import CustomLoader from "@/components/core/loading";
+import { notify } from "@/lib/notifications";
 
 type User = {
   _id: string;
@@ -89,8 +90,14 @@ export default function UsersPage() {
         name: form.name,
         email: form.email,
       }).unwrap();
+      notify.success({
+        message: "Utilisateur modifié avec succès.",
+      });
     } else {
       await createUser(form).unwrap();
+      notify.success({
+        message: "Utilisateur créé avec succès.",
+      });
     }
 
     setOpened(false);
@@ -105,6 +112,10 @@ export default function UsersPage() {
 
     await deleteUser(confirmDelete).unwrap();
     setConfirmDelete(null);
+    notify.success({
+      title: "Suppression réussie",
+      message: "L'utilisateur a été supprimé avec succès.",
+    });
   };
 
   // -------------------

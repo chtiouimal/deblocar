@@ -4,6 +4,7 @@ import CustomLoader from "@/components/core/loading";
 import AuthRetailForm from "@/components/retail/auth/AuthRetailForm";
 import { useAuthRetailInit } from "@/hooks/useAuthInit";
 import { useRetailAuthDrawer } from "@/hooks/useRetailAuthDrawer";
+import { notify } from "@/lib/notifications";
 import { useRetailLogoutMutation } from "@/lib/retailApi/authRetailApi";
 import { setRetailUser } from "@/retailStore/retailAuthSlice";
 import { RootRetailState } from "@/retailStore/retailStore";
@@ -30,6 +31,10 @@ function RetailLayout({ children }: { children: React.ReactNode }) {
       await logout().unwrap();
 
       dispatch(setRetailUser(null));
+      notify.success({
+        title: "Déconnexion",
+        message: "Vous avez été déconnecté avec succès.",
+      });
     } catch (err) {
       console.error(err);
     }

@@ -33,6 +33,7 @@ import CustomLoader from "@/components/core/loading";
 import CustomScore from "@/components/shared/score";
 import { CAR_DATA } from "@/constants/devis";
 import { useGetServicesQuery } from "@/lib/api/servicesApi";
+import { notify } from "@/lib/notifications";
 
 const VIN_REQUIRED_BRANDS = ["BMW", "Mercedes"];
 
@@ -116,9 +117,18 @@ export default function LeadPage() {
     setFormErrors(errors);
 
     if (!isValid) return;
+    try {
+      await createLead(form).unwrap();
+      setOpened(false);
 
-    await createLead(form).unwrap();
-    setOpened(false);
+      notify.success({
+        message: "Lead créé avec succès.",
+      });
+    } catch (err: any) {
+      notify.error({
+        message: err?.data?.message ?? "Échec lors de la création de lead.",
+      });
+    }
   };
 
   const openCreate = () => {
@@ -348,20 +358,30 @@ export default function LeadPage() {
             onClick={async () => {
               if (!selectedLead) return;
 
-              await createRdv({
-                id: selectedLead._id,
-                date: rdvForm.date,
-                time: rdvForm.time,
-                location: rdvForm.location,
-              });
+              try {
+                await createRdv({
+                  id: selectedLead._id,
+                  date: rdvForm.date,
+                  time: rdvForm.time,
+                  location: rdvForm.location,
+                });
 
-              setRdvDrawer(false);
-              setSelectedLead(null);
-              setRdvForm({
-                date: "",
-                time: "",
-                location: "",
-              });
+                setRdvDrawer(false);
+                setSelectedLead(null);
+                setRdvForm({
+                  date: "",
+                  time: "",
+                  location: "",
+                });
+                notify.success({
+                  message: "RDV créé avec succès.",
+                });
+              } catch (err: any) {
+                notify.error({
+                  message:
+                    err?.data?.message ?? "Échec lors de la création du RDV.",
+                });
+              }
             }}
           >
             Confirmer le RDV

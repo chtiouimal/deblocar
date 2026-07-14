@@ -1,4 +1,5 @@
 import { useRetailAuthDrawer } from "@/hooks/useRetailAuthDrawer";
+import { notify } from "@/lib/notifications";
 import { setRetailUser } from "@/retailStore/retailAuthSlice";
 import { Button, PasswordInput, Stack, TextInput } from "@mantine/core";
 import { useState } from "react";
@@ -24,7 +25,8 @@ function SignupForm() {
     }));
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setLoading(true);
     setError("");
     try {
@@ -49,16 +51,26 @@ function SignupForm() {
 
       dispatch(setRetailUser(data.user));
 
+      notify.success({
+        title: "Compte créé avec succès",
+        message: "Connexion réussie",
+      });
+
       close();
     } catch (err: any) {
       setError(err.message);
+      notify.error({
+        title: "Échec de la connexion",
+        message:
+          err?.data?.message ?? "Adresse e-mail ou mot de passe incorrect.",
+      });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Stack>
+    <form onSubmit={handleSubmit}>
       <TextInput
         label="Nom"
         name="name"
@@ -77,10 +89,10 @@ function SignupForm() {
         value={signupForm.password}
         onChange={handleInputChange}
       />
-      <Button onClick={handleSubmit} mt={32}>
+      <Button type="submit" mt={32}>
         {loading ? "En cours ..." : "S'inscrire"}
       </Button>
-    </Stack>
+    </form>
   );
 }
 

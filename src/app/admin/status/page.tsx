@@ -5,8 +5,6 @@ import {
   Table,
   Group,
   Button,
-  Loader,
-  Box,
   Modal,
   UnstyledButton,
   Drawer,
@@ -24,6 +22,7 @@ import {
 
 import { TrashIcon, PlusIcon } from "@phosphor-icons/react";
 import CustomLoader from "@/components/core/loading";
+import { notify } from "@/lib/notifications";
 
 type StatusForm = {
   label: string;
@@ -50,6 +49,9 @@ export default function StatusPage() {
     await createStatus(form);
     setForm({ label: "", color: "" });
     setOpened(false);
+    notify.success({
+      message: "Status créé avec succès.",
+    });
   };
 
   const handleDelete = async () => {
@@ -57,6 +59,11 @@ export default function StatusPage() {
 
     await deleteStatus(confirmDelete);
     setConfirmDelete(null);
+
+    notify.success({
+      title: "Suppression réussie",
+      message: "Le status a été supprimé avec succès.",
+    });
   };
 
   if (isLoading) {

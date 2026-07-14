@@ -37,6 +37,7 @@ import { useLogoutMutation } from "@/lib/api/authApi";
 import { colors } from "@/theme/colors";
 import { useDisclosure } from "@mantine/hooks";
 import CustomLoader from "@/components/core/loading";
+import { notify } from "@/lib/notifications";
 
 const mockdata = [
   { label: "Dashboard", icon: ChartBarIcon, link: "/admin/dashboard" },
@@ -155,6 +156,10 @@ function AdminLayout({ children }: { children: React.ReactNode }) {
   const handleLogout = async () => {
     await logout();
     router.replace("/login");
+    notify.success({
+      title: "Déconnexion",
+      message: "Vous avez été déconnecté avec succès.",
+    });
   };
 
   if (loading || !user) {

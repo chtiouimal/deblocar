@@ -16,6 +16,7 @@ import {
 } from "@mantine/core";
 import Link from "next/link";
 import Image from "next/image";
+import { notify } from "@/lib/notifications";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -25,7 +26,8 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleLogin = async () => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setLoading(true);
     setError("");
 
@@ -54,8 +56,18 @@ export default function LoginPage() {
       }
 
       router.replace("/admin/dashboard");
+
+      notify.success({
+        title: "Connexion réussie",
+        message: "Bienvenue sur votre espace Deblocar.",
+      });
     } catch (err: any) {
       setError(err.message);
+      notify.error({
+        title: "Échec de la connexion",
+        message:
+          err?.data?.message ?? "Adresse e-mail ou mot de passe incorrect.",
+      });
     } finally {
       setLoading(false);
     }
@@ -104,7 +116,7 @@ export default function LoginPage() {
             </Link>
           </Group>
 
-          <Flex direction="column">
+          <form onSubmit={handleLogin}>
             <TextInput
               label="Email"
               value={email}
@@ -119,12 +131,12 @@ export default function LoginPage() {
               mb="sm"
             />
 
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            {/* {error && <p style={{ color: "red" }}>{error}</p>} */}
 
-            <Button fullWidth onClick={handleLogin} mt={16} loading={loading}>
+            <Button fullWidth type="submit" mt={16} loading={loading}>
               Login
             </Button>
-          </Flex>
+          </form>
           <Text fz={14} style={{ textAlign: "center" }}>
             © Deblocar — All rights reserved
           </Text>
