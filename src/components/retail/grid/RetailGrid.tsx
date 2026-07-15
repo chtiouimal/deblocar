@@ -6,6 +6,7 @@ import RetailForm from "../form/RetailForm";
 import Link from "next/link";
 import { XIcon } from "@phosphor-icons/react";
 import CustomLoader from "@/components/core/loading";
+import { colors } from "@/theme/colors";
 
 interface RetailGridProps {
   data: RetailParameters[];
@@ -37,7 +38,10 @@ function RetailGrid({ data, isLoading }: RetailGridProps) {
           {data?.ntgName}
         </Text>
 
-        <Text mt="xs" c="dimmed" size="sm">
+        <Text mt="xs" c="dimmed" size="xs">
+          {data?.displayName} tokens
+        </Text>
+        <Text mt={8} size="sm" c={colors.glowingRed[5]}>
           {data?.tokenCost} tokens
         </Text>
       </Card>
@@ -46,7 +50,7 @@ function RetailGrid({ data, isLoading }: RetailGridProps) {
 
   return (
     <>
-      <Grid>
+      <Grid mt={64} pb={32}>
         {isLoading ? (
           <CustomLoader />
         ) : (

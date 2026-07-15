@@ -88,3 +88,10 @@ a:hover {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+.mantine-Button-root[data-disabled],
+.mantine-Button-root:disabled {
+  background-color: rgba(220, 31, 38, 0.6) !important;
+  color: rgba(255, 255, 255, 0.45) !important;
+  opacity: 1 !important;
+}

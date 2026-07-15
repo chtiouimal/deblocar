@@ -136,7 +136,9 @@ function RetailForm({ data }: RetailFormProps) {
           <Flex direction="column" gap={16} mb={64}>
             <Title order={3}>{data?.ntgName}</Title>
             <Text fw={600}>{data?.tokenCost} tokens</Text>
-            <Text>{data?.displayName}</Text>
+            <Text c="dimmed" size="xs">
+              {data?.displayName}
+            </Text>
           </Flex>
           <Stack>
             <TextInput
@@ -162,7 +164,7 @@ function RetailForm({ data }: RetailFormProps) {
               onChange={(value) => handleSelectChange("version", value)}
             />
             <Button mt={32} onClick={handleSubmit}>
-              {isLoading ? "En cours" : "Envoyer"}
+              {isLoading ? "Génération en cours..." : "Générer le code"}
             </Button>
           </Stack>
         </Flex>

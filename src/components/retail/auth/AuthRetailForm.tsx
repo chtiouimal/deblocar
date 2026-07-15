@@ -1,5 +1,5 @@
 // components/auth/AuthDrawer.tsx
-import { Box, Drawer, UnstyledButton } from "@mantine/core";
+import { Box, Drawer, Text, UnstyledButton } from "@mantine/core";
 import { useState } from "react";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
@@ -23,7 +23,9 @@ export default function AuthDrawer() {
         style={{ display: "flex", justifyContent: "center" }}
         onClick={() => setHasAccount((prev) => !prev)}
       >
-        {hasAccount ? "Vous n'avez pas de compte?" : "Vous avez un compte?"}
+        <Text size="sm">
+          {hasAccount ? "Vous n'avez pas de compte?" : "Vous avez un compte?"}
+        </Text>
       </UnstyledButton>
     </Drawer>
   );

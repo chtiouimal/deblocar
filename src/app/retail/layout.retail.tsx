@@ -45,43 +45,60 @@ function RetailLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <main className="leftBg" style={{ minHeight: "100vh" }}>
-      <Flex
-        justify="space-between"
-        align="center"
-        p={32}
-        style={{ maxWidth: 1440, margin: "0 auto" }}
+    <>
+      <Box
+        className="leftBg"
+        h="100vh"
+        w="100%"
+        style={{ position: "fixed" }}
+      />
+
+      <main
+        style={{
+          position: "relative",
+          zIndex: 1,
+          minHeight: "100vh",
+        }}
       >
-        <Link href="/" style={{ opacity: 1 }}>
-          <Image
-            src="/Deblocar_small.svg"
-            alt="deblocar-logo"
-            width={192}
-            height={30}
-          />
-        </Link>
-        {user ? (
-          <Flex gap={16} align="center">
-            <Flex gap={8}>
-              <CoinsIcon size={26} weight="thin" />
-              {user.balance}
+        <Flex
+          justify="space-between"
+          align="center"
+          p={32}
+          style={{ maxWidth: 1440, margin: "0 auto" }}
+        >
+          <Link href="/" style={{ opacity: 1 }}>
+            <Image
+              src="/Deblocar_small.svg"
+              alt="deblocar-logo"
+              width={192}
+              height={30}
+            />
+          </Link>
+
+          {user ? (
+            <Flex gap={16} align="center">
+              <Flex gap={8}>
+                <CoinsIcon size={26} weight="thin" />
+                {user.balance}
+              </Flex>
+
+              <Link href="/retail/profile">
+                <Avatar radius="xl" />
+              </Link>
+
+              <UnstyledButton onClick={handleLogout}>
+                Se déconnecter
+              </UnstyledButton>
             </Flex>
-            <Link href="/retail/profile">
-              <Avatar radius="xl" />
-            </Link>
-            <UnstyledButton onClick={handleLogout}>
-              Se déconnecter
-            </UnstyledButton>
-          </Flex>
-        ) : (
-          <Button onClick={open}>Se connecter</Button>
-        )}
-      </Flex>
-      <Box>
+          ) : (
+            <Button onClick={open}>Se connecter</Button>
+          )}
+        </Flex>
+
         {children}
         <AuthRetailForm />
-      </Box>
-    </main>
+      </main>
+    </>
   );
 }
 

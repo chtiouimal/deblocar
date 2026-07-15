@@ -80,7 +80,7 @@ function LoginForm() {
         value={loginForm.password}
         onChange={handleInputChange}
       />
-      <Button type="submit" mt={32} w="100%">
+      <Button type="submit" mt={32} w="100%" disabled={loading}>
         {!loading ? "Se connecter" : "en cours ..."}
       </Button>
     </form>

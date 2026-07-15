@@ -89,7 +89,7 @@ function SignupForm() {
         value={signupForm.password}
         onChange={handleInputChange}
       />
-      <Button type="submit" mt={32}>
+      <Button type="submit" mt={32} disabled={loading}>
         {loading ? "En cours ..." : "S'inscrire"}
       </Button>
     </form>

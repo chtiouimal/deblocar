@@ -11,6 +11,7 @@ import { RetailTransactionType } from "@/types/retail";
 import {
   Box,
   Card,
+  Flex,
   Grid,
   GridCol,
   Group,
@@ -22,6 +23,7 @@ import {
 } from "@mantine/core";
 import CustomLoader from "@/components/core/loading";
 import { colors } from "@/theme/colors";
+import { CoinsIcon, EnvelopeIcon } from "@phosphor-icons/react";
 
 function RetailProfileView() {
   const router = useRouter();
@@ -92,9 +94,27 @@ function RetailProfileView() {
     <Box style={{ maxWidth: 1440, margin: "0 auto", minHeight: "80vh" }} p={32}>
       <Grid mb={32}>
         <GridCol span={{ base: 12, md: 7 }}>
-          <Title order={3}>{user.name}</Title>
-          <Text>{user.email}</Text>
-          <Text>{user.balance} crédits disponibles</Text>
+          <Flex
+            pt="sm"
+            pb="sm"
+            direction="column"
+            justify="space-between"
+            h="100%"
+          >
+            <Title order={3}>{user.name}</Title>
+            <Flex direction="column" gap={16}>
+              <Flex align="center" gap={8}>
+                <EnvelopeIcon size={20} weight="thin" />
+                <Text size="md">{user.email}</Text>
+              </Flex>
+              <Flex align="center" gap={8}>
+                <CoinsIcon size={20} weight="thin" />
+                <Text size="md">
+                  <b>{user.balance}</b> crédits disponibles
+                </Text>
+              </Flex>
+            </Flex>
+          </Flex>
         </GridCol>
 
         <GridCol span={{ base: 12, md: 5 }}>

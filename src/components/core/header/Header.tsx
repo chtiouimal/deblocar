@@ -4,10 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "./header.module.css";
 import { Text } from "@mantine/core";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 function Header() {
   const pathname = usePathname();
+  const router = useRouter();
   const isDevis = pathname === "/devis";
   const handleNavClick = (sectionId: string) => {
     if (pathname === "/") {
@@ -50,6 +51,13 @@ function Header() {
               <button onClick={() => handleNavClick("process")}>
                 <Text size="md" fw={400}>
                   Process
+                </Text>
+              </button>
+            </li>
+            <li>
+              <button onClick={() => router.push("/retail")}>
+                <Text size="md" fw={400}>
+                  Retail
                 </Text>
               </button>
             </li>
