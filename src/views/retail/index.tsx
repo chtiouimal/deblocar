@@ -3,7 +3,7 @@
 import RetailForm from "@/components/retail/form/RetailForm";
 import RetailGrid from "@/components/retail/grid/RetailGrid";
 import { useGetParametersQuery } from "@/lib/retailApi/parametersApi";
-import { Box } from "@mantine/core";
+import { Box, Flex, Title } from "@mantine/core";
 
 function RetailView() {
   const { data, isLoading, error } = useGetParametersQuery();
@@ -21,6 +21,9 @@ function RetailView() {
       {/* <Box maw="300" style={{margin: "auto"}}>
         <RetailForm data={data} />
       </Box> */}
+      <Flex h={100} align="center">
+        <Title order={3}>Mises à jour GPS Mercedes</Title>
+      </Flex>
       <RetailGrid data={data} isLoading={isLoading} />
     </div>
   );

@@ -50,7 +50,12 @@ function RetailGrid({ data, isLoading }: RetailGridProps) {
 
   return (
     <>
-      <Grid mt={64} pb={32}>
+      <Flex justify="flex-end" w="100%">
+        <Text fz="sm">
+          <b>{data?.length}</b> produit(s)
+        </Text>
+      </Flex>
+      <Grid mt={16} pb={32}>
         {isLoading ? (
           <CustomLoader />
         ) : (

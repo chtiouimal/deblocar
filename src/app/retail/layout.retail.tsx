@@ -8,7 +8,16 @@ import { notify } from "@/lib/notifications";
 import { useRetailLogoutMutation } from "@/lib/retailApi/authRetailApi";
 import { setRetailUser } from "@/retailStore/retailAuthSlice";
 import { RootRetailState } from "@/retailStore/retailStore";
-import { Avatar, Box, Button, Flex, UnstyledButton } from "@mantine/core";
+import {
+  Avatar,
+  Box,
+  Burger,
+  Button,
+  Drawer,
+  Flex,
+  UnstyledButton,
+} from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { CoinsIcon } from "@phosphor-icons/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -19,6 +28,8 @@ function RetailLayout({ children }: { children: React.ReactNode }) {
   const { user, loading } = useSelector(
     (state: RootRetailState) => state.retailAuth,
   );
+  const [sidebarOpened, { open: openSidebar, close: closeSidebar }] =
+    useDisclosure(false);
 
   const { open } = useRetailAuthDrawer();
 
@@ -66,14 +77,24 @@ function RetailLayout({ children }: { children: React.ReactNode }) {
           p={32}
           style={{ maxWidth: 1440, margin: "0 auto" }}
         >
-          <Link href="/" style={{ opacity: 1 }}>
-            <Image
-              src="/Deblocar_small.svg"
-              alt="deblocar-logo"
-              width={192}
-              height={30}
+          <Flex gap={8} align="center">
+            <Burger
+              opened={sidebarOpened}
+              onClick={openSidebar}
+              size="md"
+              lineSize={2}
             />
-          </Link>
+            {!sidebarOpened && (
+              <Link href="/" style={{ opacity: 1 }}>
+                <Image
+                  src="/Deblocar_small.svg"
+                  alt="deblocar-logo"
+                  width={192}
+                  height={30}
+                />
+              </Link>
+            )}
+          </Flex>
 
           {user ? (
             <Flex gap={16} align="center">
@@ -98,6 +119,26 @@ function RetailLayout({ children }: { children: React.ReactNode }) {
         {children}
         <AuthRetailForm />
       </main>
+      <Drawer
+        opened={sidebarOpened}
+        onClose={closeSidebar}
+        position="left"
+        size={320}
+        withCloseButton={false}
+        overlayProps={{ opacity: 0.2, blur: 3 }}
+      >
+        <Flex direction="column">
+          <Link href="/" style={{ opacity: 1, marginBottom: 32 }}>
+            <Image
+              src="/Deblocar_small.svg"
+              alt="deblocar-logo"
+              width={192}
+              height={30}
+            />
+          </Link>
+          <Link href="/retail">Mises à jour GPS Mercedes</Link>
+        </Flex>
+      </Drawer>
     </>
   );
 }
