@@ -39,16 +39,18 @@ function RetailGrid({ data, isLoading }: RetailGridProps) {
         </Text>
 
         <Text mt="xs" c="dimmed" size="xs">
-          {data?.displayName} tokens
+          {data?.displayName}
         </Text>
         <Text mt={8} size="sm" c={colors.glowingRed[5]}>
-          {data?.tokenCost} tokens
+          {data?.price} TND
         </Text>
       </Card>
     );
   };
 
-  return (
+  return isLoading ? (
+    <CustomLoader />
+  ) : (
     <>
       <Flex justify="flex-end" w="100%">
         <Text fz="sm">
@@ -56,15 +58,11 @@ function RetailGrid({ data, isLoading }: RetailGridProps) {
         </Text>
       </Flex>
       <Grid mt={16} pb={32}>
-        {isLoading ? (
-          <CustomLoader />
-        ) : (
-          data?.map((e, i) => (
-            <GridCol span={{ base: 6, md: 4 }} key={i}>
-              <RetailCard data={e} />
-            </GridCol>
-          ))
-        )}
+        {data?.map((e, i) => (
+          <GridCol span={{ base: 6, md: 4 }} key={i}>
+            <RetailCard data={e} />
+          </GridCol>
+        ))}
       </Grid>
       <Drawer
         opened={opened}

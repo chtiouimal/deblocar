@@ -2,6 +2,7 @@ export interface RetailParameters {
   displayName: string;
   shortName: string;
   tokenCost: string;
+  price: number;
   ecu: string;
   images: string[];
   ntgName: string;
