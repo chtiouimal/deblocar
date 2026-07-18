@@ -112,7 +112,7 @@ function RetailLayout({ children }: { children: React.ReactNode }) {
               </UnstyledButton>
             </Flex>
           ) : (
-            <Button onClick={open}>Se connecter</Button>
+            <Button onClick={() => open()}>Se connecter</Button>
           )}
         </Flex>
 

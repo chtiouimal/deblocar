@@ -1,17 +1,38 @@
-import { createContext, useContext, ReactNode } from "react";
+import { createContext, useContext, ReactNode, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 
-const RetailAuthDrawerContext = createContext<{
-  open: () => void;
+interface RetailAuthDrawerContextType {
+  open: (options?: { isGeneration?: boolean }) => void;
   close: () => void;
   opened: boolean;
-} | null>(null);
+  isGeneration: boolean;
+}
 
-export function RetailAuthDrawerProvider({ children }: { children: ReactNode }) {
-  const [opened, { open, close }] = useDisclosure(false);
+const RetailAuthDrawerContext =
+  createContext<RetailAuthDrawerContextType | null>(null);
+
+export function RetailAuthDrawerProvider({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const [opened, { open: openDrawer, close }] = useDisclosure(false);
+  const [isGeneration, setIsGeneration] = useState(false);
+
+  const open = (options?: { isGeneration?: boolean }) => {
+    setIsGeneration(options?.isGeneration ?? false);
+    openDrawer();
+  };
 
   return (
-    <RetailAuthDrawerContext.Provider value={{ opened, open, close }}>
+    <RetailAuthDrawerContext.Provider
+      value={{
+        opened,
+        open,
+        close,
+        isGeneration,
+      }}
+    >
       {children}
     </RetailAuthDrawerContext.Provider>
   );
@@ -19,6 +40,12 @@ export function RetailAuthDrawerProvider({ children }: { children: ReactNode }) 
 
 export function useRetailAuthDrawer() {
   const ctx = useContext(RetailAuthDrawerContext);
-  if (!ctx) throw new Error("useAuthDrawer must be used within AuthDrawerProvider");
+
+  if (!ctx) {
+    throw new Error(
+      "useRetailAuthDrawer must be used within RetailAuthDrawerProvider",
+    );
+  }
+
   return ctx;
 }

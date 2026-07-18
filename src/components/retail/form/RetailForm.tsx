@@ -1,3 +1,4 @@
+import { MERCEDES_NTG_MODELS } from "@/constants/retail";
 import { useRetailAuthDrawer } from "@/hooks/useRetailAuthDrawer";
 import { notify } from "@/lib/notifications";
 import { useLazyGetGenerateCodeQuery } from "@/lib/retailApi/parametersApi";
@@ -9,6 +10,8 @@ import {
   RetailVersions,
 } from "@/types/retail";
 import {
+  Blockquote,
+  Box,
   Button,
   Flex,
   Grid,
@@ -21,6 +24,7 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
+import { WarningIcon } from "@phosphor-icons/react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -84,9 +88,29 @@ function RetailForm({ data }: RetailFormProps) {
     }));
   };
 
+  function formatVersion(value: string) {
+    const match = value.match(/^(\d{4})\s*\(([^)]+)\)$/);
+
+    if (!match) return value;
+
+    const [, year, version] = match;
+
+    return `${year} - ${version}`;
+  }
+
+  function getNTGModels(displayName: string) {
+    const ntg = MERCEDES_NTG_MODELS.find((item) =>
+      displayName.startsWith(item.ntg),
+    );
+
+    return ntg?.models ?? [];
+  }
+
+  const models = getNTGModels(data?.displayName ?? "");
+
   const handleSubmit = async () => {
     if (!user) {
-      open();
+      open({ isGeneration: true });
       return;
     }
 
@@ -133,9 +157,9 @@ function RetailForm({ data }: RetailFormProps) {
           />
         )}
       </GridCol>
-      <GridCol span={{ base: 12, md: 5 }} p="0 32px 32px">
+      <GridCol span={{ base: 12, md: 5 }} p="0 0 32px 32px">
         <ScrollArea h="76vh">
-          <Flex direction="column" justify="space-between" h="100%" pr={16}>
+          <Flex direction="column" justify="space-between" h="100%" pr={20}>
             <Flex direction="column" gap={16} mb={64}>
               <Title order={3}>{data?.ntgName}</Title>
               <Text fw={600}>{data?.price} TND</Text>
@@ -170,21 +194,36 @@ function RetailForm({ data }: RetailFormProps) {
                 {isLoading ? "Génération en cours..." : "Générer le code"}
               </Button>
             </Stack>
-            <Stack mt={32}>
-              <Text>
+            <Stack mt={64}>
+              <Text fz="sm">
                 PIN d'activation des cartes de navigation Mercedes-Benz pour les
-                systèmes NTG6 (MBUX – première génération).
+                systèmes {data?.ntgName}.
               </Text>
+
+              <Flex w="100%" justify="center">
+                <Blockquote
+                  w="90%"
+                  color="red"
+                  iconSize={38}
+                  // cite="– Forrest Gump"
+                  icon={<WarningIcon size={20} weight="thin" />}
+                  mt="xl"
+                >
+                  Un PC Windows est requis pour installer cette mise à jour — le
+                  Mercedes Download Manager fonctionne uniquement sur Windows.
+                  Les appareils Mac et mobiles ne sont pas pris en charge.
+                </Blockquote>
+              </Flex>
 
               <Title order={6} mt={16}>
                 Ce que vous recevrez par e-mail
               </Title>
               <List>
-                <List.Item>
+                <List.Item fz="sm">
                   Un code PIN d'activation Mercedes-Benz, généré pour votre VIN
                   et la version de cartographie sélectionnée.
                 </List.Item>
-                <List.Item>
+                <List.Item fz="sm">
                   Mercedes Download Manager, l'outil officiel permettant de
                   télécharger la cartographie, d'extraire les fichiers, de
                   préparer la clé USB et de copier les données en une seule
@@ -196,15 +235,15 @@ function RetailForm({ data }: RetailFormProps) {
                 Ce dont vous aurez besoin
               </Title>
               <List>
-                <List.Item>
+                <List.Item fz="sm">
                   Une clé USB d'au moins 32 Go (64 Go recommandés pour les
                   cartographies les plus récentes), formatée en FAT32 ou exFAT.
                 </List.Item>
-                <List.Item>
+                <List.Item fz="sm">
                   Un ordinateur sous Windows (nécessaire pour utiliser Mercedes
                   Download Manager).
                 </List.Item>
-                <List.Item>
+                <List.Item fz="sm">
                   Votre Mercedes-Benz, avec le moteur en marche ou le contact
                   mis pendant toute la durée de la mise à jour.
                 </List.Item>
@@ -213,7 +252,7 @@ function RetailForm({ data }: RetailFormProps) {
               <Title order={6} mt={16}>
                 Installation
               </Title>
-              <Text>
+              <Text fz="sm">
                 L'installation dure environ une heure, dont la majeure partie
                 est consacrée à la copie des fichiers. Aucun passage en atelier
                 ni outil de programmation n'est nécessaire.
@@ -223,23 +262,13 @@ function RetailForm({ data }: RetailFormProps) {
                 Compatibilité
               </Title>
               <List>
-                <List.Item>Classe A W177 (à partir de 05/2018)</List.Item>
-                <List.Item>Classe B W247 (à partir de 12/2018)</List.Item>
-                <List.Item>CLA Coupé C118 (à partir de 03/2019)</List.Item>
-                <List.Item>
-                  CLA Shooting Brake X118 (à partir de 07/2019)
-                </List.Item>
-                <List.Item>EQC N293 (millésime 2019 et suivants)</List.Item>
-                <List.Item>GLB X247 (à partir de 09/2019)</List.Item>
-                <List.Item>GLC X253 (à partir de 2019)</List.Item>
-                <List.Item>
-                  GLE Coupé C167 / W167 (millésime 2019 et suivants)
-                </List.Item>
-                <List.Item>GLS X167 (millésime 2019 et suivants)</List.Item>
-                <List.Item>Classe V W447 (à partir de 03/2020)</List.Item>
-                <List.Item>Sprinter W907 / W910 (à partir de 2018)</List.Item>
+                {models.map((model) => (
+                  <List.Item key={model.name} fz="sm">
+                    {model.name} ({model.codes.join(" / ")})
+                  </List.Item>
+                ))}
               </List>
-              <Text>
+              <Text fz="sm">
                 Le code PIN est associé à votre numéro de châssis (VIN) à 17
                 caractères ainsi qu'à la version de cartographie sélectionnée.
                 Veuillez vérifier attentivement votre VIN avant de passer
@@ -253,13 +282,15 @@ function RetailForm({ data }: RetailFormProps) {
                 Zones de couverture des cartographies
               </Title>
               <List>
-                <List.Item>Europe (V25 – 2026)</List.Item>
-                <List.Item>Amérique du Nord (V25 – 2026)</List.Item>
-                <List.Item>Amérique du Sud (V17 – 2026)</List.Item>
-                <List.Item>Afrique / Moyen-Orient (V10 – 2025)</List.Item>
-                <List.Item>Australie / Nouvelle-Zélande (V12 – 2025)</List.Item>
-                <List.Item>Inde (V19 – 2025)</List.Item>
-                <List.Item>Asie du Sud-Est (V19.1 – 2025)</List.Item>
+                {data?.regions?.map((region, i) => (
+                  <List.Item key={i} fz="sm">
+                    {region?.displayName} (
+                    {region?.versions
+                      ?.map((version, i) => formatVersion(version?.displayName))
+                      .join(", ")}
+                    )
+                  </List.Item>
+                ))}
               </List>
             </Stack>
           </Flex>
