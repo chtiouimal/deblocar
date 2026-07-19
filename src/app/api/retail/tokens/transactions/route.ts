@@ -18,13 +18,12 @@ export async function GET(req: Request) {
 
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "10");
-    const type = searchParams.get("type"); // topup | consume
+    const type = searchParams.get("type");
 
     const skip = (page - 1) * limit;
 
     const userId = new Types.ObjectId(auth.userId);
 
-    // History filter (with optional type)
     const filter: any = {
       retailUserId: userId,
     };
@@ -33,22 +32,24 @@ export async function GET(req: Request) {
       filter.type = type;
     }
 
-    // Stats should not depend on the selected tab/filter
     const statsFilter = {
       retailUserId: userId,
     };
 
     const [transactions, total, consumed, topups] = await Promise.all([
-      // Paginated transactions
       RetailTokenTransaction.find(filter)
+        .populate({
+          path: "orderId",
+          populate: {
+            path: "items",
+          },
+        })
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit),
 
-      // Total transactions with current filter
       RetailTokenTransaction.countDocuments(filter),
 
-      // Total consumed tokens
       RetailTokenTransaction.aggregate([
         {
           $match: {
@@ -66,7 +67,6 @@ export async function GET(req: Request) {
         },
       ]),
 
-      // Total topup tokens
       RetailTokenTransaction.aggregate([
         {
           $match: {
@@ -89,6 +89,7 @@ export async function GET(req: Request) {
       transactions,
 
       totalConsumed: consumed[0]?.totalConsumed ?? 0,
+
       totalTopups: topups[0]?.totalTopups ?? 0,
 
       pagination: {

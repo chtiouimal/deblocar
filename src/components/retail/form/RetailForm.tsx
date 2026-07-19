@@ -3,6 +3,7 @@ import { useRetailAuthDrawer } from "@/hooks/useRetailAuthDrawer";
 import { notify } from "@/lib/notifications";
 import { useLazyGetGenerateCodeQuery } from "@/lib/retailApi/parametersApi";
 import { updateBalance } from "@/retailStore/retailAuthSlice";
+import { addToCart } from "@/retailStore/retailCartSlice";
 import { RootRetailState } from "@/retailStore/retailStore";
 import {
   RetailParameters,
@@ -145,6 +146,34 @@ function RetailForm({ data }: RetailFormProps) {
     }
   };
 
+  const handleAddToCart = () => {
+    const item = {
+      id: `${formData.hu}-${formData.region}-${formData.version}-${formData.vin}`,
+
+      hu: formData.hu,
+
+      ntgName: data?.ntgName ?? "",
+
+      region: formData.region,
+
+      version: formData.version,
+
+      vin: formData.vin,
+
+      tokenCost: Number(data?.tokenCost ?? 0),
+
+      price: data?.price ?? 0,
+    };
+
+    dispatch(addToCart(item));
+
+    console.log("ADDING:", item);
+
+    notify.success({
+      message: "Produit ajouté au panier.",
+    });
+  };
+
   return (
     <Grid overflow="hidden" mah="76vh">
       <GridCol span={{ base: 12, md: 7 }}>
@@ -190,8 +219,11 @@ function RetailForm({ data }: RetailFormProps) {
                 disabled={!formData.region}
                 onChange={(value) => handleSelectChange("version", value)}
               />
-              <Button mt={32} onClick={handleSubmit}>
+              {/* <Button mt={32} onClick={handleSubmit}>
                 {isLoading ? "Génération en cours..." : "Générer le code"}
+              </Button> */}
+              <Button mt={32} onClick={handleAddToCart}>
+                Ajouter au panier
               </Button>
             </Stack>
             <Stack mt={64}>

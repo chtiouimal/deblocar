@@ -16,6 +16,8 @@ export interface IRetailTokenTransaction {
 
   balanceAfter: number;
 
+  orderId?: Types.ObjectId;
+
   note?: string;
 }
 
@@ -47,6 +49,12 @@ const RetailTokenTransactionSchema = new Schema<IRetailTokenTransaction>(
     balanceAfter: {
       type: Number,
       required: true,
+    },
+
+    orderId: {
+      type: Schema.Types.ObjectId,
+      ref: "RetailOrder",
+      default: null,
     },
 
     note: {

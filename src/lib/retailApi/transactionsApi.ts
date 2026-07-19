@@ -6,13 +6,16 @@ export const transactionsApi = retailBaseApi.injectEndpoints({
     getTransactions: builder.query<
       {
         transactions: RetailTransaction[];
+
         pagination: {
           page: number;
           limit: number;
           total: number;
           pages: number;
         };
+
         totalConsumed: number;
+
         totalTopups: number;
       },
       {
