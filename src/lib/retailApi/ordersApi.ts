@@ -1,5 +1,4 @@
 import { retailBaseApi } from "./retailBaseApi";
-import { RetailOrder } from "@/types/retail";
 
 export interface CreateOrderItem {
   hu: string;

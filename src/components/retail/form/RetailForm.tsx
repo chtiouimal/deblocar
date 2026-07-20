@@ -109,42 +109,42 @@ function RetailForm({ data }: RetailFormProps) {
 
   const models = getNTGModels(data?.displayName ?? "");
 
-  const handleSubmit = async () => {
-    if (!user) {
-      open({ isGeneration: true });
-      return;
-    }
+  // const handleSubmit = async () => {
+  //   if (!user) {
+  //     open({ isGeneration: true });
+  //     return;
+  //   }
 
-    try {
-      const result = await getGenerateCode({
-        hu: formData.hu,
-        region: formData.region,
-        version: formData.version,
-        // vin: formData.vin,
-        vin: "XXXXXXXXXXXXXXXXX",
-      }).unwrap();
+  //   try {
+  //     const result = await getGenerateCode({
+  //       hu: formData.hu,
+  //       region: formData.region,
+  //       version: formData.version,
+  //       // vin: formData.vin,
+  //       vin: "XXXXXXXXXXXXXXXXX",
+  //     }).unwrap();
 
-      dispatch(updateBalance(result.balance));
-      notify.success({
-        message: "Le code a été généré avec succès.",
-      });
-    } catch (err: any) {
-      const message =
-        err?.data?.message || "Une erreur est survenue lors de la génération.";
+  //     dispatch(updateBalance(result.balance));
+  //     notify.success({
+  //       message: "Le code a été généré avec succès.",
+  //     });
+  //   } catch (err: any) {
+  //     const message =
+  //       err?.data?.message || "Une erreur est survenue lors de la génération.";
 
-      if (err?.data?.message === "Insufficient tokens") {
-        notify.warning({
-          title: "Solde insuffisant",
-          message: "Vous n'avez pas assez de crédits pour générer ce code.",
-        });
-      } else {
-        notify.error({
-          title: "Erreur",
-          message,
-        });
-      }
-    }
-  };
+  //     if (err?.data?.message === "Insufficient tokens") {
+  //       notify.warning({
+  //         title: "Solde insuffisant",
+  //         message: "Vous n'avez pas assez de crédits pour générer ce code.",
+  //       });
+  //     } else {
+  //       notify.error({
+  //         title: "Erreur",
+  //         message,
+  //       });
+  //     }
+  //   }
+  // };
 
   const handleAddToCart = () => {
     const item = {
@@ -175,7 +175,11 @@ function RetailForm({ data }: RetailFormProps) {
   };
 
   return (
-    <Grid overflow="hidden" mah="76vh">
+    <Grid
+      overflow="hidden"
+      // h={{ base: "auto", md: "100vh" }}
+      mah={{ base: "unset", md: "100vh" }}
+    >
       <GridCol span={{ base: 12, md: 7 }}>
         {data?.images[0] && (
           <img
@@ -186,8 +190,11 @@ function RetailForm({ data }: RetailFormProps) {
           />
         )}
       </GridCol>
-      <GridCol span={{ base: 12, md: 5 }} p="0 0 32px 32px">
-        <ScrollArea h="76vh">
+      <GridCol
+        span={{ base: 12, md: 5 }}
+        p={{ base: "0 0 32px", md: "0 0 32px 32px" }}
+      >
+        <ScrollArea h={{ base: "auto", md: "76vh" }}>
           <Flex direction="column" justify="space-between" h="100%" pr={20}>
             <Flex direction="column" gap={16} mb={64}>
               <Title order={3}>{data?.ntgName}</Title>
@@ -198,7 +205,7 @@ function RetailForm({ data }: RetailFormProps) {
             </Flex>
             <Stack>
               <TextInput
-                label="VIN"
+                label="Numéro de châssis"
                 name="vin"
                 value={formData.vin}
                 onChange={handleInputChange}

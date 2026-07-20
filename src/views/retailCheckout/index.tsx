@@ -18,20 +18,25 @@ import {
   Box,
 } from "@mantine/core";
 import { useDispatch, useSelector } from "react-redux";
+import { removeFromCart } from "@/retailStore/retailCartSlice";
+import { TrashIcon } from "@phosphor-icons/react";
+import { ActionIcon } from "@mantine/core";
+import { formatPrice } from "@/utils/formatNumber";
 
 function RetailCheckoutView() {
   const dispatch = useDispatch();
-    const { open } = useRetailAuthDrawer();
-    const { user } = useSelector((state: RootRetailState) => state.retailAuth);
+  const { open } = useRetailAuthDrawer();
+  const { user } = useSelector((state: RootRetailState) => state.retailAuth);
   const items = useSelector((state: RootRetailState) => state.retailCart.items);
 
   const [createOrder, { isLoading }] = useCreateOrderMutation();
 
-  console.log("items: ", items)
+  console.log("items: ", items);
 
   const totalTokens = items.reduce((acc, item) => acc + item.tokenCost, 0);
-
-  const totalPrice = items.reduce((acc, item) => acc + item.price, 0);
+  const totalPrice = Number(
+    items.reduce((acc, item) => acc + item.price, 0).toFixed(2),
+  );
 
   const handleCreateOrder = async () => {
     if (!user) {
@@ -44,7 +49,7 @@ function RetailCheckoutView() {
           hu: item.hu,
           region: item.region,
           version: item.version,
-        //   vin: item.vin,
+          //   vin: item.vin,
           vin: "XXXXXXXXXXXXXXXXX",
         })),
       }).unwrap();
@@ -87,8 +92,23 @@ function RetailCheckoutView() {
           <Stack gap={8}>
             <Group justify="space-between">
               <Title order={4}>{item.ntgName}</Title>
+              <Group>
+                <Badge>{item.tokenCost} tokens</Badge>
 
-              <Badge>{item.tokenCost} tokens</Badge>
+                <ActionIcon
+                  color="red"
+                  variant="subtle"
+                  onClick={() => {
+                    dispatch(removeFromCart(item.id));
+
+                    notify.success({
+                      message: "Produit retiré du panier.",
+                    });
+                  }}
+                >
+                  <TrashIcon size={20} weight="thin" />
+                </ActionIcon>
+              </Group>
             </Group>
 
             <Text size="sm">Région : {item.region}</Text>
@@ -102,7 +122,7 @@ function RetailCheckoutView() {
             <Group justify="space-between">
               <Text fw={600}>Prix</Text>
 
-              <Text fw={700}>{item.price} TND</Text>
+              <Text fw={700}>{formatPrice(item.price)} TND</Text>
             </Group>
           </Stack>
         </Card>
@@ -120,7 +140,7 @@ function RetailCheckoutView() {
             <Text>Total</Text>
 
             <Text fw={700} size="lg">
-              {totalPrice} TND
+              {formatPrice(totalPrice)} TND
             </Text>
           </Group>
           <Button mt="md" loading={isLoading} onClick={handleCreateOrder}>

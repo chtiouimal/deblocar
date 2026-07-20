@@ -4,7 +4,7 @@ import { requireRetailAuth } from "@/lib/requireAuth";
 
 import RetailUser from "@/models/RetailUser";
 import RetailWallet from "@/models/RetailWallet";
-import RetailOrder from "@/models/RetailOrder";
+import RetailOrder, { RetailOrderStatus } from "@/models/RetailOrder";
 import RetailOrderItem, {
   RetailOrderItemStatus,
 } from "@/models/RetailOrderItem";
@@ -13,6 +13,7 @@ import RetailTokenTransaction, {
 } from "@/models/RetailTokenTransaction";
 
 import { transporter } from "@/lib/mailer";
+import { orderEmailTemplate } from "@/templates/orderEmailTemplate";
 
 export async function POST(req: Request) {
   try {
@@ -255,53 +256,38 @@ export async function POST(req: Request) {
 
     order.transactionId = transaction._id;
 
-    order.status = "completed";
+    const successCount = results.filter(Boolean).length;
+
+    if (successCount === preparedItems.length) {
+      order.status = RetailOrderStatus.COMPLETED;
+    } else if (successCount === 0) {
+      order.status = RetailOrderStatus.FAILED;
+    } else {
+      order.status = RetailOrderStatus.PARTIAL;
+    }
 
     await order.save();
-
-    /*
-      Send ONE email
-    */
 
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
 
       to: user.email,
 
-      subject: "Vos codes PIN Mercedes-Benz",
+      subject: "Commande Mercedes-Benz - Deblocar",
 
-      text: `
-Bonjour ${user.name},
+      html: orderEmailTemplate({
+        name: user.name,
 
-Votre commande a été générée avec succès.
+        orderId: order._id,
 
-${results
-  .filter(Boolean)
-  .map(
-    (item: any) => `
+        items: results.filter(Boolean),
 
-Système: ${item.ntgName}
+        totalItems: preparedItems.length,
 
-Région: ${item.region}
+        totalTokens,
 
-Version: ${item.version}
-
-VIN: ${item.vin}
-
-PIN: ${item.pin}
-
-`,
-  )
-  .join("\n")}
-
-
-Tokens utilisés: ${totalTokens}
-
-Solde restant: ${wallet.balance}
-
-
-Merci.
-`,
+        balance: wallet.balance,
+      }),
     });
 
     return NextResponse.json({

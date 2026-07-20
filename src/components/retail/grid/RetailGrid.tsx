@@ -26,21 +26,25 @@ function RetailGrid({ data, isLoading }: RetailGridProps) {
     return (
       <Card
         shadow="sm"
-        padding="xl"
+        padding="md"
         onClick={handleClick}
         style={{ cursor: "pointer" }}
       >
         <Card.Section>
-          <Image src={data?.images[0]} h={260} alt={data?.ntgName} />
+          <Image
+            src={data?.images[0]}
+            h={{ base: 160, sm: 260 }}
+            alt={data?.ntgName}
+          />
         </Card.Section>
 
-        <Text fw={500} size="lg" mt="md">
+        <Text fw={500} h={60} size="lg" mt="md">
           {data?.ntgName}
         </Text>
 
-        <Text mt="xs" c="dimmed" size="xs">
+        {/* <Text mt="xs" c="dimmed" size="xs">
           {data?.displayName}
-        </Text>
+        </Text> */}
         <Text mt={8} size="sm" c={colors.glowingRed[5]}>
           {data?.price} TND
         </Text>
@@ -71,10 +75,19 @@ function RetailGrid({ data, isLoading }: RetailGridProps) {
         size="100%"
         // title={selectedRetail?.ntgName}
         withCloseButton={false}
+        styles={{
+          body: {
+            padding: 0,
+            maxHeight: "100vh",
+          },
+        }}
       >
         <Box
-          p="32px"
-          style={{ maxWidth: 1440, margin: "0 auto", maxHeight: "100vh" }}
+          p={{ base: 16, md: 32 }}
+          style={{ maxWidth: 1440, margin: "0 auto" }}
+          mah={{ base: "auto", md: "100vh" }}
+          mih="100vh"
+          className="rightBg"
         >
           <Flex mb={32} justify="space-between" w="100%">
             <Link href="/" style={{ opacity: 1 }}>

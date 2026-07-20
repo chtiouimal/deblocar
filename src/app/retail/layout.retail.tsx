@@ -8,6 +8,7 @@ import { notify } from "@/lib/notifications";
 import { useRetailLogoutMutation } from "@/lib/retailApi/authRetailApi";
 import { setRetailUser } from "@/retailStore/retailAuthSlice";
 import { RootRetailState } from "@/retailStore/retailStore";
+import { colors } from "@/theme/colors";
 import {
   Avatar,
   Box,
@@ -15,18 +16,30 @@ import {
   Button,
   Drawer,
   Flex,
+  Indicator,
+  Menu,
   UnstyledButton,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { CoinsIcon } from "@phosphor-icons/react";
+import {
+  CoinsIcon,
+  ShoppingCartIcon,
+  SignOutIcon,
+  UserIcon,
+} from "@phosphor-icons/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 
 function RetailLayout({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { user, loading } = useSelector(
     (state: RootRetailState) => state.retailAuth,
+  );
+  const cartItems = useSelector(
+    (state: RootRetailState) => state.retailCart.items,
   );
   const [sidebarOpened, { open: openSidebar, close: closeSidebar }] =
     useDisclosure(false);
@@ -74,7 +87,7 @@ function RetailLayout({ children }: { children: React.ReactNode }) {
         <Flex
           justify="space-between"
           align="center"
-          p={32}
+          p={{ base: 16, md: 32 }}
           style={{ maxWidth: 1440, margin: "0 auto" }}
         >
           <Flex gap={8} align="center">
@@ -84,16 +97,18 @@ function RetailLayout({ children }: { children: React.ReactNode }) {
               size="md"
               lineSize={2}
             />
-            {!sidebarOpened && (
-              <Link href="/" style={{ opacity: 1 }}>
-                <Image
-                  src="/Deblocar_small.svg"
-                  alt="deblocar-logo"
-                  width={192}
-                  height={30}
-                />
-              </Link>
-            )}
+            <Box visibleFrom="sm">
+              {!sidebarOpened && (
+                <Link href="/" style={{ opacity: 1 }}>
+                  <Image
+                    src="/Deblocar_small.svg"
+                    alt="deblocar-logo"
+                    width={192}
+                    height={30}
+                  />
+                </Link>
+              )}
+            </Box>
           </Flex>
 
           {user ? (
@@ -103,13 +118,44 @@ function RetailLayout({ children }: { children: React.ReactNode }) {
                 {user.balance}
               </Flex>
 
-              <Link href="/retail/profile">
-                <Avatar radius="xl" />
+              <Link href="/retail/checkout" style={{ opacity: 1 }}>
+                <Indicator
+                  label={cartItems.length > 0 ? cartItems.length : 0}
+                  color={colors.glowingRed[5]}
+                  size={16}
+                  showZero={false}
+                  maxValue={99}
+                  style={{ display: "flex", alignItems: "center" }}
+                >
+                  <ShoppingCartIcon size={26} weight="thin" />
+                </Indicator>
               </Link>
 
-              <UnstyledButton onClick={handleLogout}>
-                Se déconnecter
-              </UnstyledButton>
+              <Menu shadow="md" width={200}>
+                <Menu.Target>
+                  <Avatar style={{ cursor: "pointer" }} radius="xl" />
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <Menu.Label>{user?.name}</Menu.Label>
+                  <Menu.Item
+                    leftSection={<UserIcon size={14} />}
+                    onClick={() => router.push("/retail/profile")}
+                  >
+                    Votre profile
+                  </Menu.Item>
+                  <Menu.Divider />
+                  <Menu.Item
+                    color="red"
+                    leftSection={<SignOutIcon size={14} />}
+                    onClick={handleLogout}
+                  >
+                    Se déconnecter
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
+              {/* <Link href="/retail/profile">
+                <Avatar radius="xl" />
+              </Link> */}
             </Flex>
           ) : (
             <Button onClick={() => open()}>Se connecter</Button>
@@ -128,7 +174,11 @@ function RetailLayout({ children }: { children: React.ReactNode }) {
         overlayProps={{ opacity: 0.2, blur: 3 }}
       >
         <Flex direction="column">
-          <Link href="/" style={{ opacity: 1, marginBottom: 32 }}>
+          <Link
+            href="/"
+            style={{ opacity: 1, marginBottom: 32 }}
+            onClick={closeSidebar}
+          >
             <Image
               src="/Deblocar_small.svg"
               alt="deblocar-logo"
@@ -136,7 +186,9 @@ function RetailLayout({ children }: { children: React.ReactNode }) {
               height={30}
             />
           </Link>
-          <Link href="/retail">Mises à jour GPS Mercedes</Link>
+          <Link href="/retail" onClick={closeSidebar}>
+            Mises à jour GPS Mercedes
+          </Link>
         </Flex>
       </Drawer>
     </>

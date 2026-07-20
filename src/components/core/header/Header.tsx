@@ -33,21 +33,21 @@ function Header() {
       {!isDevis && (
         <div className={styles.headerMenu}>
           <ul className={styles.textMenuList}>
-            <li>
+            <li className={styles.textMenuItem}>
               <button onClick={() => handleNavClick("marques")}>
                 <Text size="md" fw={400}>
                   Marques
                 </Text>
               </button>
             </li>
-            <li>
+            <li className={styles.textMenuItem}>
               <button onClick={() => handleNavClick("services")}>
                 <Text size="md" fw={400}>
                   Services
                 </Text>
               </button>
             </li>
-            <li>
+            <li className={styles.textMenuItem}>
               <button onClick={() => handleNavClick("process")}>
                 <Text size="md" fw={400}>
                   Process

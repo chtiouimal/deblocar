@@ -1,6 +1,8 @@
+import "@/models/RetailOrder";
+import "@/models/RetailOrderItem";
+import RetailTokenTransaction from "@/models/RetailTokenTransaction";
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
-import RetailTokenTransaction from "@/models/RetailTokenTransaction";
 import { requireRetailAuth } from "@/lib/requireAuth";
 import { Types } from "mongoose";
 
@@ -40,8 +42,12 @@ export async function GET(req: Request) {
       RetailTokenTransaction.find(filter)
         .populate({
           path: "orderId",
+          select:
+            "status totalItems totalTokens balanceBefore balanceAfter createdAt items",
           populate: {
             path: "items",
+            select:
+              "ntgName regionName versionName vin tokenCost status createdAt",
           },
         })
         .sort({ createdAt: -1 })

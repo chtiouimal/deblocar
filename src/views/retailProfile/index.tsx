@@ -15,7 +15,6 @@ import {
   Grid,
   GridCol,
   Group,
-  Paper,
   RingProgress,
   Tabs,
   Text,
