@@ -80,7 +80,40 @@ export interface RetailOrder {
 export interface RetailTransaction {
   _id: string;
 
-  retailUserId: string;
+  retailUserId:
+    | string
+    | {
+        _id: string;
+        email: string;
+        name: string;
+      };
+
+  type: RetailTransactionType;
+
+  amount: number;
+
+  balanceBefore: number;
+
+  balanceAfter: number;
+
+  note: string;
+
+  // new
+  orderId?: RetailOrder | null;
+
+  createdAt: string;
+
+  updatedAt: string;
+}
+
+export interface RetailTransactionAdmin {
+  _id: string;
+
+  retailUserId: {
+    _id: string;
+    email: string;
+    name: string;
+  };
 
   type: RetailTransactionType;
 

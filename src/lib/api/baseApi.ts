@@ -16,6 +16,7 @@ export const baseApi = createApi({
     "Calendar",
     "Dashboard",
     "Retail",
+    "RetailTransactions",
   ],
   endpoints: () => ({}),
 });

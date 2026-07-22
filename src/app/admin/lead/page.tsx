@@ -224,7 +224,7 @@ export default function LeadPage() {
               leftSection={<XIcon size={20} weight="thin" />}
               onClick={resetFilters}
             >
-              Reset filters
+              Réinitialiser
             </Button>
           )}
 
