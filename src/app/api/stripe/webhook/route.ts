@@ -79,12 +79,14 @@ export async function POST(req: Request) {
       });
     }
 
+    order.paymentId = payment._id;
+
     const orderItems = await RetailOrderItem.find({
       orderId: order._id,
     });
 
     const results = await generateOrderPins(orderItems);
-    
+
     const successCount = results.filter(Boolean).length;
 
     if (successCount === orderItems.length) {
@@ -155,6 +157,7 @@ export async function POST(req: Request) {
     const order = await RetailOrder.findById(payment.orderId);
 
     if (order) {
+      order.paymentId = payment._id;
       order.status = RetailOrderStatus.FAILED;
       await order.save();
     }
