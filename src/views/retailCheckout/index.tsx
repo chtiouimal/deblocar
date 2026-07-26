@@ -16,22 +16,33 @@ import {
   Button,
   Badge,
   Box,
+  Radio,
 } from "@mantine/core";
 import { useDispatch, useSelector } from "react-redux";
 import { removeFromCart } from "@/retailStore/retailCartSlice";
 import { TrashIcon } from "@phosphor-icons/react";
 import { ActionIcon } from "@mantine/core";
 import { formatPrice } from "@/utils/formatNumber";
+import { useState } from "react";
+import { RetailPaymentMethod } from "@/types/retail";
+import StripeProvider from "@/components/retail/stripe/StripeProvider";
+import StripePaymentForm from "@/components/retail/stripe/StripePaymentForm";
+import { useRouter } from "next/navigation";
 
 function RetailCheckoutView() {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { open } = useRetailAuthDrawer();
   const { user } = useSelector((state: RootRetailState) => state.retailAuth);
   const items = useSelector((state: RootRetailState) => state.retailCart.items);
 
-  const [createOrder, { isLoading }] = useCreateOrderMutation();
+  const [paymentMethod, setPaymentMethod] =
+    useState<RetailPaymentMethod>("tokens");
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [orderCreated, setOrderCreated] = useState(false);
+  const [orderId, setOrderId] = useState<string | null>(null);
 
-  console.log("items: ", items);
+  const [createOrder, { isLoading }] = useCreateOrderMutation();
 
   const totalTokens = items.reduce((acc, item) => acc + item.tokenCost, 0);
   const totalPrice = Number(
@@ -45,20 +56,34 @@ function RetailCheckoutView() {
     }
     try {
       const result = await createOrder({
+        paymentMethod,
+
         items: items.map((item) => ({
           hu: item.hu,
           region: item.region,
           version: item.version,
-          //   vin: item.vin,
+
+          // TEST VIN - DO NOT CONSUME MBTOOLS
           vin: "XXXXXXXXXXXXXXXXX",
         })),
       }).unwrap();
+
+      if (result.paymentRequired && result.clientSecret) {
+        setClientSecret(result.clientSecret);
+        setOrderId(result.orderId);
+        setOrderCreated(true);
+        return;
+      }
+
+      setOrderCreated(true);
 
       notify.success({
         message: "Votre commande a été créée avec succès.",
       });
 
-      dispatch(updateBalance(result.balance));
+      if (result.balance !== undefined) {
+        dispatch(updateBalance(result.balance));
+      }
 
       dispatch(clearCart());
     } catch (error: any) {
@@ -143,9 +168,40 @@ function RetailCheckoutView() {
               {formatPrice(totalPrice)} TND
             </Text>
           </Group>
-          <Button mt="md" loading={isLoading} onClick={handleCreateOrder}>
-            Continuer
-          </Button>
+          <Card shadow="sm" padding="lg" radius="md" withBorder>
+            <Stack>
+              <Text fw={700}>Méthode de paiement</Text>
+
+              {!orderCreated && (
+                <Radio.Group
+                  value={paymentMethod}
+                  onChange={(value) =>
+                    setPaymentMethod(value as RetailPaymentMethod)
+                  }
+                >
+                  <Stack>
+                    <Radio value="tokens" label="Payer avec mes tokens" />
+
+                    <Radio value="card" label="Carte bancaire" />
+                  </Stack>
+                </Radio.Group>
+              )}
+            </Stack>
+          </Card>
+          {!orderCreated && (
+            <Button mt="md" loading={isLoading} onClick={handleCreateOrder}>
+              Continuer
+            </Button>
+          )}
+          {clientSecret && (
+            <StripeProvider clientSecret={clientSecret}>
+              <StripePaymentForm
+                onSuccess={() => {
+                  router.push(`/retail/checkout/processing?orderId=${orderId}`);
+                }}
+              />
+            </StripeProvider>
+          )}
         </Stack>
       </Card>
     </Stack>

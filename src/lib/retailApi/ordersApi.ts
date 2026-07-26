@@ -1,24 +1,9 @@
+import { CreateOrderBody, CreateOrderResponse } from "@/types/retail";
 import { retailBaseApi } from "./retailBaseApi";
-
-export interface CreateOrderItem {
-  hu: string;
-  region: string;
-  version: string;
-  vin: string;
-}
 
 export const ordersApi = retailBaseApi.injectEndpoints({
   endpoints: (builder) => ({
-    createOrder: builder.mutation<
-      {
-        message: string;
-        orderId: string;
-        balance: number;
-      },
-      {
-        items: CreateOrderItem[];
-      }
-    >({
+    createOrder: builder.mutation<CreateOrderResponse, CreateOrderBody>({
       query: (body) => ({
         url: "/retail/orders",
         method: "POST",
@@ -38,7 +23,16 @@ export const ordersApi = retailBaseApi.injectEndpoints({
         } catch {}
       },
     }),
+    getOrderStatus: builder.query<
+      {
+        orderStatus: string;
+        paymentStatus: string | null;
+      },
+      string
+    >({
+      query: (orderId) => `/retail/orders/${orderId}/status`,
+    }),
   }),
 });
 
-export const { useCreateOrderMutation } = ordersApi;
+export const { useCreateOrderMutation, useGetOrderStatusQuery } = ordersApi;

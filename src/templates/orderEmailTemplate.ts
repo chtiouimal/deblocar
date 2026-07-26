@@ -127,11 +127,11 @@ ${data.totalTokens}
 </p>
 
 
-<p>
-<strong>Nouveau solde :</strong>
-${data.balance}
-tokens
-</p>
+${
+  data.balance !== null
+    ? `<p><strong>Solde restant :</strong> ${data.balance} tokens</p>`
+    : ""
+}
 
 
 </div>

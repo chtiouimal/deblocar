@@ -23,6 +23,8 @@ export interface RetailVersions {
 
 export type RetailTransactionType = "topup" | "consume";
 
+export type RetailPaymentMethod = "tokens" | "card";
+
 export interface RetailOrderItem {
   _id: string;
 
@@ -131,4 +133,29 @@ export interface RetailTransactionAdmin {
   createdAt: string;
 
   updatedAt: string;
+}
+
+export interface CreateOrderItem {
+  hu: string;
+  region: string;
+  version: string;
+  vin: string;
+}
+
+export interface CreateOrderBody {
+  items: CreateOrderItem[];
+
+  paymentMethod: RetailPaymentMethod;
+}
+
+export interface CreateOrderResponse {
+  message?: string;
+
+  orderId: string;
+
+  balance?: number;
+
+  paymentRequired?: boolean;
+
+  clientSecret?: string;
 }

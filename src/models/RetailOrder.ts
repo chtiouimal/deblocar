@@ -6,6 +6,12 @@ export enum RetailOrderStatus {
   COMPLETED = "completed",
   PARTIAL = "partial",
   FAILED = "failed",
+  ACTION_REQUIRED = "action_required",
+}
+
+export enum RetailPaymentMethod {
+  TOKENS = "tokens",
+  CARD = "card",
 }
 
 export interface IRetailOrder {
@@ -22,6 +28,10 @@ export interface IRetailOrder {
   balanceAfter: number;
 
   status: RetailOrderStatus;
+
+  paymentMethod: RetailPaymentMethod;
+
+  paymentId?: Types.ObjectId;
 }
 
 const RetailOrderSchema = new Schema<IRetailOrder>(
@@ -37,6 +47,17 @@ const RetailOrderSchema = new Schema<IRetailOrder>(
       type: Schema.Types.ObjectId,
       ref: "RetailTokenTransaction",
       default: null,
+    },
+    paymentId: {
+      type: Schema.Types.ObjectId,
+      ref: "RetailPayment",
+      default: null,
+    },
+
+    paymentMethod: {
+      type: String,
+      enum: Object.values(RetailPaymentMethod),
+      default: RetailPaymentMethod.TOKENS,
     },
 
     totalItems: {
