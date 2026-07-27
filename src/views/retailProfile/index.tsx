@@ -23,6 +23,8 @@ import {
 import CustomLoader from "@/components/core/loading";
 import { colors } from "@/theme/colors";
 import { CoinsIcon, EnvelopeIcon } from "@phosphor-icons/react";
+import { useGetOrdersQuery } from "@/lib/retailApi/ordersApi";
+import OrdersList from "@/components/retail/orders/OrdersList";
 
 function RetailProfileView() {
   const router = useRouter();
@@ -38,21 +40,34 @@ function RetailProfileView() {
   }, [loading, user, router]);
 
   const [filters, setFilters] = useState({
-    page: 1,
-    limit: 10,
-    type: "consume" as RetailTransactionType,
+    type: "topup" as RetailTransactionType,
   });
+
+  const [page, setPage] = useState(1);
+  const [topupPage, setTopupsPage] = useState(1);
 
   const { data } = useGetTransactionsQuery(
     {
-      page: filters.page,
-      limit: filters.limit,
+      page: topupPage,
+      limit: 6,
       type: filters.type,
     },
     {
       skip: !user,
     },
   );
+
+  const { data: orders } = useGetOrdersQuery(
+    {
+      page,
+      limit: 6,
+    },
+    {
+      skip: !user,
+    },
+  );
+
+  console.log("orders: ", orders);
 
   const transactions = data?.transactions ?? [];
   const completed = data?.totalConsumed ?? 0;
@@ -172,17 +187,39 @@ function RetailProfileView() {
         }
       >
         <Tabs.List>
-          <Tabs.Tab value="consume">Générations de codes</Tabs.Tab>
+          <Tabs.Tab value="consume">Commandes</Tabs.Tab>
 
           <Tabs.Tab value="topup">Historique des recharges</Tabs.Tab>
         </Tabs.List>
 
         <Tabs.Panel value="consume">
-          <TransactionList data={transactions} />
+          <OrdersList
+            data={orders?.data ?? []}
+            pagination={
+              orders?.pagination ?? {
+                page: 1,
+                pages: 1,
+                total: 0,
+                limit: 6,
+              }
+            }
+            onPageChange={setPage}
+          />
         </Tabs.Panel>
 
         <Tabs.Panel value="topup">
-          <TransactionList data={transactions} />
+          <TransactionList
+            data={transactions}
+            pagination={
+              data?.pagination ?? {
+                page: 1,
+                pages: 1,
+                total: 0,
+                limit: 10,
+              }
+            }
+            onPageChange={setTopupsPage}
+          />
         </Tabs.Panel>
       </Tabs>
     </Box>

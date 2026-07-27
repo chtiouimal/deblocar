@@ -25,6 +25,38 @@ export type RetailTransactionType = "topup" | "consume";
 
 export type RetailPaymentMethod = "tokens" | "card";
 
+export type RetailOrderStatus =
+  | "pending"
+  | "processing"
+  | "completed"
+  | "partial"
+  | "failed"
+  | "action_required";
+
+export type RetailOrderItemStatus = "pending" | "success" | "failed";
+
+export type RetailPaymentStatus = "pending" | "succeeded" | "failed";
+
+export interface RetailPayment {
+  _id: string;
+
+  retailUserId: string;
+
+  orderId: string;
+
+  stripePaymentIntentId: string;
+
+  amount: number;
+
+  currency: string;
+
+  status: RetailPaymentStatus;
+
+  createdAt: string;
+
+  updatedAt: string;
+}
+
 export interface RetailOrderItem {
   _id: string;
 
@@ -34,21 +66,25 @@ export interface RetailOrderItem {
 
   ntgName: string;
 
-  displayName?: string;
+  displayName: string;
 
   region: string;
 
-  regionName?: string;
+  regionName: string;
 
   version: string;
 
-  versionName?: string;
+  versionName: string;
 
   vin: string;
 
   tokenCost: number;
 
-  status: string;
+  pin: string | null;
+
+  status: RetailOrderItemStatus;
+
+  error?: string;
 
   createdAt: string;
 
@@ -60,19 +96,29 @@ export interface RetailOrder {
 
   retailUserId: string;
 
-  transactionId?: string;
+  transactionId: string | null;
+
+  paymentId: string | null;
+
+  paymentMethod: RetailPaymentMethod;
 
   totalItems: number;
 
   totalTokens: number;
 
+  totalPrice: number;
+
   balanceBefore: number;
 
   balanceAfter: number;
 
-  status: string;
+  status: RetailOrderStatus;
 
-  items?: RetailOrderItem[];
+  items: RetailOrderItem[];
+
+  payment: RetailPayment | null;
+
+  transaction: RetailTransaction | null;
 
   createdAt: string;
 

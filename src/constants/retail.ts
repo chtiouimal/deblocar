@@ -218,3 +218,93 @@ export const MERCEDES_NTG_MODELS = [
     ],
   },
 ];
+
+import {
+  RetailOrderStatus,
+  RetailOrderItemStatus,
+  RetailPaymentStatus,
+} from "@/types/retail";
+
+export const RETAIL_ORDER_STATUS = {
+  pending: {
+    label: "En attente",
+    color: "yellow",
+  },
+
+  processing: {
+    label: "Traitement en cours",
+    color: "blue",
+  },
+
+  completed: {
+    label: "Terminée",
+    color: "green",
+  },
+
+  partial: {
+    label: "Partiellement terminée",
+    color: "orange",
+  },
+
+  failed: {
+    label: "Échec",
+    color: "red",
+  },
+
+  action_required: {
+    label: "Action requise",
+    color: "grape",
+  },
+} satisfies Record<
+  RetailOrderStatus,
+  {
+    label: string;
+    color: string;
+  }
+>;
+
+export const RETAIL_ORDER_ITEM_STATUS = {
+  pending: {
+    label: "En attente",
+    color: "yellow",
+  },
+
+  success: {
+    label: "Réussi",
+    color: "green",
+  },
+
+  failed: {
+    label: "Échec",
+    color: "red",
+  },
+} satisfies Record<
+  RetailOrderItemStatus,
+  {
+    label: string;
+    color: string;
+  }
+>;
+
+export const RETAIL_PAYMENT_STATUS = {
+  pending: {
+    label: "En attente",
+    color: "yellow",
+  },
+
+  succeeded: {
+    label: "Payé",
+    color: "green",
+  },
+
+  failed: {
+    label: "Échec",
+    color: "red",
+  },
+} satisfies Record<
+  RetailPaymentStatus,
+  {
+    label: string;
+    color: string;
+  }
+>;

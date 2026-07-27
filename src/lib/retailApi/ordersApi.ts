@@ -1,4 +1,8 @@
-import { CreateOrderBody, CreateOrderResponse } from "@/types/retail";
+import {
+  CreateOrderBody,
+  CreateOrderResponse,
+  RetailOrder,
+} from "@/types/retail";
 import { retailBaseApi } from "./retailBaseApi";
 
 export const ordersApi = retailBaseApi.injectEndpoints({
@@ -23,6 +27,30 @@ export const ordersApi = retailBaseApi.injectEndpoints({
         } catch {}
       },
     }),
+    getOrders: builder.query<
+      {
+        data: RetailOrder[];
+        pagination: {
+          page: number;
+          limit: number;
+          total: number;
+          pages: number;
+        };
+      },
+      {
+        page?: number;
+        limit?: number;
+        status?: string;
+        paymentMethod?: string;
+      }
+    >({
+      query: (params) => ({
+        url: "/retail/orders",
+        params,
+      }),
+
+      providesTags: ["RetailOrders"],
+    }),
     getOrderStatus: builder.query<
       {
         orderStatus: string;
@@ -35,4 +63,8 @@ export const ordersApi = retailBaseApi.injectEndpoints({
   }),
 });
 
-export const { useCreateOrderMutation, useGetOrderStatusQuery } = ordersApi;
+export const {
+  useCreateOrderMutation,
+  useGetOrderStatusQuery,
+  useGetOrdersQuery,
+} = ordersApi;

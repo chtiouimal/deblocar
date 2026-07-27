@@ -84,25 +84,26 @@ function RetailGrid({ data, isLoading }: RetailGridProps) {
       >
         <Box
           p={{ base: 16, md: 32 }}
-          style={{ maxWidth: 1440, margin: "0 auto" }}
           mah={{ base: "auto", md: "100vh" }}
           mih="100vh"
           className="rightBg"
         >
-          <Flex mb={32} justify="space-between" w="100%">
-            <Link href="/" style={{ opacity: 1 }}>
-              <Image
-                src="/Deblocar_small.svg"
-                alt="deblocar-logo"
-                width={192}
-                height={30}
-              />
-            </Link>
-            <UnstyledButton onClick={close}>
-              <XIcon size={32} weight="thin" />
-            </UnstyledButton>
-          </Flex>
-          <RetailForm data={selectedRetail} />
+          <Box style={{ maxWidth: 1440, margin: "0 auto" }}>
+            <Flex mb={32} justify="space-between" w="100%">
+              <Link href="/" style={{ opacity: 1 }}>
+                <Image
+                  src="/Deblocar_small.svg"
+                  alt="deblocar-logo"
+                  width={192}
+                  height={30}
+                />
+              </Link>
+              <UnstyledButton onClick={close}>
+                <XIcon size={32} weight="thin" />
+              </UnstyledButton>
+            </Flex>
+            <RetailForm data={selectedRetail} />
+          </Box>
         </Box>
       </Drawer>
     </>

@@ -1,24 +1,32 @@
 import { RetailTransaction } from "@/types/retail";
-import { Box, Flex, Grid, GridCol, Text, Title } from "@mantine/core";
+import { formatDateTime } from "@/utils/formatDate";
+import {
+  Box,
+  Flex,
+  Grid,
+  GridCol,
+  Pagination,
+  Text,
+  Title,
+} from "@mantine/core";
 import { CalendarCheckIcon, ClockIcon } from "@phosphor-icons/react";
 
 interface TransactionListProps {
   data: RetailTransaction[];
+  pagination: {
+    page: number;
+    pages: number;
+    total: number;
+    limit: number;
+  };
+  onPageChange: (page: number) => void;
 }
 
-function TransactionList({ data }: TransactionListProps) {
-  const formatDateTime = (date: string) => {
-    const d = new Date(date);
-
-    return {
-      date: d.toLocaleDateString("fr-FR"),
-      time: d.toLocaleTimeString("fr-FR", {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-    };
-  };
-
+function TransactionList({
+  data,
+  pagination,
+  onPageChange,
+}: TransactionListProps) {
   const TransactionCard = ({ data }: { data: RetailTransaction }) => {
     const { date, time } = formatDateTime(data?.createdAt);
     return (
@@ -47,13 +55,24 @@ function TransactionList({ data }: TransactionListProps) {
     );
   };
   return (
-    <Grid p="32px 0">
-      {data?.map((e, i) => (
-        <GridCol span={6} key={i}>
-          <TransactionCard data={e} />
-        </GridCol>
-      ))}
-    </Grid>
+    <>
+      <Grid p="32px 0">
+        {data?.map((e, i) => (
+          <GridCol span={6} key={i}>
+            <TransactionCard data={e} />
+          </GridCol>
+        ))}
+      </Grid>
+      {pagination.pages > 1 && (
+        <Flex justify="center" mt="xl">
+          <Pagination
+            value={pagination.page}
+            total={pagination.pages}
+            onChange={onPageChange}
+          />
+        </Flex>
+      )}
+    </>
   );
 }
 

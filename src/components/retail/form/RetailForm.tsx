@@ -17,6 +17,7 @@ import {
   Flex,
   Grid,
   GridCol,
+  Group,
   List,
   ScrollArea,
   Select,
@@ -24,8 +25,10 @@ import {
   Text,
   TextInput,
   Title,
+  UnstyledButton,
 } from "@mantine/core";
 import { WarningIcon } from "@phosphor-icons/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -35,6 +38,7 @@ interface RetailFormProps {
 
 function RetailForm({ data }: RetailFormProps) {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { open } = useRetailAuthDrawer();
   const { user } = useSelector((state: RootRetailState) => state.retailAuth);
   const [formData, setFormData] = useState({
@@ -43,6 +47,8 @@ function RetailForm({ data }: RetailFormProps) {
     region: "",
     version: "",
   });
+
+  const [addedToCart, setAddedToCart] = useState(false);
 
   const [getGenerateCode, { data: generatedCode, isLoading, error }] =
     useLazyGetGenerateCodeQuery();
@@ -167,7 +173,7 @@ function RetailForm({ data }: RetailFormProps) {
 
     dispatch(addToCart(item));
 
-    console.log("ADDING:", item);
+    setAddedToCart(true);
 
     notify.success({
       message: "Produit ajouté au panier.",
@@ -229,9 +235,27 @@ function RetailForm({ data }: RetailFormProps) {
               {/* <Button mt={32} onClick={handleSubmit}>
                 {isLoading ? "Génération en cours..." : "Générer le code"}
               </Button> */}
-              <Button mt={32} onClick={handleAddToCart}>
-                Ajouter au panier
-              </Button>
+              {addedToCart ? (
+                <Group gap={8} mt={32}>
+                  <UnstyledButton
+                    w="calc(50% - 4px)"
+                    style={{ textAlign: "center" }}
+                    onClick={() => router.push("/retail")}
+                  >
+                    Continuer mes achats
+                  </UnstyledButton>
+                  <Button
+                    w="calc(50% - 4px)"
+                    onClick={() => router.push("/retail/checkout")}
+                  >
+                    Voir le pannier
+                  </Button>
+                </Group>
+              ) : (
+                <Button mt={32} onClick={handleAddToCart}>
+                  Ajouter au panier
+                </Button>
+              )}
             </Stack>
             <Stack mt={64}>
               <Text fz="sm">
