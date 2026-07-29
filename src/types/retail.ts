@@ -96,6 +96,8 @@ export interface RetailOrder {
 
   retailUserId: string;
 
+  retailUser: { name: string; email: string } | null;
+
   transactionId: string | null;
 
   paymentId: string | null;

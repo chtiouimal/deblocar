@@ -53,7 +53,7 @@ function RetailPage() {
     <div style={{ padding: 20, width: "100%" }}>
       {/* HEADER */}
       <Group justify="space-between" mb="md">
-        <h2>Commercials</h2>
+        <h2>Clients</h2>
       </Group>
 
       {/* TABLE */}

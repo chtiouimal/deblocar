@@ -39,7 +39,7 @@ export const components = {
         borderBottom: "0.5px solid rgba(244, 239, 231, 0.1)",
         borderRadius: 0,
         backgroundColor: "rgba(255,255,255,0.05",
-        padding: "10px 0",
+        padding: "10px 0 10px 10px",
         transition: "border-color 0.2s ease",
       },
       label: {

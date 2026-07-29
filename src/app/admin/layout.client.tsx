@@ -49,6 +49,16 @@ const mockdata = [
     link: "/admin/calendreier",
   },
   {
+    label: "Clients",
+    icon: UsersIcon,
+    initiallyOpened: false,
+    links: [
+      { label: "Clients", link: "/admin/retail" },
+      { label: "Transactions", link: "/admin/transactions" },
+      { label: "Commandes", link: "/admin/commandes" },
+    ],
+  },
+  {
     label: "Paramètres",
     icon: GearIcon,
     initiallyOpened: true,
@@ -56,8 +66,6 @@ const mockdata = [
       { label: "Services", link: "/admin/services" },
       { label: "status", link: "/admin/status" },
       { label: "Utilisateurs", link: "/admin/users" },
-      { label: "Commercials", link: "/admin/retail" },
-      { label: "Transactions", link: "/admin/transactions" },
     ],
   },
 ];
